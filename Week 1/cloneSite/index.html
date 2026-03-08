@@ -415,8 +415,8 @@
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
+            <div class="indicator"><span></span></div>
           </div>
-          <div class="indicator"><span></span></div>
           <div class="user-menu">
             <img src="./assets/owner.png" alt="User" />
             <p style="display: flex">
@@ -578,37 +578,67 @@
             <!-- Continue Here!! -->
 
             <div class="main-top-right-footer">
-              <ul >
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
+              <ul>
+                <li>
+                  <span class="helper-msg">Target</span>
+                  <p>$20K <span style="color: #D92D20;font-weight:lighter;">↓</span></p>
+                </li>
+                <li>
+                  <span class="helper-msg">Revenue</span>
+                  <p>$20K <span style="color: #039855;font-weight:lighter;">↑</span></p>
+                </li>
+                <li>
+                  <span class="helper-msg">Today</span>
+                  <p>$20K <span style="color: #039855;font-weight:lighter;">↑</span></p>
+                </li>
               </ul>
             </div>
           </div>
 
         </div>
 
+
         <div class="main-center bordered-div">
           <div class="main-center-header">
             <div class="titles">
-              <h3>Statics</h3>
-              <span>Target you’ve set for each month</span>
+              <p>Statistics</p>
+              <span class="helper-msg" style="margin-left: 0;">Target you’ve set for each month</span>
             </div>
 
             <div class="controls">
-              <div class="slider">
+              <div>
                 <ul style="list-style-type: none">
-                  <li>Overview</li>
-                  <li>Sales</li>
-                  <li>Revenue</li>
+                  <li>
+                  <div class="slider-container">
+                    <button class="slider active-slider">Overview</button>
+                    <button class="slider">Sales</button>
+                    <button class="slider end-slider">Revenue</button>
+                  </div>
+                  </li>
+                  <li class="right-controls"></li>
                 </ul>
               </div>
-              <div><p>date</p></div>
+              <div class="date">
+                    <svg
+                :class="(selected === 'Calendar') &amp;&amp; (page === 'calendar') ? 'menu-item-icon-active'  :'menu-item-icon-inactive'"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="menu-item-icon-inactive">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 2C8.41421 2 8.75 2.33579 8.75 2.75V3.75H15.25V2.75C15.25 2.33579 15.5858 2 16 2C16.4142 2 16.75 2.33579 16.75 2.75V3.75H18.5C19.7426 3.75 20.75 4.75736 20.75 6V9V19C20.75 20.2426 19.7426 21.25 18.5 21.25H5.5C4.25736 21.25 3.25 20.2426 3.25 19V9V6C3.25 4.75736 4.25736 3.75 5.5 3.75H7.25V2.75C7.25 2.33579 7.58579 2 8 2ZM8 5.25H5.5C5.08579 5.25 4.75 5.58579 4.75 6V8.25H19.25V6C19.25 5.58579 18.9142 5.25 18.5 5.25H16H8ZM19.25 9.75H4.75V19C4.75 19.4142 5.08579 19.75 5.5 19.75H18.5C18.9142 19.75 19.25 19.4142 19.25 19V9.75Z" fill="currentColor"
+                ></path></svg> 
+                <span>Mar 2 - Mar 8</span>
+              </div>
             </div>
+        </div>
+          <div class="center-image-container">
+            <img src="./assets/center-graph.png" alt="graph">
           </div>
         </div>
 
-        <div class="main-bottom bordered-div">
+        <div class="main-bottom">
           <div class="main-bottom-left">Bottom left</div>
 
           <div class="main-bottom-right">Bottom right</div>
