@@ -301,11 +301,6 @@ li:hover:not(.active){
 
 }
 
-.main-bottom{
-    display: flex;
-    min-height: 300px;
-}
-
 .controls{
     width: 600px;
     display: flex;
@@ -358,7 +353,7 @@ li:hover:not(.active){
     color: #667085;
     outline: none;
     padding: 8px 20px;
-
+    
     border: none;
 }
 
@@ -483,3 +478,27 @@ li:hover:not(.active){
     }
 }
 
+
+
+.main-bottom{
+    min-height: 300px;
+    margin: 10px 5px 10px 5px;
+    display: grid;
+    grid-template-columns: 38% 1fr;
+    gap: 15px;
+    padding-bottom: 30px;
+}
+
+.main-bottom-left{
+    background-color: red;
+    border-radius: 10px;
+    height: 400px;
+
+}
+
+.main-bottom-right{
+    background-color: red;
+    border-radius: 10px;
+    height: 510px;
+
+}
