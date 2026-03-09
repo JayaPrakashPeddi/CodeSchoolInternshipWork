@@ -1,0 +1,35 @@
+body {
+  padding: 3vw;
+}
+.container {
+  display: flex;
+}
+
+#num {
+  margin-top: -15px;
+}
+
+.container>div {
+  /* border: 1px solid; */
+  width: 50%;
+}
+
+#socials {
+  text-align: center;
+  padding-top: 3vh;
+}
+
+
+
+h4 {
+  border-bottom: 1px solid;
+  color: rgb(55, 54, 53);
+}
+
+tr {
+  text-align: left;
+}
+th,
+td {
+  padding-left: 10px;
+}
