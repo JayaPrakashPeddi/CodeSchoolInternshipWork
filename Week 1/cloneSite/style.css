@@ -380,7 +380,7 @@ li:hover:not(.active){
     display: flex;
     justify-content: center;
 }
-.main-center-header .titles p{
+.titles p{
     margin-bottom: 5px;
     font-size: 18px;
     font-weight: 500;
@@ -490,7 +490,7 @@ li:hover:not(.active){
 }
 
 .main-bottom-left{
-    background-color: red;
+    background-color: rgb(255, 255, 255);
     border-radius: 10px;
     height: 400px;
 
@@ -502,3 +502,20 @@ li:hover:not(.active){
     height: 510px;
 
 }
+
+.main-buttom-left-image-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-buttom-left-image-container img{
+    width: 420px; 
+    margin-top:10px;
+    padding-top: 15px;
+}
+
+
+
+
