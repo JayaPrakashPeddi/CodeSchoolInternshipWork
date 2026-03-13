@@ -1,7 +1,3 @@
-ul > li > ul > li > a {
-  color: black !important;
-  display: flex !important;
-}
 
 #active {
   background-color: #ecf3ff;
@@ -34,10 +30,27 @@ ul > li > ul > li > a > span {
   background-color: #e0e0e1;
   cursor: pointer;
 }
+.right{
+  right:40px
+}
+.left{
+  left:30px;
+  bottom: 3px;
+}
 
+.top-right-card{
+  background-image: linear-gradient(
+    to bottom,
+    white,
+    white,
+    rgb(229, 229, 229),
+    rgb(222, 226, 251)
+  ) !important;
+}
 
 
 @media (min-width: 1200px) {
+
   .lg-margin {
     margin-left: 253px !important;
   }
