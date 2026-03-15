@@ -1,13 +1,63 @@
-.hover-orange:hover{
-    color:orange !important;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+body{
+    font-family: 'Inter', sans-serif !important;
 }
 
-/* .dark-shadow{
-    box-shadow: 0px 5px 50px -30px #000000;
-} */
+.hover-orange:hover{
+color: orange !important;
+cursor: pointer;
+}
 
-.buttons-div>button{
-    background-color: lightgray;
-    font-size: 18px;
-    font-weight: bold
+.box-shadow-height{
+    height: 170px !important;
+}
+
+.hover-effect{
+transition: transform .15s ease;
+}
+
+.hover-effect:hover{
+transform: scale(.96);
+}
+
+.side-scroll-bar{
+scrollbar-width:none;
+}
+
+.bg-orange{
+background-color: rgb(255,77,0);
+}
+
+.bg-img{
+top:100px;
+height:500px;
+}
+
+.buttons-div button{
+background:lightgray;
+font-weight:bold;
+}
+
+.no-underline{
+    text-decoration: none;
+}
+
+.custom-margin-top{
+    padding-top: 80px !important;
+}
+
+.pointer-blocked{
+    background-color: #949494 !important;
+    cursor: not-allowed !important;
+}
+
+.btn-lime{
+    background-color: rgb(115, 248, 115);
+}
+
+@media (max-width:1024px) {
+    .custom-margin-top{
+        padding-top: 150px !important;
+    }
 }
