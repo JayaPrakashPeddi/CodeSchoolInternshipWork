@@ -1,0 +1,13 @@
+.hover-orange:hover{
+    color:orange !important;
+}
+
+/* .dark-shadow{
+    box-shadow: 0px 5px 50px -30px #000000;
+} */
+
+.buttons-div>button{
+    background-color: lightgray;
+    font-size: 18px;
+    font-weight: bold
+}
