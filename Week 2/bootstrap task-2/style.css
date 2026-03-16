@@ -1,74 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
-:root{
-    --swiggy-orange:rgb(255,77,0);
+:root {
+  --swiggy-orange: rgb(255, 77, 0);
 }
 
-body{
-    font-family: 'Inter', sans-serif !important;
+body {
+  font-family: "Inter", sans-serif !important;
 }
 
-.hover-orange:hover{
-color: orange !important;
-cursor: pointer;
+.hover-orange:hover {
+  color: orange !important;
+  cursor: pointer;
 }
 
-.box-shadow-height{
-    height: 170px !important;
+.box-shadow-height {
+  height: 170px !important;
 }
 
-.logo-hover-effect{
-    transition: transform .2s;
+.logo-hover-effect {
+  transition: transform 0.2s;
 }
-.logo-hover-effect:hover{
-    transform: scale(1.1);
-}
-
-.hover-effect{
-transition: transform .15s ease;
+.logo-hover-effect:hover {
+  transform: scale(1.1);
 }
 
-.hover-effect:hover{
-transform: scale(.96);
+.hover-effect {
+  transition: transform 0.15s ease;
 }
 
-.side-scroll-bar{
-scrollbar-width:none;
+.hover-effect:hover {
+  transform: scale(0.96);
 }
 
-.bg-orange{
-background-color: var(--swiggy-orange);
+.side-scroll-bar {
+  scrollbar-width: none;
 }
 
-.bg-img{
-top:100px;
-height:500px;
+.bg-orange {
+  background-color: var(--swiggy-orange);
 }
 
-.buttons-div button{
-background:lightgray;
-font-weight:bold;
+.bg-img {
+  top: 100px;
+  height: 500px;
 }
 
-.no-underline{
-    text-decoration: none;
+.buttons-div button {
+  background: lightgray;
+  font-weight: bold;
 }
 
-.custom-margin-top{
+.no-underline {
+  text-decoration: none;
+}
+
+.custom-padding-top {
+  padding-top: 80px !important;
+}
+
+.pointer-blocked {
+  background-color: #949494 !important;
+  cursor: not-allowed !important;
+}
+
+.btn-lime {
+  background-color: rgba(165, 253, 165, 0.768);
+}
+
+.bg-gray {
+  background-color: lightgray;
+}
+
+@media (max-width: 1024px) {
+  .custom-padding-top {
     padding-top: 80px !important;
-}
-
-.pointer-blocked{
-    background-color: #949494 !important;
-    cursor: not-allowed !important;
-}
-
-.btn-lime{
-    background-color: rgb(115, 248, 115);
-}
-
-@media (max-width:1024px) {
-    .custom-margin-top{
-        padding-top: 150px !important;
-    }
+  }
 }
