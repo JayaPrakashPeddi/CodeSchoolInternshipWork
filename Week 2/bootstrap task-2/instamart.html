@@ -11,7 +11,7 @@
 <body>
 
     <header class="shadow-sm">
-        <nav class="container-fluid d-flex justify-content-between justify-content-md-evenly align-items-center pt-3 position-fixed w-100 bg-white pb-2" >
+        <nav class="container-fluid d-flex justify-content-between justify-content-md-evenly align-items-center pt-3 position-fixed w-100 bg-white pb-2 z-1" >
             <div class="d-flex">
             <div class="border-end">
               <a href="./index.html"><img src="./assets/Instamart log.avif" height="50" alt="logo"></a></div>
@@ -34,7 +34,7 @@
         </nav>
     </header>
 
-    <div class="container-fluid custom-margin-top d-flex flex-column justify-content-center ps-5">
+    <div class="container-fluid custom-margin-top d-flex flex-column justify-conten ps-5">
       <div class="container ps-3 ps-lg-5 d-flex flex-column pt-0 pt-xl-5  gap-1 overflow-auto side-scroll-bar">
         <span class="text-muted">Fresh Items</span>
         <div class="d-flex gap-5">
@@ -159,13 +159,215 @@
           </div>
           </div>
       </div>
+
+       <section class="container border-bottom pb-4 pt-3">
+        <div class="d-flex flex-column mb-3">
+          <span class="fw-lighter text-muted">Trending near you</span>
+          <span class="rounded-pill text-muted px-2" style="width: fit-content; background-color: lightgray;">Upto 50% off</span>
+        </div>
+      <div class="d-flex gap-4 overflow-auto side-scroll-bar z-0">
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;">
+          <img src="./assets/curd.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Hatsun Curd</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.50</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/veggies-instamart.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Fresh Veggies</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.70</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/ice-cream-2.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Ice cream</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.30</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/Indian-tomatos.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Indian-tomatos</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.30</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/onions.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Onions</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.60</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/fish.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Fresh-Fish</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.200</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/oils.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Oil</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.250</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/noodles.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Maggie Noodles</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.75</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/curd.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Hatsun Curd</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.50</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/curd.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Hatsun Curd</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.50</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/curd.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Hatsun Curd</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.50</p>
+            </span>
+          </div>
+        </div>
+        <div class="card position-relative pb-0 border-0" style="min-width: 120px;" >
+          <img src="./assets/curd.avif" alt="curd" class="card-img-top img-fluid border">
+          <div class="card-img-overlay">
+            <button class="btn btn-outline-primary position-absolute end-0 top-0 bg-light px-2 py-1"> + </button>
+          </div>
+          <div class="card-body py-0">
+            <span>
+            <span class="text-muted">20 Mins</span>
+            <p>Hatsun Curd</p>
+            </span>
+            <span class="pb-0">
+              <span class="text-muted">500 g</span>
+              <p>₹.50</p>
+            </span>
+          </div>
+        </div>
+      </div>
+      </section>
+
       <div class="row">
         <div class="col text-center">Loading....</div>
       </div>
     </div>
     </div>
 
-    <footer class="border-top bg-light py-5 mt-auto">
+     <footer class="border-top bg-light py-5 mt-auto">
       <div class="container d-flex flex-column flex-md-row justify-content-evenly align-items-center gap-3 text-center">
         <h4 class="mb-0"><strong>For better experience, download the Swiggy app now</strong></h4>
 
@@ -206,6 +408,7 @@
           <span class="d-block mt-1">&copy; 2026 Swiggy Limited </span>
         </div>
         <div class="col-md-8 d-flex justify-content-evenly ps-0 mt-4">
+          <div class="d-flex flex-column flex-md-row gap-5">
           <div class="d-flex flex-column">
             <h6 class="mb-1"><strong>Company</strong></h6>
             <ul class="list-unstyled">
@@ -257,6 +460,10 @@
               </a></li>
             </ul>
           </div>
+          </div>
+
+
+          <div class="d-flex flex-column flex-md-row gap-5">
           <div class="d-flex flex-column">
             <h6 class="mb-1"><strong>Avaliable In</strong></h6>
             <ul class="list-unstyled">
@@ -308,6 +515,7 @@
 
             </ul>
 
+          </div>
           </div>
           
         </div>

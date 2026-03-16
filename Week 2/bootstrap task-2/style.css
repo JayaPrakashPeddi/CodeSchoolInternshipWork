@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root{
+    --swiggy-orange:rgb(255,77,0);
+}
+
 body{
     font-family: 'Inter', sans-serif !important;
 }
@@ -11,6 +15,13 @@ cursor: pointer;
 
 .box-shadow-height{
     height: 170px !important;
+}
+
+.logo-hover-effect{
+    transition: transform .2s;
+}
+.logo-hover-effect:hover{
+    transform: scale(1.1);
 }
 
 .hover-effect{
@@ -26,7 +37,7 @@ scrollbar-width:none;
 }
 
 .bg-orange{
-background-color: rgb(255,77,0);
+background-color: var(--swiggy-orange);
 }
 
 .bg-img{
