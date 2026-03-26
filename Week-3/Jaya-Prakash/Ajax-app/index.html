@@ -1,47 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Weather App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-</head>
-<body class="d-flex flex-column min-vh-100 bg-dark">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Weather App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body class="d-flex flex-column min-vh-100 bg-dark">
+    <div class="container text-center mt-5 flex-grow-1">
+      <h1 class="mb-4 text-white">Weather App</h1>
 
-  <div class="container text-center mt-5 flex-grow-1">
-
-    <h1 class="mb-4 text-white">Weather App</h1>
-
-    <!-- Search Bar -->
-    <div class="row d-flex justify-content-center">
-      <div class="col-12 col-md-8 col-xl-6 ">
-        <div class="input-group mb-3 mx-auto">
-          <input type="text" id="cityInput" class="form-control" placeholder="Enter city name...">
-          <button class="btn btn-primary" onclick="getWeather()"><i class="bi bi-search"></i></button>
+      <!-- Search Bar -->
+      <div class="row d-flex justify-content-center">
+        <div class="col-12 col-md-8 col-xl-6">
+          <div class="input-group mb-3 mx-auto">
+            <input
+              type="text"
+              id="cityInput"
+              class="form-control"
+              placeholder="Enter city name..."
+            />
+            <button class="btn btn-primary" onclick="getWeather()">
+              <i class="bi bi-search searchBtn"></i>
+              <div class="spinner-border spinner-border-sm d-none searchBtn" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- If Result -->
-    <div id="weatherCard" class="card mx-auto p-3 shadow d-none" style="width: 300px;">
-      <div class="d-flex justify-content-center align-items-center gap-1">
-        <h3 id="city"></h3>
-        <span class="" id="country"></span>
+      <!-- If Result -->
+      <div
+        class="row rounded-4 p-2 pt-4 p-md-5 gap-3 gap-lg-0 d-none"
+        id="weatherCard"
+        style="
+          background-image: linear-gradient(
+            to bottom,
+            rgb(119, 143, 249),
+            rgb(252, 205, 117)
+          );
+        "
+      >
+        <div class="col-12 col-lg-6 d-flex justify-content-start">
+          <div class="container-fluid d-flex flex-column">
+            <div
+              class="d-flex justify-content-start align-items-center gap-1 ps-1 ps-md-4"
+            >
+              <img id="weatherImageIcons" />
+              <h1 id="city">City</h1>
+              <span class="" id="country">- country</span>
+            </div>
+            <div class="d-flex flex-column ps-5">
+              <p id="temp" class="text-start fs-4">temp</p>
+              <p id="condition" class="text-start fs-4">condition</p>
+              <p id="humidity" class="text-start fs-4">humidity</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <iframe
+            id="map"
+            class="rounded w-100 border p-1"
+            loading="lazy"
+            height="400"
+            src="https://www.google.com/maps?q=17.3850,78.4867&z=15&output=embed"
+            allowfullscreen
+          >
+          </iframe>
+        </div>
       </div>
-      <p id="temp"></p>
-      <p id="condition"></p>
-      <p id="humidity"></p>
+      <!-- If No Result -->
+      <div class="container d-none text-white" id="noResult">
+        <h4>No City Found...</h4>
+      </div>
     </div>
-
-    <!-- If No Result -->
-    <div class="container d-none text-white" id="noResult">
-      <h4>No City Found...</h4>
-    </div>
-
-  </div>
-  
-  <script src="script.js"></script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
