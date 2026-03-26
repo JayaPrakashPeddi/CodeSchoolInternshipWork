@@ -53,8 +53,15 @@
         >
       </div>
       <div class="d-flex justify-content-evenly mb-3">
-        <button onclick="userAuth()" class="btn btn-primary px-5 py-2">
-          Login
+        <button onclick="userAuth()" class="btn btn-primary px-5 py-2" id="loginBtn">
+          <span id="btnText">Login</span>
+          <div
+            class="spinner-border spinner-border-sm d-none"
+            role="status"
+            id="spinner"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </button>
         <a href="" class="btn btn-secondary px-5">Cancel</a>
       </div>

@@ -27,9 +27,9 @@
               class="form-control"
               placeholder="Enter city name..."
             />
-            <button class="btn btn-primary" onclick="getWeather()">
-              <i class="bi bi-search searchBtn"></i>
-              <div class="spinner-border spinner-border-sm d-none searchBtn" role="status">
+            <button class="btn btn-primary" id="searchBtn" onclick="getWeather()">
+              <i class="bi bi-search" id="searchIcon"></i>
+              <div class="spinner-border spinner-border-sm d-none" role="status" id="spinner">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </button>

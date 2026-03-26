@@ -1,6 +1,8 @@
 function getWeather() {
 
-  const spin = document.getElementsByClassName("searchBtn");
+  const spinerIcon = document.getElementById("spinner");
+  const searchIcon = document.getElementById("searchIcon");
+  const searchBtn = document.getElementById("searchBtn");
   const city = document.getElementById("cityInput").value;
 
 
@@ -16,18 +18,22 @@ function getWeather() {
   const xhr = new XMLHttpRequest();
 
     xhr.open("GET", url);
+    
+    searchBtn.classList.add("disabled");
+    searchIcon.classList.add("d-none");
+    spinerIcon.classList.remove("d-none");
 
 
     xhr.onerror= function(){
       console.error("request failed");
     };
 
-    xhr.onprogress=function(){
-        spin.classList.toggle("d-none");
-    }
-
     xhr.onload = function () {
     if (xhr.status === 200) {
+      spinerIcon.classList.add("d-none");
+      searchIcon.classList.remove("d-none");
+      searchBtn.classList.remove("disabled");
+
 
       const data = JSON.parse(xhr.responseText);
 

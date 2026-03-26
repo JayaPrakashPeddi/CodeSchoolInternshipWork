@@ -1,15 +1,3 @@
-// {
-//   "id": 1,
-//   "username": "emilys",
-//   "email": "emily.johnson@x.dummyjson.com",
-//   "firstName": "Emily",
-//   "lastName": "Johnson",
-//   "gender": "female",
-//   "image": "https://dummyjson.com/icon/emilys/128",
-//   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", // JWT accessToken (for backward compatibility) in response and cookies
-//   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // refreshToken in response and cookies
-// }
-
 const token = localStorage.getItem("token");
 if (token) {
   window.location.href = "../templates/home.html";
@@ -21,7 +9,15 @@ const nameError = document.getElementById("userNameError");
 const passError = document.getElementById("passwordError");
 const invalidCreds = document.getElementById("invalidCreds");
 
+const spinerIcon = document.getElementById("spinner");
+const btnText = document.getElementById("btnText");
+const loginBtn = document.getElementById("loginBtn");
+
 function userAuth() {
+  spinerIcon.classList.remove("d-none");
+  btnText.classList.add("d-none");
+  loginBtn.classList.add("disabled");
+
   function formValidations(username, password) {
     if (
       username.value.length >= 4 &&
@@ -58,15 +54,21 @@ function userAuth() {
           window.location.href = "../templates/home.html";
         }
       })
-      .catch(() => {
-        window.alert("Error while fetching data....");
+      .catch((err) => {
+        console.error(err);
       });
   } else {
+    spinerIcon.classList.add("d-none");
+    btnText.classList.remove("d-none");
+    loginBtn.classList.remove("disabled");
     warnings();
   }
 }
 
 function warnings(useCase = null) {
+  spinerIcon.classList.add("d-none");
+  btnText.classList.remove("d-none");
+  loginBtn.classList.remove("disabled");
   if (useCase) {
     nameError.classList.remove("d-none");
     passError.classList.remove("d-none");
