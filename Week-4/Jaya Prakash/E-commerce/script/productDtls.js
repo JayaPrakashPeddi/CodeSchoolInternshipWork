@@ -1,4 +1,3 @@
-const user = JSON.parse(localStorage.getItem("user"));
 const productStr = localStorage.getItem("product");
 const product = JSON.parse(productStr);
 const parentDiv = document.getElementById("productDtlsBody");
@@ -31,7 +30,8 @@ function getProductFromLS() {
 
   const reviewCard = document.getElementById("reviewsDiv");
   const addToCartBtn = document.getElementById("addtoCartBtn");
-  addToCartBtn.onclick = () => addToCart(product.id,product.thumbnail,product.title,product.price);
+  addToCartBtn.onclick = () =>
+    addToCart(product.id, product.thumbnail, product.title, product.price);
 
   for (let i = 0; i < product.reviews.length; i++) {
     let reviewParent = document.createElement("div");
@@ -134,11 +134,6 @@ function getCart() {
   return { products: [] };
 }
 
-function saveCart(cart) {
-  localStorage.setItem(`cart-${user.id}`, JSON.stringify(cart));
-}
-
-
 function addToCart(productId, img, title, price, quantity = 1) {
   let cart = getCart();
   const product = cart.products.find((p) => p.id === productId);
@@ -147,6 +142,6 @@ function addToCart(productId, img, title, price, quantity = 1) {
   } else {
     cart.products.push({ id: productId, img, title, price, quantity });
   }
-
-  saveCart(cart);
+  localStorage.setItem(`cart-${user.id}`, JSON.stringify(cart));
+  alert("Cart item added!...");
 }

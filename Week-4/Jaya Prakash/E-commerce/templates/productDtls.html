@@ -47,7 +47,7 @@
                 <li class="list-group-item border-0 bg-dark">
                   <a
                     href="./products.html"
-                    class="nav-link text-dark rounded sideBarHover"
+                    class="nav-link rounded sideBarHover"
                     id="active"
                   >
                     <span>Products</span>
@@ -86,6 +86,47 @@
               <li class="nav-item w-100">
                 <ul class="list-group list-group-flush mt-2">
                   <li class="list-group-item border-0 bg-dark">
+                    <div class="dropdown pt-1 d-block d-lg-none">
+                      <button
+                        class="btn d-flex align-items-center rounded-pill icon-hover dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="bi bi-person-circle fs-4 text-white"></i>
+                        <span class="text-white ms-1 fs-5 user"></span>
+                        <i class="bi bi-chevron-down fs-6 ms-1 text-white"></i>
+                      </button>
+
+                      <ul
+                        class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
+                      >
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                          <a
+                            class="dropdown-item d-block d-xl-none"
+                            href="./cart.html"
+                            >Cart</a
+                          >
+                        </li>
+                        <li>
+                          <a class="dropdown-item d-block d-xl-none" href="#"
+                            >Wishlist</a
+                          >
+                        </li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                          <button
+                            class="dropdown-item text-danger"
+                            onclick="logout()"
+                          >
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="list-group-item border-0 bg-dark">
                     <a
                       href="./home.html"
                       class="nav-link text-white rounded sideBarHover"
@@ -95,7 +136,7 @@
                   <li class="list-group-item border-0 bg-dark">
                     <a
                       href="./products.html"
-                      class="nav-link text-dark rounded sideBarHover"
+                      class="nav-link rounded sideBarHover"
                       id="active"
                     >
                       <span>Products</span>
@@ -149,7 +190,7 @@
                 />
               </div>
               <!-- search bar -->
-              <div class="input-group d-none d-xl-flex" style="width: 600px">
+              <div class="input-group" style="width: 20rem">
                 <input
                   type="text"
                   id="searchInput"
@@ -160,32 +201,27 @@
                   <i class="bi bi-search searchBtn"></i>
                 </button>
               </div>
-
-              <div id="v-elipsis" class="d-flex d-xl-none">
-                <i class="bi bi-three-dots-vertical text-white"></i>
-              </div>
-
-              <div class="nav d-none d-xl-flex">
+              <div class="nav">
                 <a
                   href=""
-                  class="nav-link d-flex justify-content-center align-items-center mt-1 rounded-circle icon-hover"
+                  class="nav-link d-flex justify-content-center align-items-center mt-1 rounded-circle icon-hover d-none d-xl-flex"
                 >
                   <i class="bi bi-heart fs-4 text-white"></i>
                 </a>
                 <a
                   href="./cart.html"
-                  class="nav-link d-flex justify-content-center align-items-center rounded-circle icon-hover"
+                  class="nav-link d-flex justify-content-center align-items-center rounded-circle icon-hover d-none d-xl-flex"
                 >
                   <i class="bi bi-cart2 fs-4 text-white"></i>
                 </a>
-                <div class="dropdown pt-1">
+                <div class="dropdown pt-1 d-none d-lg-block">
                   <button
                     class="btn d-flex align-items-center rounded-pill icon-hover dropdown-toggle"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     <i class="bi bi-person-circle fs-4 text-white"></i>
-                    <span id="user" class="text-white ms-1 fs-5"></span>
+                    <span class="text-white ms-1 fs-5 user"></span>
                     <i class="bi bi-chevron-down fs-6 ms-1 text-white"></i>
                   </button>
 
@@ -193,6 +229,18 @@
                     class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                   >
                     <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li>
+                      <a
+                        class="dropdown-item d-block d-xl-none"
+                        href="./cart.html"
+                        >Cart</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-block d-xl-none" href="#"
+                        >Wishlist</a
+                      >
+                    </li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
@@ -223,7 +271,7 @@
                 class="bi bi-arrow-left text-center text-white fs-4 rounded-circle px-1 back-hover"
               ></i
             ></a>
-            
+
             <div class="row border w-100 mx-mb-5 mt-3 bg-low-opacity rounded-4">
               <div class="col-lg-5 text-center">
                 <img alt="img" id="productImg" class="img-fluid" />
@@ -232,7 +280,7 @@
                 class="col-lg-6 text-white d-flex flex-column gap-3 justify-content-evenly m-3"
               >
                 <div>
-                  <h2 id="productTitle" style="font-size: 1.3rem;"></h2>
+                  <h2 id="productTitle" style="font-size: 1.3rem"></h2>
                   <span></span>
                   <p class="text-wrap px-3 ps-0" id="productText"></p>
                   <div class="d-flex flex-column">
@@ -243,7 +291,10 @@
                 </div>
                 <div class="d-flex gap-3">
                   <button class="btn btn-outline-success px-5">Buy</button>
-                  <button class="btn btn-outline-warning px-3" id="addtoCartBtn">
+                  <button
+                    class="btn btn-outline-warning px-3"
+                    id="addtoCartBtn"
+                  >
                     <i class="bi bi-cart-plus fs-5"></i>
                   </button>
                 </div>
@@ -267,6 +318,7 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script src="../script/default.js"></script>
     <script src="../script/productDtls.js"></script>
   </body>
 </html>
