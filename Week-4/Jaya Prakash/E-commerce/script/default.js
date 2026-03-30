@@ -84,10 +84,14 @@ function getItems(data) {
 }
 
 function searchItem() {
-  const input = document.getElementById("searchInput").value;
+  let input = document.getElementById("searchInput").value;
+  if (input===""){
+    input = document.getElementById("searchInputOffcanvas").value;
+  }
   fetch(`https://dummyjson.com/products/search?q=${input}`)
     .then((res) => {
       if (!res.ok) {
+        console.log("okay")
         return;
       }
       return res.json();

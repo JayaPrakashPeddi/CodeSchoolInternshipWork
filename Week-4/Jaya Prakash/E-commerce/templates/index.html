@@ -13,58 +13,69 @@
     <title>Shop</title>
   </head>
   <body
-    class="min-vh-100 d-flex align-items-center justify-content-center"
+    class="min-vh-100 d-flex flex-column align-items-center justify-content-center"
     id="logInBgImg"
   >
-    <div
-      class="col-12 col-md-4 d-flex flex-column gap-3 p-4 rounded-4 border"
-      id="loginDiv"
-    >
-      <h2 class="text-center text-white">Login</h2>
-      <span
-        id="invalidCreds"
-        class="text-center text-danger d-none fw-bold fs-5"
-        >Invalid Credentials</span
+    <div class="row border w-100 bg-toRight-gradient" style="min-height: 100vh;">
+    <div class="col-12 col-md-6 py-4 d-flex justify-content-center align-items-center">
+      <div
+        class="w-100 w-md-75 d-flex flex-column gap-3 p-4 p-md-5 rounded-4 shadow border bg-low-opacity"
+        id="loginDiv"
+        style="max-width: 400px;"
       >
-      <div class="form-floating">
-        <input
-          type="text"
-          name="userName"
-          class="form-control"
-          id="userName"
-          placeholder="User Name"
-        />
-        <label for="userName">User Name</label>
-        <span id="userNameError" class="text-danger d-none"
-          >Invalid Username!!!</span
-        >
-      </div>
-      <div class="form-floating">
-        <input
-          type="password"
-          name="password"
-          class="form-control"
-          id="password"
-          placeholder="Password"
-        />
-        <label for="password" class="text-center">Password</label>
-        <span id="passwordError" class="text-danger d-none"
-          >Invalid Password!!!</span
-        >
-      </div>
-      <div class="d-flex justify-content-evenly mb-3">
-        <button onclick="userAuth()" class="btn btn-primary w-100 py-2" id="loginBtn">
-          <span id="btnText">Login</span>
-          <div
-            class="spinner-border spinner-border-sm d-none"
-            role="status"
-            id="spinner"
+          <h2 class="text-center text-white">Login</h2>
+          <span
+            id="invalidCreds"
+            class="text-center text-danger d-none fw-bold fs-5"
+            >Invalid Credentials</span
           >
-            <span class="visually-hidden">Loading...</span>
+          <div class="form-floating">
+            <input
+              type="text"
+              name="userName"
+              class="form-control"
+              id="userName"
+              placeholder="User Name"
+            />
+            <label for="userName">User Name</label>
+            <span id="userNameError" class="text-danger d-none"
+              >Invalid Username!!!</span
+            >
           </div>
-        </button>
+          <div class="form-floating">
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+            />
+            <label for="password" class="text-center">Password</label>
+            <span id="passwordError" class="text-danger d-none"
+              >Invalid Password!!!</span
+            >
+          </div>
+          <div class="d-flex justify-content-evenly mb-3">
+            <button
+              onclick="userAuth()"
+              class="btn btn-primary w-100 py-2"
+              id="loginBtn"
+            >
+              <span id="btnText">Login</span>
+              <div
+                class="spinner-border spinner-border-sm d-none"
+                role="status"
+                id="spinner"
+              >
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
+      <div class="col-6 d-block d-md-none"></div>
     </div>
+
     <script src="../script/script.js"></script>
   </body>
 </html>

@@ -9,6 +9,9 @@
     background-color: #000000c8;
 }
 
+.bg-toRight-gradient{
+  background-image: linear-gradient(to right, rgb(192, 191, 191),rgba(128, 128, 128, 0.497),rgba(0, 0, 0, 0));
+}
 
 #userName,#password{
   background-color: #ffffffc5;

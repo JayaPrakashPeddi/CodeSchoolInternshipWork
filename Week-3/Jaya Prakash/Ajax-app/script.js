@@ -1,5 +1,5 @@
-function getWeather() {
 
+function getWeather() {
   const spinerIcon = document.getElementById("spinner");
   const searchIcon = document.getElementById("searchIcon");
   const searchBtn = document.getElementById("searchBtn");
@@ -68,6 +68,7 @@ function getWeather() {
 
       document.getElementById("weatherCard").classList.remove("d-none");
       document.getElementById("noResult").classList.add("d-none");
+
     }
 
     else {

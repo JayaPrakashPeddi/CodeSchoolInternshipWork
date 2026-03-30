@@ -72,19 +72,29 @@
           </div>
         </div>
 
-        <div class="offcanvas offcanvas-top bg-dark" style="height: 80px;" id="searchbar">
-          <div class="offcanvas-body d-flex align-items-end justify-content-center bg-transparent">
+        <div
+          class="offcanvas offcanvas-top bg-dark"
+          style="height: 80px"
+          id="searchbar"
+        >
+          <div
+            class="offcanvas-body d-flex align-items-end justify-content-center bg-transparent"
+          >
             <div class="input-group" style="width: 20rem">
-                <input
-                  type="text"
-                  id="searchInput"
-                  class="form-control"
-                  placeholder="search..."
-                />
-                <button class="btn btn-secondary" onclick="searchItem()" data-bs-dismiss="offcanvas">
-                  <i class="bi bi-search searchBtn"></i>
-                </button>
-              </div>
+              <input
+                type="text"
+                id="searchInputOffcanvas"
+                class="form-control"
+                placeholder="search..."
+              />
+              <button
+                class="btn btn-secondary"
+                onclick="searchItem()"
+                data-bs-dismiss="offcanvas"
+              >
+                <i class="bi bi-search searchBtn"></i>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -287,7 +297,21 @@
             class="container-fluid mt-5 pt-5 p-3 d-flex flex-wrap justify-content-evenly gap-3"
             id="mainBody"
           ></div>
+
+          <nav aria-label="" class="py-3">
+            <ul class="pagination d-flex justify-content-center">
+              <li class="page-item"><button class="page-link pages bg-low-opacity" id="page-1" onclick="displayProducts(0,'page-1')">1</button></li>
+              <li class="page-item"><button class="page-link pages bg-low-opacity" id="page-2" onclick="displayProducts(1,'page-2')">2</button></li>
+              <li class="page-item"><button class="page-link pages bg-low-opacity" id="page-3" onclick="displayProducts(2,'page-3')">3</button></li>
+              <li class="page-item"><button class="page-link pages bg-low-opacity" id="page-4" onclick="displayProducts(3,'page-4')">4</button></li>
+              <li class="page-item"><button class="page-link pages bg-low-opacity" id="page-5" onclick="displayProducts(4,'page-5')">5</button></li>
+              <li class="page-item"><button class="page-link pages bg-low-opacity" id="page-6" onclick="displayProducts(5,'page-6')">6</button></li>
+              <li class="page-item"><button class="page-link pages bg-low-opacity" id="page-7" onclick="displayProducts(6,'page-7')">7</button></li>
+            </ul>
+          </nav>
+          
         </div>
+        
       </div>
     </div>
 
