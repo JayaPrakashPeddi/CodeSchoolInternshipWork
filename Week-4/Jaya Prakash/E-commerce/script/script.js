@@ -23,7 +23,7 @@ function userAuth() {
       username.value.length >= 4 &&
       username.value.length <= 15 &&
       password.value.length >= 8 &&
-      username.value.length <= 16
+      password.value.length <= 16
     ) {
       return true;
     }
