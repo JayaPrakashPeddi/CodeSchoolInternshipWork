@@ -25,4 +25,3 @@ function logout() {
 $(document).ready(function () {
   $("#navBar").load("../templates/base.html");
 });
-

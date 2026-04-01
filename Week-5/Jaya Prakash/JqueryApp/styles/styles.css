@@ -1,23 +1,33 @@
-#logInBgImg{
-    background-image: url(../assects/bg-image.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+#logInBgImg {
+  background-image: url(../assects/bg-image.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
-.bg-low-opacity{
-    background-color: #000000c8;
+.bg-low-opacity {
+  background-color: #000000c8;
 }
 
-.bg-toRight-gradient{
+.bg-toRight-gradient {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.645));
 }
 
-#userName,#password{
+#userName,
+#password {
   background-color: #ffffffc5;
 }
 
 #active {
   background-color: #ecf3ff;
   color: black !important;
+}
+.backbutton-position {
+  left: 30px;
+  bottom: 30px;
+}
+
+.hover-animation:hover {
+  scale: 1.02;
+  background: black;
 }
