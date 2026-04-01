@@ -4,6 +4,9 @@ if (token) {
 }
 clearWarnings();
 $("#loginBtn").click(function () {
+  $("#loginBtn").addClass("disabled");
+  $("#btnText").addClass("d-none");
+  $("#spinner").removeClass("d-none");
   let userName = $("#userName");
   let userPass = $("#password");
 
@@ -42,11 +45,17 @@ $("#loginBtn").click(function () {
         window.location.href = "./dashboard.html";
       },
       error: function (error) {
+        $("#loginBtn").removeClass("disabled");
+        $("#btnText").removeClass("d-none");
+        $("#spinner").addClass("d-none");
         warnings(1);
         console.log(error);
       },
     });
   } else {
+    $("#loginBtn").removeClass("disabled");
+    $("#btnText").removeClass("d-none");
+    $("#spinner").addClass("d-none");
     warnings();
   }
 });
