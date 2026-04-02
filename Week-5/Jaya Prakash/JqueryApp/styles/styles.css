@@ -17,11 +17,6 @@
 #password {
   background-color: #ffffffc5;
 }
-
-#active {
-  background-color: #ecf3ff;
-  color: black !important;
-}
 .backbutton-position {
   left: 30px;
   bottom: 30px;

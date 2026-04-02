@@ -42,7 +42,11 @@ $("#loginBtn").click(function () {
       },
       success: function (response) {
         localStorage.setItem("userToken", response.accessToken);
-        window.location.href = "./dashboard.html";
+        Swal.fire({
+          title: "success!",
+          text: "Login successfull",
+          icon: "success",
+        }).then(()=> {window.location.href = "./dashboard.html";})
       },
       error: function (error) {
         $("#loginBtn").removeClass("disabled");
