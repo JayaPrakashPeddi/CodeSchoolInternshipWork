@@ -1,3 +1,8 @@
+const token = localStorage.getItem("userToken");
+if (token) {
+  window.location.href = "../dashboard.html";
+}
+
 const mailRegex = /^[a-zA-Z0-9+-.#$]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
 const panRegex = /^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/;
 
@@ -83,6 +88,7 @@ $(document).ready(function () {
     $.ajax({
       type: "POST",
       url: "../php/index.php",
+      dataType: "json",
       data: {
         first_name: fName.val(),
         last_name: lName.val(),
@@ -91,17 +97,24 @@ $(document).ready(function () {
         pan_number: panId.val(),
         dob: dob.val(),
         password: password.val(),
-        conformPassword: conformPassword.val()
+        conformPassword: conformPassword.val(),
       },
       success: function (response) {
         console.log(response);
-        if (response.status){
-          window.location.href="/";
+        if (response.status) {
+          window.location.href = "/login.html?signedup=true";
+        } else {
+          Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: response.message,
+            showConfirmButton: false,
+          });
         }
       },
-      error: function (error){
+      error: function (error) {
         console.log(error);
-      }
+      },
     });
   });
 });

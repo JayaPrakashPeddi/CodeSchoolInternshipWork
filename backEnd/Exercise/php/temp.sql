@@ -12,7 +12,7 @@ CREATE TABLE users (
     CHECK (length(phone_number) = 10)
 );
 
-ALTER Table users ALTER COLUMN password TYPE VARCHAR(50);
+ALTER Table users ALTER COLUMN password TYPE VARCHAR(225);
 
 CREATE TABLE user_tokens (
     id SERIAL PRIMARY KEY,
@@ -23,5 +23,8 @@ CREATE TABLE user_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+SELECT * FROM users;
+SELECT * FROM user_tokens;
 
+DELETE FROM user_tokens;
 DELETE FROM users;

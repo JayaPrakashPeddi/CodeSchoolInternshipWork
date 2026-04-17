@@ -1,4 +1,5 @@
 <?php
+
 function generateSecureToken($length = 20) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $token = '';
@@ -6,5 +7,16 @@ function generateSecureToken($length = 20) {
         $token .= $characters[random_int(0, strlen($characters) - 1)];
     }
     return $token;
+}
+
+function sendResponse($status,$message,$data=Null){
+$res = json_encode(
+            [
+                "status" => $status,
+                "message" => $message,
+                "data" => $data
+            ]
+        );
+        return $res;      
 }
 ?>
