@@ -53,14 +53,21 @@ $("#loginBtn").click(function () {
         password: userPassword,
       },
       success: function (response) {
-        localStorage.setItem("userToken", response.data["token"]);
-        Swal.fire({
-          title: "Success!",
-          text: "Login successful",
-          icon: "success",
-        }).then(() => {
-          window.location.href = "./dashboard.html";
-        });
+        if (response.status) {
+          localStorage.setItem("userToken", response.data["token"]);
+          Swal.fire({
+            title: "Success!",
+            text: "Login successful",
+            icon: "success",
+          }).then(() => {
+            window.location.href = "./dashboard.html";
+          });
+        } else {
+          Swal.fire("Error", response.message, "error");
+          $("#loginBtn").removeClass("disabled");
+          $("#btnText").removeClass("d-none");
+          $("#spinner").addClass("d-none");
+        }
       },
       error: function (error) {
         console.error(error);

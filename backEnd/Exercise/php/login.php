@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
 $email = $_POST["email"];
 $password = $_POST["password"];
+
 $status=loginFormValidations($email,$password);
 
 if (!$status){

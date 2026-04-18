@@ -19,12 +19,10 @@ class AuthController{
             return sendResponse(false,"Invalid Credintials!!");
         }
         $token = generateSecureToken();
-        $expireAt = date('Y-m-d H:i:s', strtotime('+60 minutes'));
-        $insertQuery = "INSERT INTO user_tokens (token,user_id,expire_at) VALUES (:token,:user_id,:expire_at)";
+        $insertQuery = "INSERT INTO user_tokens (token,user_id) VALUES (:token,:user_id)";
         $this->db->query($insertQuery)->execute([
             ":token"=>$token,
-            ":user_id"=>$userDetails['id'],
-            ":expire_at"=>$expireAt
+            ":user_id"=>$userDetails['id']
         ]);
         unset($userDetails['password']);
         $userDetails["token"]=$token;
@@ -64,15 +62,14 @@ class AuthController{
     public function logout($token){
         $query = "DELETE FROM user_tokens WHERE token=:token";
         $this->db->query($query)->execute([":token"=>$token]);
-        return sendResponse(true,"logged out successfully!!");
+        return sendResponse(false,"logged out successfully!!");
     }
 
     public function validateToken($token){
-        $checkToken = "SELECT * FROM user_tokens WHERE token=:token";
-        //  AND expire_at > NOW()
+        $checkToken = "SELECT * FROM user_tokens WHERE token=:token AND expire_at > CURRENT_TIMESTAMP";
         $tokenExist = $this->db->query($checkToken)->getObject([":token"=>$token]);
         if(!$tokenExist){
-            return sendResponse(false,"Invalid or Expired Token!!");
+            return $this->logout($token);
         }
         $query = "SELECT first_name,last_name,email,phone_number,pan_number,date_of_birth FROM users u INNER JOIN user_tokens ut ON u.id=ut.user_id WHERE token=:token";
         $userDetails = $this->db->query($query)->getObject([":token"=>$token]);

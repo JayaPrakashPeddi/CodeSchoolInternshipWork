@@ -7,10 +7,11 @@ class DB{
     private $statement = null;
 function __construct(){
     $this->pdo = getPDO();
-}   
+}
+
 public function query($query){
     $this->query=$query;
-    return $this; // for chaining ex:query("SELECT * FROM users")->getObject();
+    return $this; // for chaining ex: query("SELECT * FROM users")->getObject();
 }
 
 public function execute($params=[]){
@@ -23,7 +24,7 @@ public function getObject($params=[]){
     return $this->statement->fetch(PDO::FETCH_ASSOC);
 }
 
-public function allObject($params=[]){
+public function allObjects($params=[]){
     $this->execute($params);
     return $this->statement->fetchAll(PDO::FETCH_ASSOC);
 }
