@@ -13,5 +13,6 @@ if($logout){
     echo $auth->logout($token);
     exit();
 }
+
 echo $auth->validateToken($token);
 ?>

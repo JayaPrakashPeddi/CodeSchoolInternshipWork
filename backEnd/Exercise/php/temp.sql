@@ -30,7 +30,7 @@ ALTER TABLE user_tokens
 ALTER COLUMN expire_at
 SET DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 hour');
 
--- UPDATE user_tokens SET expire_at=current_timestamp + INTERVAL '1 minutes' where id=38;
+UPDATE user_tokens SET expire_at=current_timestamp + INTERVAL '1 minutes' where id=41;
 
 -- DELETE FROM user_tokens;
 -- DELETE FROM users;

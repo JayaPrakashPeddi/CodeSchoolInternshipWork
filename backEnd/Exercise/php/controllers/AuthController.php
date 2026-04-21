@@ -75,5 +75,6 @@ class AuthController{
         $userDetails = $this->db->query($query)->getObject([":token"=>$token]);
         return sendResponse(true,"user details fetched successfully!!",$userDetails);
     }
+
 }
 ?>
