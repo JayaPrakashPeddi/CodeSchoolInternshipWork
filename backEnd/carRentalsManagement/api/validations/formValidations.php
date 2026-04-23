@@ -1,5 +1,6 @@
 <?php
-function loginFormValidations($email, $password) {
+function loginFormValidations($email, $password)
+{
     return (
         strlen($email) >= 4 &&
         strlen($email) <= 50 &&
@@ -73,4 +74,27 @@ function registerFormValidation($first_name, $last_name, $email, $phone, $panNum
     return true;
 }
 
-?>
+function validateVehicle($brand,$model,$numberPlate,$price)
+{
+    if (empty($brand)) {
+        return false;
+    }
+    if (empty($model)) {
+        return false;
+    }
+    if (empty($numberPlate)) {
+        return false;
+    }
+
+    $numberPlate = strtoupper($numberPlate);
+    $regex = '/^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$/';
+
+    if (!preg_match($regex, $numberPlate)) {
+        return false;
+    }
+    if (!isset($price) || $price <= 0) {
+        return false;
+    }
+
+    return true;
+}

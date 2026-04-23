@@ -196,19 +196,7 @@
                   alt="logo.svg"
                 />
               </div>
-              <!-- search bar -->
-              <div class="input-group d-none d-md-flex" style="width: 20rem">
-                <input
-                  type="text"
-                  id="searchInput"
-                  class="form-control"
-                  placeholder="search..."
-                />
-                <button class="btn btn-secondary" onclick="">
-                  <i class="bi bi-search searchBtn"></i>
-                </button>
-              </div>
-
+              <div></div>
               <div class="nav">
                 <div class="dropdown pt-1 d-none d-lg-block">
                   <button
@@ -278,7 +266,7 @@
                         </div>
                         <div>
                           <div class="label">Total Bookings</div>
-                          <div class="value" id="userBookings">12</div>
+                          <div class="value" id="totalBookings"></div>
                         </div>
                       </div>
                     </div>
@@ -294,7 +282,7 @@
                         </div>
                         <div>
                           <div class="label">Total Revenue</div>
-                          <div class="value" id="totalSpent">₹18,750</div>
+                          <div class="value" id="totalRevenue"></div>
                         </div>
                       </div>
                     </div>
@@ -318,6 +306,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./scripts/dashboard.js"></script>
+    <script src="./scripts/adminDashboard.js"></script>
   </body>
 </html>

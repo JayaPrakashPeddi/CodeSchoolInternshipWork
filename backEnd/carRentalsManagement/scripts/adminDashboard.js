@@ -3,6 +3,7 @@ const userToken = localStorage.getItem("userToken");
 const mailRegex = /^[a-zA-Z0-9+-.#$]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
 const licenseRegex = /^[A-Z]{2}[0-9]{2}[-\s]?[0-9]{4}[0-9]{7}$/;
 const panRegex = /^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/;
+const numberPlateRegex = /^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$/;
 
 if (!userToken) {
   window.location.href = "./index.html";
@@ -18,22 +19,6 @@ function logout(res = {}, isExpired = false) {
   });
 }
 
-function deleteUser(id) {
-  $.ajax({
-    type: "post",
-    url: "../api/deleteDriver.php",
-    data: { id },
-    dataType: "json",
-    success: function (response) {
-      if (response.status) {
-        Swal.fire("Success", response.message, "success").then(() => {
-          listDrivers();
-        });
-      }
-    },
-  });
-}
-
 function ajaxCall() {
   $.ajax({
     type: "post",
@@ -44,17 +29,112 @@ function ajaxCall() {
       if (!response.status) {
         logout(response, true);
       }
+      console.log(response);
       $("#Customer,#offcanvasCustomer").text(
         " " + response.data.first_name + " " + response.data.last_name,
       );
       $("#totalCustomers").text(response.data.userCount - 1);
-      console.log(response);
+      $("#totalBookings").text(response.data.bookingsCount);
+      $("#totalRevenue").text(parseInt(response.data.total_revenue));
     },
     error: function (err) {
       console.error(err);
     },
   });
 }
+
+function deleteUser(id) {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This Driver record will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type: "post",
+        url: "../api/deleteDriver.php",
+        data: { id },
+        dataType: "json",
+        success: function (response) {
+          if (response.status) {
+            Swal.fire("Success", response.message, "success").then(() => {
+              listDrivers();
+            });
+          }
+        },
+      });
+    }
+  });
+}
+
+function deleteVehicleDetails(id) {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This Vehicle record will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type: "post",
+        url: "../api/deleteVehicle.php",
+        data: { id },
+        dataType: "json",
+        success: function (response) {
+          if (response.status) {
+            Swal.fire("Success", response.message, "success").then(() => {
+              listVehicles();
+            });
+          }
+        },
+      });
+    }
+  });
+}
+
+function deleteBookingDetails(id) {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This booking record will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type: "post",
+        url: "../api/deleteBooking.php",
+        data: { id },
+        dataType: "json",
+        success: function (response) {
+          if (response.status) {
+            Swal.fire("Deleted!", response.message, "success").then(() => {
+              listBookings();
+            });
+          } else {
+            Swal.fire("Error", response.message, "error");
+          }
+        },
+        error: function () {
+          Swal.fire("Error", "Something went wrong", "error");
+        },
+      });
+    }
+  });
+}
+
 
 function removeActiveClass() {
   $("#sidebarDashboard,#offcanvasDashboard").removeClass("activeTab");
@@ -63,7 +143,7 @@ function removeActiveClass() {
   $("#sidebarBookings,#offcanvasBookings").removeClass("activeTab");
 }
 
-function clearErrors() {
+function clearRegisterFormErrors() {
   $("#firstNameError").addClass("d-none");
   $("#lastNameError").addClass("d-none");
   $("#emailError").addClass("d-none");
@@ -76,6 +156,14 @@ function clearErrors() {
   $("#confirmPasswordError").addClass("d-none");
 }
 
+function clearVehicleFormErrors() {
+  $("#brandNameError").addClass("d-none");
+  $("#modelNameError").addClass("d-none");
+  $("#numberPlateError").addClass("d-none").text("");
+  $("#priceError").addClass("d-none");
+  $("#photoError").addClass("d-none");
+}
+
 function listDrivers() {
   removeActiveClass();
   $("#sidebarDrivers,#offcanvasDrivers").addClass("activeTab");
@@ -84,11 +172,13 @@ function listDrivers() {
 
     $.ajax({
       type: "get",
-      url: "./api/driversList.php",
+      url: "../api/listDrivers.php",
       dataType: "json",
       success: function (response) {
-        console.log("hi");
-        console.log(response.data.length);
+        if (response.data.length == 0) {
+          return;
+        }
+        table.text("");
         for (let i = 0; i < response.data.length; i++) {
           let tr = $("<tr>").append(
             $("<td>").text(i + 1),
@@ -99,8 +189,76 @@ function listDrivers() {
             $("<td>").text(response.data[i].pan_number),
             $("<td>").text(response.data[i].license_number),
             $("<td>").text(response.data[i].aadhar_number),
+            $("<td>").append($("<img>").addClass("image-fluid").attr({"src":"./uploads/"+response.data[i].photo,"height":50})),
             $("<td>").html(
               `<button class="btn btn-danger"><i class="bi bi-trash3" onclick="deleteUser(${response.data[i].id})"></i></button>`,
+            ),
+          );
+          table.append(tr);
+        }
+      },
+    });
+  });
+}
+
+function listVehicles() {
+  removeActiveClass();
+  $("#sidebarVehicles,#offcanvasVehicles").addClass("activeTab");
+  $("#mainDiv").load("./vehicles.html", function () {
+    const table = $("#vehiclesTable");
+    $.ajax({
+      type: "get",
+      url: "../api/listVehicles.php",
+      dataType: "json",
+      success: function (response) {
+        if (response.data.length == 0) {
+          return;
+        }
+        table.text("");
+        for (let i = 0; i < response.data.length; i++) {
+          let tr = $("<tr>").append(
+            $("<td>").text(i + 1),
+            $("<td>").text(response.data[i].brand),
+            $("<td>").text(response.data[i].model),
+            $("<td>").text(response.data[i].number_plate),
+            $("<td>").text(response.data[i].price_per_day),
+            $("<td>").text(response.data[i].is_available),
+            $("<td>").text(response.data[i].photo),
+            $("<td>").html(
+              `<button class="btn btn-danger" onclick="deleteVehicleDetails(${response.data[i].id})"><i class="bi bi-trash3"></i></button>`,
+            ),
+          );
+          table.append(tr);
+        }
+      },
+    });
+  });
+}
+
+function listBookings() {
+  removeActiveClass();
+  $("#sidebarBookings,#offcanvasBookings").addClass("activeTab");
+  $("#mainDiv").load("./bookings.html", function () {
+    const table = $("#bookingsTable");
+    $.ajax({
+      type: "get",
+      url: "../api/listBookings.php",
+      dataType: "json",
+      success: function (response) {
+        if (response.data.length == 0) {
+          return;
+        }
+        table.text("");
+        for (let i = 0; i < response.data.length; i++) {
+          let tr = $("<tr>").append(
+            $("<td>").text(i + 1),
+            $("<td>").text(response.data[i].user_id),
+            $("<td>").text(response.data[i].vehicle_id),
+            $("<td>").text(response.data[i].booked_date),
+            $("<td>").text(response.data[i].return_date),
+            $("<td>").text(response.data[i].total_amount),
+            $("<td>").html(
+              `<button class="btn btn-danger" onclick="deleteBookingDetails(${response.data[i].id})"><i class="bi bi-trash3"></i></button>`,
             ),
           );
           table.append(tr);
@@ -125,11 +283,11 @@ $(document).ready(function () {
   });
 
   $(document).on("click", "#sidebarVehicles,#offcanvasVehicles", () => {
-    listDrivers();
+    listVehicles();
   });
 
   $(document).on("click", "#sidebarBookings,#offcanvasBookings", () => {
-    listDrivers();
+    listBookings();
   });
 
   $(document).on("click", "#logoutButton,#logoutButtonOffcanavas", () => {
@@ -150,9 +308,8 @@ $(document).ready(function () {
     });
   });
 
-
   $(document).on("submit", "#registerForm", function (e) {
-    clearErrors();
+    clearRegisterFormErrors();
     let errorFlag = false;
     e.preventDefault();
     let firstName = $("#firstName");
@@ -287,6 +444,77 @@ $(document).ready(function () {
       },
       error: function (error) {
         console.log(error);
+      },
+    });
+  });
+
+  $(document).on("submit", "#vehicleForm", function (e) {
+    clearVehicleFormErrors();
+    let errorFlag = false;
+    e.preventDefault();
+    const form = document.getElementById("vehicleForm");
+    const formData = new FormData(form);
+
+    let brandName = formData.get("brand_name");
+    let modelName = formData.get("model_name");
+    let numberPlate = formData.get("number_plate");
+    let price = formData.get("price");
+    let photo = formData.get("photo");
+
+    if (!brandName) {
+      $("#brandNameError").removeClass("d-none");
+      errorFlag = true;
+    }
+    if (!modelName) {
+      $("#modelNameError").removeClass("d-none");
+      errorFlag = true;
+    }
+    numberPlate = numberPlate.toUpperCase();
+    if (!numberPlate || !numberPlateRegex.test(numberPlate)) {
+      $("#numberPlateError").removeClass("d-none");
+      errorFlag = true;
+    }
+    if (price <= 0) {
+      $("#priceError").removeClass("d-none");
+      errorFlag = true;
+    }
+    if (!photo) {
+      $("#photoError").removeClass("d-none");
+      errorFlag = true;
+    }
+
+    if (errorFlag) {
+      return;
+    }
+    $.ajax({
+      type: "post",
+      url: "../api/addVehicle.php",
+      data: formData,
+      dataType: "json",
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        console.log(response);
+        if (response.status) {
+          Swal.fire("Success", response.message, "success").then(() => {
+            listVehicles();
+          });
+        } else {
+          Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: response.message,
+            showConfirmButton: false,
+          });
+        }
+      },
+      error: function (err) {
+        console.log(err);
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: "error occures",
+        });
       },
     });
   });

@@ -1,23 +1,229 @@
 <div
-  class="container-fluid d-flex w-100 align-items-center justify-content-center text-center"
-  style="min-height: 80vh"
+  class="container-fluid d-flex flex-column align-items-center text-center"
+  style="min-height: 80vh; margin-top: 85px"
 >
-  <div class="table-responsive">
+  <div class="w-100 d-flex justify-content-end mb-2">
+    <button
+      class="btn btn-info"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#addUserCanvas"
+    >
+      <i class="bi bi-plus-circle"></i> Add New Vehicle
+    </button>
+  </div>
+  <!-- Offcanvas -->
+  <div
+    class="offcanvas offcanvas-end bg-dark text-light"
+    tabindex="-1"
+    id="addUserCanvas"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Add Vehicle</h5>
+      <button
+        type="button"
+        class="btn-close btn-close-white"
+        data-bs-dismiss="offcanvas"
+      ></button>
+    </div>
+
+    <div class="offcanvas-body">
+      <form
+        id="vehicleForm"
+        method="post"
+        enctype="multipart/form-data"
+        class="d-flex flex-column gap-3"
+      >
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input
+                type="text"
+                id="brandName"
+                name="brand_name"
+                class="form-control"
+                placeholder="Brand Name"
+              />
+              <label>Brand Name</label>
+            </div>
+            <span id="brandNameError" class="text-danger small d-none"
+              >Invalid Brand Name</span
+            >
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input
+                type="text"
+                id="modelName"
+                name="model_name"
+                class="form-control"
+                placeholder="Model Name"
+              />
+              <label>Model Name</label>
+            </div>
+            <span id="modelNameError" class="text-danger small d-none"
+              >Invalid Model Name</span
+            >
+          </div>
+        </div>
+
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input
+                type="text"
+                id="numberPlate"
+                name="number_plate"
+                class="form-control"
+                placeholder="Number Plate"
+              />
+              <label>Number Plate</label>
+            </div>
+            <span id="numberPlateError" class="text-danger small d-none"
+              >Invalid Number Plate</span
+            >
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input
+                type="number"
+                id="price"
+                name="price"
+                class="form-control"
+                min="0"
+                placeholder="Price"
+              />
+              <label>Price</label>
+            </div>
+            <span id="priceError" class="text-danger small d-none"
+              >Invalid Price</span
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Car Image</label>
+          <input type="file" id="photo" name="photo" class="form-control" />
+          <span id="photoError" class="text-danger small d-none"
+            >Invalid Image Format</span
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="vehicleDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content rounded-4 shadow">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold">Vehicle Details</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-4 align-items-start">
+            <div class="col-md-6 text-center">
+              <img
+                id="mImage"
+                class="img-fluid rounded-3"
+                style="max-height: 320px; object-fit: cover"
+              />
+            </div>
+            <div class="col-md-6">
+              <h4 id="mBrand" class="fw-bold mb-1"></h4>
+              <div id="mModel" class="text-muted mb-3 fs-5"></div>
+
+              <hr />
+              <div class="mb-3">
+                <span class="text-muted">Price:</span><br />
+                <span id="mPrice" class="fw-bold text-danger fs-3"></span>
+                <span class="text-muted fs-6"> / day</span>
+              </div>
+              <div class="mb-3">
+                <span class="text-muted">Number Plate</span>
+                <div id="mNumber" class="fw-semibold fs-5"></div>
+              </div>
+              <div class="mb-4">
+                <span id="mAvailable" class="fw-bold fs-5"></span>
+              </div>
+              <button
+                class="btn btn-success w-50 fw-bold py-2"
+                id="bookVechicleBtn"
+              >
+                Rent This Car
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="bookingModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 shadow">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold">📅 Book Vehicle</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" id="bookingVehicleId" />
+
+          <div class="mb-3">
+            <label class="form-label">Booking Date</label>
+            <input type="date" id="bookingDate" class="form-control" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Return Date</label>
+            <input type="date" id="returnDate" class="form-control" />
+          </div>
+
+          <div id="bookingError" class="text-danger d-none"></div>
+        </div>
+
+        <div class="modal-footer border-0">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button class="btn btn-success" id="confirmBookingBtn">
+            Confirm Booking
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive w-100">
     <table class="table table-dark table-striped table-hover align-middle">
       <thead class="table-secondary text-dark">
         <tr>
           <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>PAN Number</th>
-          <th>License Number</th>
-          <th>Aadhar Number</th>
+          <th>Brand Name</th>
+          <th>Model Name</th>
+          <th>Number Plate</th>
+          <th>Price</th>
+          <th>Is Available</th>
+          <th>Photo</th>
+          <th>Action</th>
         </tr>
       </thead>
 
-      <tbody id="vehiclesTable"></tbody>
+      <tbody id="vehiclesTable">
+        <td colspan="8">No Drivers...</td>
+      </tbody>
     </table>
   </div>
 </div>

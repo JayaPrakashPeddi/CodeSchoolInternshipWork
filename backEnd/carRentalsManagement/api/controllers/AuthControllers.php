@@ -78,12 +78,17 @@ class AuthControllers
         }
         $query = "SELECT first_name,last_name FROM users u INNER JOIN user_tokens ut ON u.id=ut.user_id WHERE token=:token";
         $data = $this->db->query($query)->get([":token"=>$token]);
-        $result = $this->db->query("SELECT COUNT(*) AS total FROM users")->get();
-        $data["userCount"] = $result["total"];
+        $userCount = $this->db->query("SELECT COUNT(*) AS total FROM users")->get();
+        
+        $bookingDetails = $this->db->query("SELECT COUNT(*) AS total_count,SUM(total_amount) as revenue FROM bookings")->get();
+
+        $data["userCount"] = $userCount["total"];
+        $data["bookingsCount"] = $bookingDetails["total_count"];
+        $data["total_revenue"] = $bookingDetails["revenue"];
         return sendResponse(true,"user details fetched successfully!!",[],$data);
     }
 
-    public function usersList(){
+    public function listUsers(){
         $data = $this->db->query("SELECT u.id,first_name,last_name,email,phone,pan_number,license_number,aadhar_number FROM users u LEFT JOIN admins a ON u.id=a.admin_id WHERE a.admin_id IS NULL")->getAll();
         return sendResponse(true,"Users details fetched successfully!!",[],$data);
     }
