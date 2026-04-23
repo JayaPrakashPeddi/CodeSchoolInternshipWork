@@ -1,0 +1,70 @@
+<div class="container" id="loginContainer">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-6 col-lg-4">
+      <div class="border rounded-4 bg-lowOpacity p-4">
+        <h2 class="text-center text-white">Login</h2>
+        <div class="w-100 d-flex justify-content-center">
+          <span id="invalidCreds" class="text-danger d-none fw-bold fs-5">
+            Invalid Credentials
+          </span>
+        </div>
+        <form
+          class="d-flex flex-column justify-content-center align-items-center w-100"
+        >
+          <div class="d-flex flex-column gap-4 w-100">
+            <div class="form-floating">
+              <input
+                type="text"
+                name="userName"
+                class="form-control"
+                id="userName"
+                placeholder="User Name"
+                required
+              />
+              <label for="userName">User Name</label>
+              <span id="userNameError" class="text-danger d-none">
+                Invalid Username!!!
+              </span>
+            </div>
+
+            <div class="form-floating">
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                id="password"
+                placeholder="Password"
+                required
+              />
+              <label for="password">Password</label>
+              <span id="passwordError" class="text-danger d-none">
+                Invalid Password!!!
+              </span>
+            </div>
+
+            <button
+              class="btn btn-primary w-100 py-2"
+              id="loginBtn"
+              type="button"
+            >
+              <span id="btnText">Login</span>
+              <div
+                class="spinner-border spinner-border-sm d-none"
+                id="spinner"
+              ></div>
+            </button>
+          </div>
+        </form>
+
+        <hr class="border-1 border-white" />
+
+        <p class="text-center text-white mb-0">
+          New User?
+          <a href="#" id="signupLink" class="text-decoration-none"
+            >Register</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <title>Document</title>
+  </head>
+
+  <body style="height: 100vh" class="dashboardBackgroundImg">
+    <div class="container-fluid h-100">
+      <div class="row h-100">
+        <!-- left side bar -->
+
+        <div
+          class="col-2 h-100 position-fixed overflow-auto border d-none d-xl-flex flex-column z-2 bg-dark"
+        >
+          <div class="mt-3 z-3 text-center">
+            <img
+              src="../assects/logo.png"
+              height="100"
+              class="navbar-brand"
+              alt="logo.svg"
+            />
+          </div>
+          <ul class="nav w-100">
+            <li class="nav-item w-100">
+              <ul class="list-group list-group-flush mt-2">
+                <li class="list-group-item border-0 bg-dark">
+                  <a
+                    href="#"
+                    id="sidebarDashboard"
+                    class="nav-link text-white rounded sideBarHover activeTab"
+                    ><i class="bi bi-ui-checks-grid me-2"></i
+                    ><span>Dashboard</span></a
+                  >
+                </li>
+                <li class="list-group-item border-0 bg-dark">
+                  <a
+                    href="#"
+                    id="sidebarDrivers"
+                    class="nav-link text-white rounded sideBarHover"
+                  >
+                    <i class="bi bi-people me-2"></i><span>Manage Drivers</span>
+                  </a>
+                </li>
+                <li class="list-group-item border-0 bg-dark">
+                  <a
+                    href="#"
+                    id="sidebarVehicles"
+                    class="nav-link text-white rounded sideBarHover"
+                  >
+                    <i class="bi bi-car-front me-2"></i
+                    ><span>Manage Vehicles</span></a
+                  >
+                </li>
+                <li class="list-group-item border-0 bg-dark">
+                  <a
+                    href="#"
+                    id="sidebarBookings"
+                    class="nav-link text-white rounded sideBarHover"
+                  >
+                    <i class="bi bi-calendar-check me-2"></i
+                    ><span>Manage Bookings</span></a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- offcanvas -->
+          <!-- navbar offcanvas -->
+        <div class="offcanvas offcanvas-start text-bg-dark" id="sidebar">
+          <div class="offcanvas-header mb-0">
+            <img src="./assects/logo.png" height="100" />
+            <button
+              class="btn-close btn-close-white"
+              data-bs-dismiss="offcanvas"
+            ></button>
+          </div>
+          <div class="offcanvas-body d-flex flex-column">
+            <ul class="nav w-100">
+              <li class="nav-item w-100">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item border-0 bg-dark">
+                    <div class="dropdown pt-1 d-block d-lg-none">
+                      <button
+                        class="btn d-flex align-items-center rounded-pill icon-hover dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="bi bi-person-circle fs-4 text-white"></i>
+                        <span
+                          class="text-white ms-1 fs-5"
+                          id="offcanvasCustomer"
+                        ></span>
+                        <i class="bi bi-chevron-down fs-6 ms-1 text-white"></i>
+                      </button>
+
+                      <ul
+                        class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
+                      >
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                          <button
+                            class="dropdown-item text-danger"
+                            id="logoutButtonOffcanavas"
+                          >
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="list-group-item border-0 bg-dark">
+                    <a
+                      href="#"
+                      class="nav-link rounded text-white sideBarHover activeTab"
+                      id="offcanvasDashboard"
+                      ><span>Dashboard</span></a
+                    >
+                  </li>
+                  <li class="list-group-item border-0 bg-dark">
+                    <a
+                      href="#"
+                      class="nav-link text-white rounded sideBarHover"
+                      id="offcanvasDrivers"
+                      data-bs-dismiss="offcanvas"
+                    >
+                      <span>Manage Driver</span>
+                    </a>
+                  </li>
+                  <li class="list-group-item border-0 bg-dark">
+                    <a
+                      href="#"
+                      class="nav-link text-white rounded sideBarHover"
+                      id="offcanvasVehicles"
+                      data-bs-dismiss="offcanvas"
+                    >
+                      <span>Manage Vehicles</span>
+                    </a>
+                  </li>
+                  <li class="list-group-item border-0 bg-dark">
+                    <a
+                      href="#"
+                      class="nav-link text-white rounded sideBarHover"
+                      id="offcanvasBookings"
+                      data-bs-dismiss="offcanvas"
+                    >
+                      <span>Manage Bookings</span></a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- MAIN -->
+
+        <div class="col-xl-10 h-100 p-0 lg-margin">
+          <!-- top nav bar -->
+
+          <nav
+            class="navbar navbar-expand-lg navbar-light bg-dark border position-fixed top-0 end-0 navbar-lg-width z-1"
+          >
+            <div class="container d-flex justify-content-between">
+              <div class="d-block d-xl-none">
+                <i
+                  class="bi bi-list text-white p-3 py-2 fs-4 rounded-circle icon-hover"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#sidebar"
+                ></i>
+              </div>
+
+              <!-- Logo -->
+              <div class="d-block d-xl-none m-0">
+                <img
+                  src="../assects/logo-2.png"
+                  height="60"
+                  width="160"
+                  class="navbar-brand"
+                  style="margin-left: -20px"
+                  alt="logo.svg"
+                />
+              </div>
+              <!-- search bar -->
+              <div class="input-group d-none d-md-flex" style="width: 20rem">
+                <input
+                  type="text"
+                  id="searchInput"
+                  class="form-control"
+                  placeholder="search..."
+                />
+                <button class="btn btn-secondary" onclick="">
+                  <i class="bi bi-search searchBtn"></i>
+                </button>
+              </div>
+
+              <div class="nav">
+                <div class="dropdown pt-1 d-none d-lg-block">
+                  <button
+                    class="btn d-flex align-items-center rounded-pill icon-hover dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="bi bi-person-circle fs-4 text-white"></i>
+                    <span class="text-white ms-1 fs-5" id="Customer"></span>
+                    <i class="bi bi-chevron-down fs-6 ms-1 text-white"></i>
+                  </button>
+
+                  <ul
+                    class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
+                  >
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <button
+                        class="dropdown-item text-danger"
+                        id="logoutButton"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          <!-- Body -->
+          <main id="mainDiv" style="margin-top: 85px">
+            <div
+              class="container-fluid d-flex align-items-center justify-content-center text-center"
+              style="min-height: 80vh"
+            >
+              <div class="text-white">
+                <h1 class="display-4 fw-bold mb-3">Welcome to Admin 👋</h1>
+                <div class="container mb-4">
+                  <div class="row g-3">
+                    <div class="col-lg-4 col-12">
+                      <div
+                        class="d-flex align-items-center gap-2 p-3 rounded border border-success bg-dark stat-card"
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center fs-5 p-2 rounded text-white bg-success"
+                        >
+                          <i class="bi bi-people"></i>
+                        </div>
+                        <div>
+                          <div class="label">Total Customers</div>
+                          <div class="value" id="totalCustomers"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 col-12">
+                      <div
+                        class="d-flex align-items-center gap-2 p-3 rounded border border-info bg-dark stat-card"
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center fs-5 p-2 rounded text-white bg-info"
+                        >
+                          <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div>
+                          <div class="label">Total Bookings</div>
+                          <div class="value" id="userBookings">12</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 col-12">
+                      <div
+                        class="d-flex align-items-center gap-2 p-3 rounded border border-warning bg-dark stat-card"
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center fs-5 p-2 rounded text-white bg-warning text-dark"
+                        >
+                          <i class="bi bi-currency-rupee"></i>
+                        </div>
+                        <div>
+                          <div class="label">Total Revenue</div>
+                          <div class="value" id="totalSpent">₹18,750</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./scripts/dashboard.js"></script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+#formBody {
+  transition: background-position 0.6s ease-in-out;
+}
+.loginBackgroundImg{
+    background-color: black;
+    background-image: url(../assects/carBG.jpeg);
+    background-position: left;
+    background-attachment:fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.registerBackgroundImg{
+    background-color: black;
+    background-image: url(../assects/carBG.jpeg);
+    background-position: right;
+    background-attachment:fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bg-lowOpacity{
+    background-color: rgba(0, 0, 0, 0.84);
+}

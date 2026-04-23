@@ -1,0 +1,135 @@
+#formBody {
+  transition: background-position 0.6s ease-in-out;
+}
+.loginBackgroundImg {
+  background-image: url(../assects/carBackgroundImg.jpeg);
+  background-position: left;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.registerBackgroundImg {
+  background-image: url(../assects/carBackgroundImg.jpeg);
+  background-position: right;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.dashboardBackgroundImg {
+  background-color: rgba(0, 0, 0, 0.69);
+  background-image: url(../assects/carBackground4dashboard.jpeg);
+  background-position: center;
+  background-attachment: fixed;
+  background-blend-mode: overlay;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bg-lowOpacity {
+  background-color: rgba(0, 0, 0, 0.758);
+}
+
+.activeTab {
+  background-color: #ecf3ff;
+  color: #465fff !important;
+}
+
+ul > li > ul > li > a:hover:not(.active) {
+  background-color: rgb(167, 168, 169);
+  border-radius: 5px;
+}
+
+.lg-margin {
+  margin-left: 0px;
+}
+
+.navbar-lg-width {
+  width: 100%;
+}
+
+.menu-button:hover {
+  background-color: #e0e0e1;
+  cursor: pointer;
+}
+
+
+
+.stat-card {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: scale(1.05);
+}
+
+
+.label {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+
+@media (min-width: 1200px) {
+  .lg-margin {
+    margin-left: 253px !important;
+  }
+  .navbar-lg-width {
+    left: 255px !important;
+    width: calc(100% - 253px) !important;
+  }
+  .custom-top-margin {
+    margin-top: 50px;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1440px) {
+  .lg-margin {
+    margin-left: 240px !important;
+  }
+  .navbar-lg-width {
+    left: 240px !important;
+    width: calc(100% - 240px) !important;
+  }
+  .custom-top-margin {
+    margin-top: 50px;
+  }
+}
+
+.boxToRight {
+  animation: boxAnimationToRight 0.6s ease-in-out;
+  will-change: transform, opacity;
+}
+
+.boxToLeft {
+  animation: boxAnimationToLeft 0.6s ease-in-out;
+  will-change: transform, opacity;
+}
+
+@keyframes boxAnimationToLeft {
+  from {
+    opacity: 0;
+    transform: translateX(150px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes boxAnimationToRight {
+  from {
+    opacity: 0;
+    transform: translateX(-150px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
