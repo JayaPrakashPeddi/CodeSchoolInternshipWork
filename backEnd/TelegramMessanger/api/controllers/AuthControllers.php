@@ -82,6 +82,8 @@ class AuthControllers
     }
 
     public function logout($token){
+        $userData = $this->db->query("SELECT user_id FROM user_tokens WHERE token=:token")->execute([":token"=>$token]);
+        $this->db->query("UPDATE users SET is_online=false WHERE id=:id")->execute([":id"=>$userData['user_id']]);
         $this->db->query("DELETE FROM user_tokens WHERE token=:token")->execute([":token"=>$token]);
         return sendResponse(true,"logged out successfully");
     }

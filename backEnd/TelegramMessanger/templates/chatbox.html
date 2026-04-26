@@ -1,0 +1,88 @@
+<!-- Header -->
+<div
+  class="border-bottom sticky-top bg-light p-1 d-flex justify-content-between align-items-center"
+>
+  <div class="d-flex align-items-center gap-2">
+    <img
+      src="./assects/placeholderImg.jpg"
+      id="contactProfilePicture"
+      height="50"
+      width="50"
+      class="rounded-circle"
+    />
+    <div>
+      <div class="fw-semibold" id="contactUsername">John</div>
+      <small class="" id="contactStatus">online</small>
+    </div>
+  </div>
+
+  <div class="d-flex gap-3">
+    <i class="bi bi-search fs-5 onHover p-2 rounded-2"></i>
+    <i class="bi bi-telephone fs-5 onHover p-2 rounded-2"></i>
+    <i class="bi bi-three-dots-vertical fs-5 onHover p-2 rounded-2"></i>
+  </div>
+</div>
+
+<!-- Messages -->
+<div
+  id="chatArea"
+  class="flex-grow-1 overflow-scroll px-3 py-2 d-flex flex-column gap-2 overflow-x-hidden"
+  style="min-height: 0; scrollbar-width: none"
+>
+  <!-- Received -->
+  <!-- <div class="d-flex">
+    <div class="msg received">
+      Hello bro 👋
+      <span class="msg-time">12:30</span>
+    </div>
+  </div> -->
+
+  <!-- Sent -->
+  <!-- <div class="d-flex justify-content-end">
+    <div class="msg sent">
+      Looks clean 🔥
+      <span class="msg-time">12:31 ✓✓</span>
+    </div>
+  </div> -->
+
+  <!-- Image -->
+  <!-- <div class="d-flex">
+    <div class="msg received p-1">
+      <img
+        src="./assects/placeholderImg.jpg"
+        height="400"
+        width="300"
+        class="img-fluid rounded-3"
+      />
+      <span class="msg-time">12:32</span>
+    </div>
+  </div> -->
+</div>
+
+<!-- Input -->
+<form class="border-top sticky-bottom" id="textMsgForm">
+  <div class="input-group p-1 px-2">
+    <button type="button" class="btn btn-light border-0 p-1 px-2">
+      <i class="bi bi-emoji-smile"></i>
+    </button>
+
+    <textarea
+      class="form-control border-0"
+      rows="1"
+      id="messageInput"
+      placeholder="Message..."
+      style="resize: none; max-height: 120px"
+    ></textarea>
+
+    <button type="button" class="btn btn-light border-0 p-1 px-2 rounded-end">
+      <i class="bi bi-paperclip"></i>
+    </button>
+    <button
+      type="button"
+      id="sendBtn"
+      class="btn btn-primary rounded-5 p-2 ms-2 mx-1"
+    >
+      <i class="bi bi-send"></i>
+    </button>
+  </div>
+</form>

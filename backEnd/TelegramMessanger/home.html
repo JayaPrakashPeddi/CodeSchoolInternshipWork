@@ -13,19 +13,50 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="shortcut icon"
+      href="https://web.telegram.org/a/favicon.svg"
+      type="image/x-icon"
+    />
     <title>Telegram</title>
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
 
-  <body class="vh-100 overflow-hidden">
+  <body class="vh-100">
+    <!-- offcanvas -->
+    <div
+      class="offcanvas offcanvas-start"
+      tabindex="-1"
+      id="offcanvasExample"
+      aria-labelledby="offcanvasExampleLabel"
+    >
+      <div class="offcanvas-header d-flex justify-content-between p-4">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+          Notifications
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <hr class="border border-dark" />
+      <div class="offcanvas-body" id="notificationPanal">
+        <div class="text-center w-100 p-4">No notifications...</div>
+      </div>
+    </div>
+
     <div class="container-fluid h-100">
       <div class="row h-100">
-        <!-- 🔹 SIDEBAR -->
+        <!-- SIDEBAR -->
         <div
-          class="col-12 col-md-4 col-lg-3 border-end bg-white d-flex flex-column p-0"
+          class="col-12 col-md-4 col-lg-3 border-end bg-light d-flex flex-column p-0 position-fixed min-vh-100"
         >
           <!-- Top Bar -->
-          <div class="p-2 border-bottom d-flex align-items-center gap-2">
+          <div
+            class="p-2 border-bottom bg-light d-flex align-items-center gap-2 sticky-top"
+          >
             <div class="dropdown">
               <button
                 class="btn btn-light px-1"
@@ -54,16 +85,6 @@
                 </li>
 
                 <!-- Items -->
-                <li>
-                  <a
-                    class="dropdown-item d-flex align-items-center gap-2"
-                    href="#"
-                  >
-                    <i class="bi bi-person"></i>
-                    <span>My Profile</span>
-                  </a>
-                </li>
-
                 <li>
                   <a
                     class="dropdown-item d-flex align-items-center gap-2"
@@ -115,137 +136,45 @@
               ></i
               ><input
                 type="text"
-                class="form-control rounded-pill text-dark border-0 ps-5"
+                id="searchContacts"
+                class="form-control rounded-pill text-dark border-0 px-5"
                 placeholder="Search..."
-                style="height: 40px; background-color: rgb(234, 233, 233);"
+                style="height: 40px; background-color: rgb(234, 233, 233)"
               />
+              <i
+                class="bi bi-x text-dark fs-4 position-absolute d-none"
+                id="cancelSearch"
+                style="right: 15px; top: 0px"
+              ></i>
+            </div>
+
+            <div class="position-relative">
+              <i
+                class="bi bi-bell fs-5 px-2 p-1 onHover rounded-circle"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample"
+                aria-controls="offcanvasExample"
+              ></i
+              ><span
+                class="position-absolute bg-danger p-1 rounded-circle d-none"
+                id="notificationsPopupIcon"
+                style="right: 3px; top: 1px"
+              ></span>
             </div>
           </div>
 
           <!-- Contacts -->
-          <div class="flex-grow-1 overflow-auto">
+          <div class="flex-grow-1 overflow-auto" id="contactsContainer">
             <!-- Contact -->
-            <div
-              class="d-flex align-items-center gap-2 p-2 active-contact rounded-2"
-            >
-              <img
-                src="./assects/placeholderImg.jpg"
-                height="50"
-                width="50"
-                class="rounded-circle"
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold">John</div>
-                <small class="text-muted text-truncate d-block"
-                  >Hey bro...</small
-                >
-              </div>
-              <small class="text-muted">12:30</small>
-            </div>
-
-            <div class="d-flex align-items-center gap-2 p-2 contact">
-              <img
-                src="./assects/placeholderImg.jpg"
-                height="50"
-                width="50"
-                class="rounded-circle"
-              />
-              <div class="flex-grow-1">
-                <div class="fw-semibold">Alice</div>
-                <small class="text-muted text-truncate d-block"
-                  >Typing...</small
-                >
-              </div>
-              <small class="text-muted">11:10</small>
-            </div>
           </div>
         </div>
 
-        <!-- 🔹 CHAT AREA -->
-        <div class="col d-md-flex flex-column bg-telegram-pattern d-none">
-          <!-- Header -->
-          <div
-            class="border-bottom bg-white p-2 d-flex justify-content-between align-items-center"
-          >
-            <div class="d-flex align-items-center gap-2">
-              <img
-                src="./assects/placeholderImg.jpg"
-                height="50"
-                width="50"
-                class="rounded-circle"
-              />
-              <div>
-                <div class="fw-semibold">John</div>
-                <small class="text-muted">online</small>
-              </div>
-            </div>
-
-            <div class="d-flex gap-3">
-              <i class="bi bi-search"></i>
-              <i class="bi bi-telephone"></i>
-              <i class="bi bi-three-dots-vertical"></i>
-            </div>
-          </div>
-
-          <!-- Messages -->
-          <div
-            id="chatArea"
-            class="flex-grow-1 overflow-auto px-3 py-2 d-flex flex-column gap-2"
-          >
-            <!-- Received -->
-            <div class="d-flex">
-              <div class="msg received">
-                Hello bro 👋
-                <span class="msg-time">12:30</span>
-              </div>
-            </div>
-
-            <!-- Sent -->
-            <div class="d-flex justify-content-end">
-              <div class="msg sent">
-                Looks clean 🔥
-                <span class="msg-time">12:31 ✓✓</span>
-              </div>
-            </div>
-
-            <!-- Image -->
-            <div class="d-flex">
-              <div class="msg received p-1">
-                <img
-                  src="./assects/placeholderImg.jpg"
-                  height="400"
-                  width="300"
-                  class="img-fluid rounded-3"
-                />
-                <span class="msg-time">12:32</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Input -->
-          <form class="border-top p-2">
-            <div class="input-group">
-              <button class="btn btn-light border-0">
-                <i class="bi bi-emoji-smile"></i>
-              </button>
-
-              <textarea
-                class="form-control border-0"
-                rows="1"
-                placeholder="Message..."
-                style="resize: none; max-height: 120px"
-              ></textarea>
-
-              <button type="button" class="btn btn-light border-0">
-                <i class="bi bi-paperclip"></i>
-              </button>
-
-              <button class="btn btn-primary rounded-circle ms-2">
-                <i class="bi bi-send"></i>
-              </button>
-            </div>
-          </form>
-        </div>
+        <!-- CHAT AREA -->
+        <div
+          class="col d-md-flex flex-column bg-telegram-pattern d-none"
+          id="chatBox"
+        ></div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

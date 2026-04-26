@@ -4,29 +4,29 @@
 }
 
 .bg-telegram-pattern {
-  background-image:url(../assects/telegramBgPattern.jpg);
+  background-image: url(../assects/telegramBgPattern.jpg);
   background-color: rgba(0, 0, 0, 0.575);
   background-position: center;
   background-attachment: fixed;
-  background-blend-mode: overlay ;
+  background-blend-mode: overlay;
   background-repeat: repeat;
 }
 
-.onHover:hover:not(.active-contact){
-  background-color: rgb(225, 224, 224);
+.onHover:hover:not(.active-contact) {
+  background-color: rgb(184, 184, 184) !important;
   cursor: pointer;
 }
 
-.active-contact{
-  background-color: rgb(67, 97, 246);
+.active-contact {
+  background-color: rgb(67, 97, 246) !important;
   color: white !important;
 }
 
-.bg-gray{
+.bg-gray {
   background-color: rgb(44 44 44);
 }
 
-#menu>li>a:hover{
+#menu > li > a:hover {
   background-color: rgb(34, 34, 34) !important;
 }
 
@@ -59,4 +59,14 @@
 .msg img {
   max-height: 300px;
   object-fit: cover;
+}
+
+#chatBox {
+  margin-left: calc(25% + 0px) !important;
+}
+
+@media (min-width: 768px) and (max-width:1023px) {
+  #chatBox {
+    margin-left: calc(33% + 2px) !important;
+  }
 }

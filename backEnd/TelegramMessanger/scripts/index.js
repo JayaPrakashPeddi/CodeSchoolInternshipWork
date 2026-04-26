@@ -70,7 +70,6 @@ $(document).ready(function () {
   });
 
   let typingTimer;
-
   $(document).on("input", "#phoneNumberInput", function () {
     $("#phoneNumberError").addClass("d-none");
     clearTimeout(typingTimer);
