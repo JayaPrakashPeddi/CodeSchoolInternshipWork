@@ -1,0 +1,96 @@
+<div class="modal fade" id="vehicleDetailsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">Vehicle Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-4 align-items-start">
+          <div class="col-md-6 text-center">
+            <img
+              id="mImage"
+              class="img-fluid rounded-3"
+              style="max-height: 320px; object-fit: cover"
+            />
+          </div>
+          <div class="col-md-6">
+            <h4 id="mBrand" class="fw-bold mb-1"></h4>
+            <div id="mModel" class="text-muted mb-3 fs-5"></div>
+
+            <hr />
+            <div class="mb-3">
+              <span class="text-muted">Price:</span><br />
+              <span id="mPrice" class="fw-bold text-success fs-5"></span>
+              <span class="text-muted fs-6"> / day</span>
+            </div>
+            <div class="mb-3">
+              <span class="text-muted">Number Plate</span>
+              <div id="mNumber" class="fw-semibold fs-5"></div>
+            </div>
+            <div class="mb-4">
+              <span class="text-muted">Available:</span>
+              <span id="mAvailable" class="fw-bold fs-5"></span>
+            </div>
+            <button
+              class="btn btn-success w-50 fw-bold py-2"
+              id="bookVechicleBtn"
+            >
+              Rent This Car
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="bookingModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">Book Vehicle</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="bookingVehicleId" />
+
+        <div class="mb-3">
+          <label class="form-label">Booking Date</label>
+          <input type="date" id="bookingDate" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Return Date</label>
+          <input type="date" id="returnDate" class="form-control" />
+        </div>
+
+        <div id="bookingError" class="text-danger d-none"></div>
+      </div>
+
+      <div class="modal-footer border-0">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button class="btn btn-success" id="confirmBookingBtn">
+          Confirm Booking
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="container-fluid d-flex flex-wrap justify-content-center gap-3"
+  style="margin-top: 85px"
+  id="vehiclesContainer"
+></div>

@@ -2,14 +2,12 @@
 require_once __DIR__ . "/pdo.php";
 
 class DB{
-
     private $query = "";
     private $pdo = null;
     private $statement = null;
-    
+
     function __construct()
     {
-
         $this->pdo = getPDO();
     }
 

@@ -21,15 +21,16 @@ class BookingContrllers
         return sendResponse(true, "vehicle deleted!!");
     }
 
-    public function bookingVehicle($vehicleId,$booking_date,$return_date,$userToken){
+    public function bookingVehicle($vehicleId, $booking_date, $return_date, $userToken)
+    {
         $days = (strtotime($return_date) - strtotime($booking_date)) / (60 * 60 * 24);
-        
-        $userData = $this->db->query("SELECT user_id FROM user_tokens WHERE token=:token")->get([":token"=>$userToken]);
-        $vehiclePrice = $this->db->query("SELECT price_per_day FROM vehicles WHERE id=:id")->get([":id"=>$vehicleId]);
-        
+
+        $userData = $this->db->query("SELECT user_id FROM user_tokens WHERE token=:token")->get([":token" => $userToken]);
+        $vehiclePrice = $this->db->query("SELECT price_per_day FROM vehicles WHERE id=:id")->get([":id" => $vehicleId]);
+
         $userId = $userData["user_id"];
         $price = $vehiclePrice['price_per_day'];
-        $total_amount = $price*$days;
+        $total_amount = $price * $days;
 
         $this->db->query("INSERT INTO bookings (user_id,vehicle_id,booked_date,return_date,total_amount) VALUES (:user_id,:vehicle_id,:booked_date,:return_date,:total_amount)")->execute([
             ":user_id" => $userId,
@@ -38,7 +39,16 @@ class BookingContrllers
             ":return_date" => $return_date,
             ":total_amount" => $total_amount
         ]);
-        $this->db->query("UPDATE vehicles SET is_available=false WHERE id=:id")->execute([":id"=>$vehicleId]);
-        return sendResponse(true,"Booking successful!!");
+        $this->db->query("UPDATE vehicles SET is_available=false WHERE id=:id")->execute([":id" => $vehicleId]);
+        return sendResponse(true, "Booking successful!!");
+    }
+
+    public function getBookingDetails($id)
+    {
+        $bookingDetails = $this->db->query("SELECT concat(first_name,' ',last_name) as driver_name,license_number,concat(v.brand,' ',v.model) as vehicle_name,number_plate,booked_date,return_date,price_per_day,total_amount,photo FROM bookings b INNER JOIN vehicles v ON b.vehicle_id=v.id INNER JOIN users u ON b.user_id=u.id WHERE b.id=:id")->get([":id" => $id]);
+        if (!$bookingDetails){
+            return sendResponse(false,"No booking found!!");
+        }
+        return sendResponse(true,"booking details fetched!!",[],$bookingDetails);
     }
 }

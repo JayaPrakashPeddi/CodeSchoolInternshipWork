@@ -74,5 +74,6 @@ CREATE TABLE bookings (
 
 SELECT * FROM bookings;
 
-INSERT INTO bookings (user_id, vehicle_id, booked_date, return_date, total_amount)
-VALUES (4, 2, '2026-04-25', '2026-04-28', 60000.00);
+SELECT concat(first_name,' ',last_name) as driver_name,license_number,concat(v.brand,' ',v.model) as vehicle_name,number_plate,booked_date,return_date,total_amount FROM bookings b INNER JOIN vehicles v ON b.vehicle_id=v.id INNER JOIN users u ON b.user_id=u.id WHERE b.id=2;
+
+SELECT COUNT(*) AS total_count,SUM(total_amount) as revenue FROM bookings WHERE user_id=4;

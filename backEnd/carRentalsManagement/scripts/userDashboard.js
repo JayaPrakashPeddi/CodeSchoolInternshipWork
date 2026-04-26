@@ -30,7 +30,7 @@ function clearVehicleFormErrors() {
   $("#photoError").addClass("d-none");
 }
 
-function viewDetails(id) {
+function viewVehicleDetails(id) {
   window.selectedVehicleId = id;
   $.ajax({
     type: "get",
@@ -67,6 +67,39 @@ function viewDetails(id) {
   });
 }
 
+function viewBookingDetails(id) {
+  window.selectedBookingId = id;
+  $.ajax({
+    type: "get",
+    url: "../api/viewBookingDetails.php",
+    data: { id },
+    dataType: "json",
+    success: function (response) {
+      if (!response.status) {
+        console.error(response.message);
+        return;
+      }
+      let booking = response.data;
+      $("#bDriverName").text(booking.driver_name);
+      $("#bLicenseNumber").text(booking.license_number);
+      $("#bVehicleName").text(booking.vehicle_name);
+      $("#bNumber").text(booking.number_plate.toUpperCase());
+      $("#bPricePerDay").text("₹." + parseInt(booking.price_per_day));
+      $("#bTotalPrice").text("₹." + parseInt(booking.total_amount));
+      $("#bStartDate").text(booking.booked_date);
+      $("#bEndDate").text(booking.return_date);
+      $("#bImage").attr("src", "./uploads/" + booking.photo);
+      const modal = bootstrap.Modal.getOrCreateInstance(
+        document.getElementById("bookingDetailsModal"),
+      );
+      modal.show();
+    },
+    error: function (err) {
+      console.error(err);
+    },
+  });
+}
+
 function ajaxCall() {
   $.ajax({
     type: "post",
@@ -94,42 +127,56 @@ function ajaxCall() {
 function listVehicles() {
   removeActiveClass();
   $("#sidebarVehicles,#offcanvasVehicles").addClass("activeTab");
-  $("#mainDiv").load("./vehicles.html", function () {
-    const table = $("#vehiclesTable");
+
+  $("#mainDiv").load("./listVehicles.html", function () {
+    const container = $("#vehiclesContainer");
+    container.empty();
+    container.addClass("d-flex flex-wrap gap-3");
     $.ajax({
       type: "get",
       url: "../api/listVehicles.php",
       dataType: "json",
       success: function (response) {
-        if (response.data.length == 0) {
+        if (!response.data || response.data.length === 0) {
+          container.append(`<p class="text-muted">No vehicles found</p>`);
           return;
         }
-        table.text("");
         for (let i = 0; i < response.data.length; i++) {
-          let tr = $("<tr>").append(
-            $("<td>").text(i + 1),
-            $("<td>").text(response.data[i].brand),
-            $("<td>").text(response.data[i].model),
-            $("<td>").text(response.data[i].number_plate.toUpperCase()),
-            $("<td>").text("₹." + response.data[i].price_per_day),
-            $("<td>").text(response.data[i].is_available),
-            $("<td>").append(
-              $("<img>")
-                .addClass("image-fluid")
-                .attr({
-                  src: "./uploads/" + response.data[i].photo,
-                  height: 50,
-                }),
-            ),
-            $("<td>").html(
-              `<button class="btn btn-info" onclick="viewDetails(${response.data[i].id})"><i class="bi bi-eye"></i></button>`,
-            ),
+          let vehicle = response.data[i];
+          let card = $("<div>")
+            .addClass("card")
+            .css({ width: "18rem" })
+            .attr({ onclick: `viewVehicleDetails(${vehicle.id})` });
+          let textMsg = "Available";
+          let textClass = "text-success";
+          if (!vehicle.is_available) {
+            textMsg = "Not Available";
+            textClass = "text-danger";
+          }
+          card.append(
+            $("<img>")
+              .addClass("card-img-top")
+              .attr({ src: "./uploads/" + vehicle.photo, alt: "car_img" }),
+            $("<div>")
+              .addClass("card-body")
+              .append(
+                $("<h5>")
+                  .addClass("card-title")
+                  .text(vehicle.brand + " " + vehicle.model),
+                $("<p>")
+                  .addClass("card-text d-flex justify-content-between")
+                  .html(`<span>${vehicle.price_per_day} / day</span><span class="${textClass}">${textMsg}</span>`)
+
+                //   vehicle.is_available
+                //   ? `<span class="text-success">Available</span>`
+                //   : `<span class="text-danger">Not Available</span>`,
+              ),
           );
-          table.append(tr);
-        }
-      },
-    });
+        container.append(card);
+      }
+    },
   });
+});
 }
 
 function listBookings() {
@@ -154,9 +201,9 @@ function listBookings() {
             $("<td>").text(response.data[i].booked_date),
             $("<td>").text(response.data[i].return_date),
             $("<td>").text(response.data[i].total_amount),
-            // $("<td>").html(
-            //   `<button class="btn btn-danger" onclick="deleteBookingDetails(${response.data[i].id})"><i class="bi bi-trash3"></i></button>`,
-            // ),
+            $("<td>").html(
+              `<button class="btn btn-info" onclick="viewBookingDetails(${response.data[i].id})"><i class="bi bi-eye"></i></button>`,
+            ),
           );
           table.append(tr);
         }
@@ -312,14 +359,15 @@ $(document).ready(function () {
       dataType: "json",
       success: function (response) {
         if (response.status) {
-          Swal.fire("Success", response.message, "success").then(()=>{
+          Swal.fire("Success", response.message, "success").then(() => {
             listBookings();
           });
         }
       },
       error: function () {
-        Swal.fire("Error","please try again later...", "error");
+        Swal.fire("Error", "please try again later...", "error");
       },
     });
   });
+  
 });

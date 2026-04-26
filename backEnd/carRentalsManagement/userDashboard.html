@@ -23,7 +23,7 @@
         <!-- left side bar -->
 
         <div
-          class="col-2 h-100 position-fixed overflow-auto border d-none d-xl-flex flex-column z-2 bg-dark"
+          class="col-2 h-100 position-fixed overflow-auto d-none d-xl-flex flex-column z-2 bg-dark"
         >
           <div class="mt-3 z-3 text-center">
             <img
@@ -103,7 +103,6 @@
                         class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                       >
                         <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
                           <button
@@ -155,7 +154,7 @@
           <!-- top nav bar -->
 
           <nav
-            class="navbar navbar-expand-lg navbar-light bg-dark border position-fixed top-0 end-0 navbar-lg-width z-1"
+            class="navbar navbar-expand-lg navbar-light bg-dark position-fixed top-0 end-0 navbar-lg-width z-1"
           >
             <div class="container d-flex justify-content-between">
               <div class="d-block d-xl-none">
@@ -179,7 +178,7 @@
               </div>
               <!-- search bar -->
               <div class="input-group d-none d-md-flex" style="width: 20rem">
-                <input
+                <!-- <input
                   type="text"
                   id="searchInput"
                   class="form-control"
@@ -187,7 +186,7 @@
                 />
                 <button class="btn btn-secondary" onclick="">
                   <i class="bi bi-search searchBtn"></i>
-                </button>
+                </button> -->
               </div>
 
               <div class="nav">
@@ -206,7 +205,6 @@
                     class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                   >
                     <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                       <button
@@ -268,7 +266,7 @@
                         </div>
                         <div>
                           <div class="label">Your Bookings</div>
-                          <div class="value" id="userBookings">12</div>
+                          <div class="value" id="totalBookings">12</div>
                         </div>
                       </div>
                     </div>
@@ -284,13 +282,12 @@
                         </div>
                         <div>
                           <div class="label">Total Spent</div>
-                          <div class="value" id="totalSpent">₹18,750</div>
+                          <div class="value" id="totalRevenue">₹18,750</div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-               
               </div>
             </div>
           </main>

@@ -72,6 +72,37 @@ function deleteUser(id) {
   });
 }
 
+function viewVehicleDetails(id) {
+  window.selectedVehicleId = id;
+  $.ajax({
+    type: "get",
+    url: "../api/getVehicleById.php",
+    data: { id: id },
+    dataType: "json",
+    success: function (response) {
+      if (!response.status) {
+        console.error(response.message);
+        return;
+      }
+      const vehicle = response.data;
+      console.log(vehicle);
+      $("#mBrand").text(vehicle.brand);
+      $("#mModel").text(vehicle.model);
+      $("#mNumber").text(vehicle.number_plate.toUpperCase());
+      $("#mPrice").text("₹." + vehicle.price_per_day);
+      $("#bookVechicleBtn").addClass("disabled");
+      $("#mImage").attr("src", "./uploads/" + vehicle.photo);
+      const modal = bootstrap.Modal.getOrCreateInstance(
+        document.getElementById("vehicleDetailsModal"),
+      );
+      modal.show();
+    },
+    error: function (err) {
+      console.error(err);
+    },
+  });
+}
+
 function deleteVehicleDetails(id) {
   Swal.fire({
     title: "Are you sure?",
@@ -98,6 +129,39 @@ function deleteVehicleDetails(id) {
         },
       });
     }
+  });
+}
+
+function viewBookingDetails(id) {
+  window.selectedBookingId = id;
+  $.ajax({
+    type: "get",
+    url: "../api/viewBookingDetails.php",
+    data: { id },
+    dataType: "json",
+    success: function (response) {
+      if (!response.status) {
+        console.error(response.message);
+        return;
+      }
+      let booking = response.data;
+      $("#bDriverName").text(booking.driver_name);
+      $("#bLicenseNumber").text(booking.license_number);
+      $("#bVehicleName").text(booking.vehicle_name);
+      $("#bNumber").text(booking.number_plate.toUpperCase());
+      $("#bPricePerDay").text("₹." + parseInt(booking.price_per_day));
+      $("#bTotalPrice").text("₹." + parseInt(booking.total_amount));
+      $("#bStartDate").text(booking.booked_date);
+      $("#bEndDate").text(booking.return_date);
+      $("#bImage").attr("src", "./uploads/" + booking.photo);
+      const modal = bootstrap.Modal.getOrCreateInstance(
+        document.getElementById("bookingDetailsModal"),
+      );
+      modal.show();
+    },
+    error: function (err) {
+      console.error(err);
+    },
   });
 }
 
@@ -134,7 +198,6 @@ function deleteBookingDetails(id) {
     }
   });
 }
-
 
 function removeActiveClass() {
   $("#sidebarDashboard,#offcanvasDashboard").removeClass("activeTab");
@@ -189,7 +252,6 @@ function listDrivers() {
             $("<td>").text(response.data[i].pan_number),
             $("<td>").text(response.data[i].license_number),
             $("<td>").text(response.data[i].aadhar_number),
-            $("<td>").append($("<img>").addClass("image-fluid").attr({"src":"./uploads/"+response.data[i].photo,"height":50})),
             $("<td>").html(
               `<button class="btn btn-danger"><i class="bi bi-trash3" onclick="deleteUser(${response.data[i].id})"></i></button>`,
             ),
@@ -204,7 +266,7 @@ function listDrivers() {
 function listVehicles() {
   removeActiveClass();
   $("#sidebarVehicles,#offcanvasVehicles").addClass("activeTab");
-  $("#mainDiv").load("./vehicles.html", function () {
+  $("#mainDiv").load("./manageVehicles.html", function () {
     const table = $("#vehiclesTable");
     $.ajax({
       type: "get",
@@ -223,9 +285,17 @@ function listVehicles() {
             $("<td>").text(response.data[i].number_plate),
             $("<td>").text(response.data[i].price_per_day),
             $("<td>").text(response.data[i].is_available),
-            $("<td>").text(response.data[i].photo),
+            $("<td>").append(
+              $("<img>")
+                .addClass("image-fluid")
+                .attr({
+                  src: "./uploads/" + response.data[i].photo,
+                  height: 50,
+                }),
+            ),
+
             $("<td>").html(
-              `<button class="btn btn-danger" onclick="deleteVehicleDetails(${response.data[i].id})"><i class="bi bi-trash3"></i></button>`,
+              `<button class="btn btn-info me-1" onclick="viewVehicleDetails(${response.data[i].id})"><i class="bi bi-eye"></i></button><button class="btn btn-danger" onclick="deleteVehicleDetails(${response.data[i].id})"><i class="bi bi-trash3"></i></button>`,
             ),
           );
           table.append(tr);
@@ -249,6 +319,7 @@ function listBookings() {
           return;
         }
         table.text("");
+        // $("#tableHead").append($("<th>").text("Action"));
         for (let i = 0; i < response.data.length; i++) {
           let tr = $("<tr>").append(
             $("<td>").text(i + 1),
@@ -258,7 +329,7 @@ function listBookings() {
             $("<td>").text(response.data[i].return_date),
             $("<td>").text(response.data[i].total_amount),
             $("<td>").html(
-              `<button class="btn btn-danger" onclick="deleteBookingDetails(${response.data[i].id})"><i class="bi bi-trash3"></i></button>`,
+              `<button class="btn btn-info me-1" onclick="viewBookingDetails(${response.data[i].id})"><i class="bi bi-eye"></i></button><button class="btn btn-danger" onclick="deleteBookingDetails(${response.data[i].id})"><i class="bi bi-trash3"></i></button>`,
             ),
           );
           table.append(tr);
