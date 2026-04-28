@@ -46,7 +46,6 @@ function startTimer() {
 
 $(document).ready(function () {
   $("#loginOptionsContainer").load("./templates/qrlogin.html");
-
   $(document).on("click", "#nextBtn", function () {
     const number = $("#phoneNumberInput").val();
     const rememberMe = $("#keepMeSignedIn").is(":checked");
@@ -131,7 +130,7 @@ $(document).ready(function () {
                 if (response.status) {
                   let token = response.data.token;
                   localStorage.setItem("userToken", token);
-                  window.location.href="./home.html";
+                  window.location.href = "./home.html";
                 }
               },
             });
@@ -185,7 +184,7 @@ $(document).ready(function () {
       url: "../api/register.php",
       type: "POST",
       data: formData,
-      dataType:"json",
+      dataType: "json",
       processData: false,
       contentType: false,
       success: function (response) {

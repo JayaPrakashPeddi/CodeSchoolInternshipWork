@@ -40,7 +40,6 @@ function validateToken() {
     url: "../api/validateToken.php",
     data: { userToken },
     dataType: "json",
-
     success: function (response) {
       if (!response || !response.status) {
         logout();
@@ -56,9 +55,32 @@ function validateToken() {
     },
   });
 }
+
 function scrollToBottom() {
   const chatArea = document.getElementById("chatArea");
   chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function dayIdentifier(sentDate, today) {
+  let dayDifference = today.getDate() - sentDate.getDate();
+  if (dayDifference == 0) {
+    return "Today";
+  } else if (dayDifference == 1) {
+    return "Yesterday";
+  } else if (dayDifference > 1 && dayDifference < 6) {
+    return `${dayDifference} Days ago`;
+  } else if (dayDifference > 6 && dayDifference < 30) {
+    let weekCount = Math.floor(dayDifference / 7);
+    return `${weekCount} Weeks ago`;
+  } else {
+    let date =
+      sentDate.getDate() +
+      " : " +
+      sentDate.getMonth() +
+      " : " +
+      sentDate.getYear();
+    return date;
+  }
 }
 
 let fetchChatTimer;
@@ -75,10 +97,31 @@ function fetchMessages(username) {
     success: function (response) {
       chatArea.text("");
       if (response.status) {
+        let dayLabel = null;
+        let newDayLabel = null;
         for (let i = 0; i < response.data.length; i++) {
           let is_mine = response.data[i].is_mine;
           let datetime = response.data[i].send_at;
-          let time = datetime.slice(11, 16);
+          let dateTimeObj = new Date(datetime);
+          let today = new Date();
+          newDayLabel = dayIdentifier(dateTimeObj, today);
+          if (dayLabel != newDayLabel) {
+            chatArea.append(
+              $("<div>")
+                .addClass("d-flex justify-content-center")
+                .append(
+                  $("<div>")
+                    .addClass("bg-dark rounded-pill px-2 p-1")
+                    .append(
+                      $("<span>")
+                        .addClass("text-center text-white fs-6")
+                        .text(newDayLabel),
+                    ),
+                ),
+            );
+            dayLabel = newDayLabel;
+          }
+          let time = dateTimeObj.getHours() + " : " + dateTimeObj.getMinutes();
           let readMsgClass;
           if (response.data[i].status) {
             readMsgClass = "bi-check-all text-info";
@@ -738,5 +781,35 @@ $(document).ready(function () {
     const chatBox = $("#chatBox");
     sidebar.removeClass("d-none");
     chatBox.addClass("d-none");
+  });
+
+  $(document).on("click", "#deleteContact", function () {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This Contact will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: "post",
+          url: "../api/deleteContact.php",
+          data: { userToken, currentUser },
+          dataType: "json",
+          success: function (response) {
+            if (response.status) {
+              Swal.fire("Success", response.message, "success").then(() => {
+                $("chatBox").text("");
+                getContacts();
+              });
+            }
+          },
+        });
+      }
+    });
   });
 });

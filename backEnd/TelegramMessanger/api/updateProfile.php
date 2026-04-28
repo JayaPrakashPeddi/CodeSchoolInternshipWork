@@ -1,18 +1,19 @@
 <?php
 require_once __DIR__ . "/controllers/AuthControllers.php";
 
-$firstName = $_POST['first_name'] ?? null;
-$lastName = $_POST['last_name'] ?? null;
-$userName = $_POST['user_name'] ?? null;
-$email = $_POST['email'] ?? null;
-$bio = $_POST['bio'] ?? null;
+$firstName = $_POST['first_name'];
+$lastName = $_POST['last_name'];
+$userName = $_POST['user_name'];
+$email = $_POST['email'];
+$bio = $_POST['bio'];
 $token = $_POST['token'];
-$file = $_FILES['photo'] ?? null;
+$file = $_FILES['photo'];
 
 $auth = new AuthControllers();
 if (!$file["name"]) {
     die($auth->updateProfileData($token, $firstName, $lastName, $userName, $bio, $email));
 }
+
 $uploadTo = "../uploads/";
 
 $fileName = time() . "_" . basename($file["name"]);

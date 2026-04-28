@@ -116,7 +116,11 @@ class AuthControllers
         if (!$id) {
             return sendResponse(false, "invalid token");
         }
-
+        $previousImg = $this->db->query("SELECT photo FROM users WHERE id=:id")->get([":id"=>$id]);
+        $previousImgPath = "../uploads/" . $previousImg['photo'];
+        if (file_exists($previousImgPath)){
+            unlink($previousImgPath);
+        }
         $this->db->query("UPDATE users SET first_name=:first_name,last_name=:last_name,username=:username,bio=:bio,photo=:photo,email=:email WHERE id=:id")->execute([":first_name" => $first_name, ":last_name" => $last_name, ":username" => $user_name, ":bio" => $bio, ":photo" => $photo, ":email" => $email, ":id" => $id]);
         return sendResponse(true, "user profile updated!!");
     }

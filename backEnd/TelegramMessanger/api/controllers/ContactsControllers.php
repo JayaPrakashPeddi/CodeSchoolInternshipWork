@@ -20,7 +20,7 @@ class ContactsControllers
     {
         $currentUserData = $this->getUserIdByToken($token);
         $userId = $currentUserData['user_id'];
-        $contactList = $this->db->query("SELECT username,photo,u.is_online FROM user_contacts uc inner join users u ON uc.friend_id=u.id where uc.user_id = :id;")->getAll([":id" => $userId]);
+        $contactList = $this->db->query("SELECT username,photo,u.is_online FROM user_contacts uc inner join users u ON uc.friend_id=u.id where uc.user_id = :id AND status=TRUE;")->getAll([":id" => $userId]);
         return sendResponse(true, "contacts list fetched!!", $contactList);
     }
 
@@ -28,7 +28,7 @@ class ContactsControllers
     {
         $userId = $this->getUserIdByToken($token);
         $pattern = $searchInput . '%';
-        $users = $this->db->query("SELECT u.username,u.photo,u.bio, (uc.friend_id IS NOT NULL) AS is_friend FROM users AS u LEFT JOIN user_contacts AS uc ON uc.friend_id = u.id AND uc.user_id=:id WHERE username ILIKE :pattern AND u.id!=:id")->getAll([":pattern" => $pattern, ":id" => $userId['user_id']]);
+        $users = $this->db->query("SELECT u.username,u.photo,u.bio, (uc.friend_id IS NOT NULL AND status=true) AS is_friend FROM users AS u LEFT JOIN user_contacts AS uc ON uc.friend_id = u.id AND uc.user_id=:id WHERE username ILIKE :pattern AND u.id!=:id")->getAll([":pattern" => $pattern, ":id" => $userId['user_id']]);
         if (!empty($users)) {
             return sendResponse(true, "contacts found!!", $users);
         }
@@ -126,5 +126,15 @@ class ContactsControllers
         $msgToUserId = $msgTo['id'];
         $this->db->query("UPDATE messages SET deleted=true WHERE ((message_from=:message_from AND message_to=:message_to) OR (message_from=:message_to AND message_to=:message_from)) AND deleted = false")->execute([":message_from" => $msgFromUserId, ":message_to" => $msgToUserId]);
         return sendResponse(true, "chat deleted successfully!!");
+    }
+
+    public function deleteContact($token, $username)
+    {
+        $msgFrom = $this->getUserIdByToken($token);
+        $currentUser = $msgFrom['user_id'];
+        $msgTo = $this->db->query("SELECT id,photo,is_online FROM users WHERE username=:username")->get([":username" => $username]);
+        $friendId = $msgTo['id'];
+        $this->db->query("UPDATE user_contacts SET status=FALSE WHERE ((user_id=:current_user AND friend_id=:friend_id) OR (user_id=:friend_id AND friend_id=:current_user)) AND status=TRUE")->execute([":friend_id"=>$friendId,":current_user"=>$currentUser]);
+        return sendResponse(true,"contact deleted!!");
     }
 }

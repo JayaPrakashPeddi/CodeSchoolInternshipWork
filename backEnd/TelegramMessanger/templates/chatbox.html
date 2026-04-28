@@ -12,8 +12,8 @@
       class="rounded-circle"
     />
     <div>
-      <div class="fw-semibold" id="contactUsername">John</div>
-      <small class="" id="contactStatus">online</small>
+      <div class="fw-semibold" id="contactUsername"></div>
+      <small class="" id="contactStatus"></small>
     </div>
   </div>
 
@@ -32,10 +32,20 @@
         <li class="p-1">
           <a
             class="dropdown-item d-flex align-items-center gap-2 text-danger"
+            id="deleteContact"
+            href="#"
+          >
+            <i class="bi bi-person-fill-slash fs-5"></i>
+            <span>Delete Contact</span>
+          </a>
+        </li>
+        <li class="p-1">
+          <a
+            class="dropdown-item d-flex align-items-center gap-2 text-danger"
             id="deleteChat"
             href="#"
           >
-            <i class="bi bi-box-arrow-right"></i>
+            <i class="bi bi-box-arrow-right fs-5"></i>
             <span>Delete Chat</span>
           </a>
         </li>
@@ -49,14 +59,57 @@
   id="chatArea"
   class="flex-grow-1 overflow-auto px-3 py-2 d-flex flex-column gap-2 overflow-x-hidden"
   style="min-height: 0; scrollbar-width: none"
-></div>
+>
+  <!-- Received -->
+  <div class="row placeholder-glow">
+    <div class="msg received w-25 p-3 placeholder">
+      <span class="msg-time placeholder"></span>
+    </div>
+  </div>
 
-<!-- Input -->
+  <!-- Sent -->
+  <div class="row justify-content-end placeholder-glow">
+    <div class="msg sent w-25 p-3 placeholder">
+      <span class="msg-time placeholder"></span>
+    </div>
+  </div>
 
+  <!-- Image -->
+  <div class="d-flex">
+    <div class="msg received p-1 placeholder-glow">
+      <img
+        src="./assects/placeholderImg.jpg"
+        height="400"
+        width="300"
+        class="img-fluid rounded-3"
+      />
+      <span class="msg-time placeholder"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Input box fro messages -->
 <form class="sticky-bottom" id="textMsgForm">
-  <div class="bg-white mb-0 mx-2 me-5 p-1 rounded-2 position-relative d-none" id="chatImgPreviewContainer">
-    <button type="button" id="closeChatImgPreview" class="btn btn-secondary position-absolute p-1 px-2 rounded-circle" style="right: 5px; top: 5px;"><i class="bi bi-x-lg"></i></button>
-    <img src="" alt="uploaded img" class="img-fluid rounded-2" height="100" width="200" id="chatImgPreview">
+  <div
+    class="bg-white mb-0 mx-2 me-5 p-1 rounded-2 position-relative d-none"
+    id="chatImgPreviewContainer"
+  >
+    <button
+      type="button"
+      id="closeChatImgPreview"
+      class="btn btn-secondary position-absolute p-1 px-2 rounded-circle"
+      style="right: 5px; top: 5px"
+    >
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <img
+      src=""
+      alt="uploaded img"
+      class="img-fluid rounded-2"
+      height="100"
+      width="200"
+      id="chatImgPreview"
+    />
   </div>
   <div class="input-group p-1 px-2">
     <button type="button" class="btn btn-light border-0 p-1 px-2">

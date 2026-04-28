@@ -25,6 +25,8 @@ CREATE TABLE otps (
 
 ALTER TABLE otps ADD COLUMN status BOOLEAN DEFAULT TRUE;
 
+ALTER TABLE otps ADD COLUMN updated_at TIMESTAMP DEFAULT current_timestamp;
+
 UPDATE otps SET status = FALSE WHERE 1=1;
 
 select * from otps;
@@ -55,6 +57,10 @@ CREATE TABLE user_contacts (
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
+
+SELECT * FROM user_contacts;
+
+ALTER TABLE user_contacts ADD COLUMN status BOOLEAN DEFAULT TRUE;
 
 SELECT *
 FROM users u
