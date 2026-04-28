@@ -12,7 +12,7 @@ class ContactsControllers
 
     private function getUserIdByToken($token)
     {
-        $userId = $this->db->query("SELECT user_id FROM user_tokens WHERE token=:token")->get([":token" => $token]);
+        $userId = $this->db->query("SELECT user_id FROM user_tokens WHERE token=:token AND expires_at>CURRENT_TIMESTAMP AND status=TRUE")->get([":token" => $token]);
         return $userId;
     }
 
@@ -96,13 +96,14 @@ class ContactsControllers
         return sendResponse(true, "contact chat fetched!", $data);
     }
 
-    public function sendMessage($token, $username, $textMessage)
+    public function sendMessage($token, $username, $textMessage, $is_media)
     {
         $msgFrom = $this->getUserIdByToken($token);
         $msgFromUserId = $msgFrom['user_id'];
         $msgTo = $this->db->query("SELECT id,photo,is_online FROM users WHERE username=:username")->get([":username" => $username]);
         $msgToUserId = $msgTo['id'];
-        $this->db->query("INSERT INTO messages (message_from,message_to,message_content) VALUES (:msg_from,:msg_to,:msg)")->execute([":msg_from" => $msgFromUserId, ":msg_to" => $msgToUserId, ":msg" => $textMessage]);
+        $is_media = (bool) $is_media;
+        $this->db->query("INSERT INTO messages (message_from,message_to,message_content,is_media) VALUES (:msg_from,:msg_to,:msg,:is_media)")->execute([":msg_from" => $msgFromUserId, ":msg_to" => $msgToUserId, ":msg" => $textMessage, ":is_media" => $is_media ? 'true' : 'false']);
         return sendResponse(true, "message sent!!");
     }
 
@@ -112,7 +113,18 @@ class ContactsControllers
         $msgFromUserId = $msgFrom['user_id'];
         $msgTo = $this->db->query("SELECT id,photo,is_online FROM users WHERE username=:username")->get([":username" => $username]);
         $msgToUserId = $msgTo['id'];
-        $messages = $this->db->query("SELECT message_content,send_at,(message_from = :message_from) AS is_mine FROM messages WHERE (message_from=:message_from AND message_to=:message_to) OR (message_from=:message_to AND message_to=:message_from) ORDER BY send_at")->getAll([":message_from" => $msgFromUserId, ":message_to" => $msgToUserId]);
+        $this->db->query("UPDATE messages SET status=TRUE WHERE message_from=:message_from AND message_to=:message_to")->execute([":message_from" => $msgToUserId, ":message_to" => $msgFromUserId]);
+        $messages = $this->db->query("SELECT message_content,send_at,status,is_media,(message_from = :message_from) AS is_mine FROM messages WHERE ((message_from=:message_from AND message_to=:message_to) OR (message_from=:message_to AND message_to=:message_from)) AND deleted = false ORDER BY send_at")->getAll([":message_from" => $msgFromUserId, ":message_to" => $msgToUserId]);
         return sendResponse(true, "messages fetched!!", $messages);
+    }
+
+    public function deleteChat($token, $username)
+    {
+        $msgFrom = $this->getUserIdByToken($token);
+        $msgFromUserId = $msgFrom['user_id'];
+        $msgTo = $this->db->query("SELECT id,photo,is_online FROM users WHERE username=:username")->get([":username" => $username]);
+        $msgToUserId = $msgTo['id'];
+        $this->db->query("UPDATE messages SET deleted=true WHERE ((message_from=:message_from AND message_to=:message_to) OR (message_from=:message_to AND message_to=:message_from)) AND deleted = false")->execute([":message_from" => $msgFromUserId, ":message_to" => $msgToUserId]);
+        return sendResponse(true, "chat deleted successfully!!");
     }
 }

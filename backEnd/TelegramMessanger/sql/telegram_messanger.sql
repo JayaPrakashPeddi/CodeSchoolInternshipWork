@@ -23,6 +23,10 @@ CREATE TABLE otps (
     otp_expires_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP + INTERVAL '5 minutes'
 );
 
+ALTER TABLE otps ADD COLUMN status BOOLEAN DEFAULT TRUE;
+
+UPDATE otps SET status = FALSE WHERE 1=1;
+
 select * from otps;
 
 select * from users where username ILIKE 'p%';
@@ -35,6 +39,8 @@ CREATE TABLE user_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE user_tokens ADD COLUMN status BOOLEAN DEFAULT TRUE;
 
 SELECT * from user_tokens;
 
@@ -52,9 +58,8 @@ CREATE TABLE user_contacts (
 
 SELECT *
 FROM users u
-LEFT JOIN user_contacts uc 
-  ON uc.friend_id = u.id 
-  AND uc.user_id = 5;
+    LEFT JOIN user_contacts uc ON uc.friend_id = u.id
+    AND uc.user_id = 5;
 
 SELECT username, photo, u.is_online
 FROM user_contacts uc
@@ -72,6 +77,9 @@ CREATE TABLE messages (
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
+
+ALTER TABLE messages ADD COLUMN deleted BOOLEAN DEFAULT FALSE;
+UPDATE messages SET status=TRUE WHERE 1=1;
 
 SELECT * FROM messages;
 
@@ -99,3 +107,5 @@ from
 WHERE
     to_user = '5'
     and ufrn.status = 'PENDING';
+
+    SELECT photo,first_name,last_name,username,email,bio FROM user_tokens ut INNER JOIN users u ON ut.user_id=u.id WHERE status=true;

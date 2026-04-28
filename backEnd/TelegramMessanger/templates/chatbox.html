@@ -3,6 +3,7 @@
   class="border-bottom sticky-top bg-light p-1 d-flex justify-content-between align-items-center"
 >
   <div class="d-flex align-items-center gap-2">
+    <button class="btn d-md-none fs-5 p-1" id="backBtn">←</button>
     <img
       src="./assects/placeholderImg.jpg"
       id="contactProfilePicture"
@@ -19,48 +20,44 @@
   <div class="d-flex gap-3">
     <i class="bi bi-search fs-5 onHover p-2 rounded-2"></i>
     <i class="bi bi-telephone fs-5 onHover p-2 rounded-2"></i>
-    <i class="bi bi-three-dots-vertical fs-5 onHover p-2 rounded-2"></i>
+
+    <div class="dropdown mt-2">
+      <i
+        class="bi bi-three-dots-vertical fs-5 onHover p-2 rounded-2"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      ></i>
+
+      <ul class="dropdown-menu dropdown-menu border-0 p-2 shadow">
+        <li class="p-1">
+          <a
+            class="dropdown-item d-flex align-items-center gap-2 text-danger"
+            id="deleteChat"
+            href="#"
+          >
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Delete Chat</span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
 <!-- Messages -->
 <div
   id="chatArea"
-  class="flex-grow-1 overflow-scroll px-3 py-2 d-flex flex-column gap-2 overflow-x-hidden"
+  class="flex-grow-1 overflow-auto px-3 py-2 d-flex flex-column gap-2 overflow-x-hidden"
   style="min-height: 0; scrollbar-width: none"
->
-  <!-- Received -->
-  <!-- <div class="d-flex">
-    <div class="msg received">
-      Hello bro 👋
-      <span class="msg-time">12:30</span>
-    </div>
-  </div> -->
-
-  <!-- Sent -->
-  <!-- <div class="d-flex justify-content-end">
-    <div class="msg sent">
-      Looks clean 🔥
-      <span class="msg-time">12:31 ✓✓</span>
-    </div>
-  </div> -->
-
-  <!-- Image -->
-  <!-- <div class="d-flex">
-    <div class="msg received p-1">
-      <img
-        src="./assects/placeholderImg.jpg"
-        height="400"
-        width="300"
-        class="img-fluid rounded-3"
-      />
-      <span class="msg-time">12:32</span>
-    </div>
-  </div> -->
-</div>
+></div>
 
 <!-- Input -->
-<form class="border-top sticky-bottom" id="textMsgForm">
+
+<form class="sticky-bottom" id="textMsgForm">
+  <div class="bg-white mb-0 mx-2 me-5 p-1 rounded-2 position-relative d-none" id="chatImgPreviewContainer">
+    <button type="button" id="closeChatImgPreview" class="btn btn-secondary position-absolute p-1 px-2 rounded-circle" style="right: 5px; top: 5px;"><i class="bi bi-x-lg"></i></button>
+    <img src="" alt="uploaded img" class="img-fluid rounded-2" height="100" width="200" id="chatImgPreview">
+  </div>
   <div class="input-group p-1 px-2">
     <button type="button" class="btn btn-light border-0 p-1 px-2">
       <i class="bi bi-emoji-smile"></i>
@@ -74,7 +71,12 @@
       style="resize: none; max-height: 120px"
     ></textarea>
 
-    <button type="button" class="btn btn-light border-0 p-1 px-2 rounded-end">
+    <input type="file" id="imageInput" accept="image/*" hidden />
+    <button
+      type="button"
+      id="attachImg"
+      class="btn btn-light border-0 p-1 px-2 rounded-end"
+    >
       <i class="bi bi-paperclip"></i>
     </button>
     <button

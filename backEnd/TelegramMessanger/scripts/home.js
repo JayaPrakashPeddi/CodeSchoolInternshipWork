@@ -1,5 +1,6 @@
 const userToken = localStorage.getItem("userToken");
 const userNameRegex = /^[a-zA-Z][a-zA-Z0-9._]{2,19}$/;
+const nameRegex = /^[A-Za-z]{2,}(?: [A-Za-z]+)*$/;
 
 if (!userToken) {
   logout();
@@ -13,11 +14,24 @@ function logout() {
     url: "../api/logout.php",
     data: { userToken: token },
     dataType: "json",
-    complete: function () {
+    success: function () {
       localStorage.removeItem("userToken");
       window.location.href = "./index.html";
     },
+    error: function () {
+      alert("error occures!!");
+    },
   });
+}
+
+function openChat(username) {
+  const sidebar = $("#sidebar");
+  const chatBox = $("#chatBox");
+  if (!chatBox.is(":visible")) {
+    sidebar.addClass("d-none");
+    chatBox.removeClass("d-none");
+  }
+  getChatContent(username);
 }
 
 function validateToken() {
@@ -42,51 +56,141 @@ function validateToken() {
     },
   });
 }
+function scrollToBottom() {
+  const chatArea = document.getElementById("chatArea");
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
 
+let fetchChatTimer;
+let currentUser;
 function fetchMessages(username) {
   const chatArea = $("#chatArea");
+  currentUser = username;
+  clearTimeout(fetchChatTimer);
   $.ajax({
     type: "post",
     url: "../api/fetchMessages.php",
     data: { username, userToken },
     dataType: "json",
     success: function (response) {
+      chatArea.text("");
       if (response.status) {
-        console.log(response);
         for (let i = 0; i < response.data.length; i++) {
           let is_mine = response.data[i].is_mine;
           let datetime = response.data[i].send_at;
           let time = datetime.slice(11, 16);
+          let readMsgClass;
+          if (response.data[i].status) {
+            readMsgClass = "bi-check-all text-info";
+          } else {
+            readMsgClass = "bi-check text-secondary";
+          }
           if (!is_mine) {
-            chatArea.append(
-              $("<div>")
-                .addClass("d-flex")
-                .append(
-                  $("<div>")
-                    .addClass("msg received")
-                    .text(response.data[i].message_content)
-                    .append($("<span>").addClass("msg-time").text(time)),
-                ),
-            );
+            if (response.data[i].is_media) {
+              chatArea.append(
+                $("<div>")
+                  .addClass("d-flex")
+                  .append(
+                    $("<div>")
+                      .addClass("msg received px-4 py-2 pb-3 position-relative")
+                      .append(
+                        $("<img>")
+                          .addClass("img-fluid rounded-3")
+                          .attr({
+                            src: `./uploads/${response.data[i].message_content}`,
+                            heigth: "400",
+                            width: "300",
+                          }),
+                        $("<span>")
+                          .addClass("msg-time position-absolute")
+                          .css({ right: "10px", bottom: "0px" })
+                          .text(`${time}`),
+                      ),
+                  ),
+              );
+            } else {
+              chatArea.append(
+                $("<div>")
+                  .addClass("d-flex")
+                  .append(
+                    $("<div>")
+                      .addClass("msg received px-4 py-2 pb-3 position-relative")
+                      .text(response.data[i].message_content)
+                      .append(
+                        $("<span>")
+                          .addClass("msg-time position-absolute")
+                          .css({ right: "10px", bottom: "0px" })
+                          .text(`${time}`),
+                      ),
+                  ),
+              );
+            }
             continue;
           }
-          chatArea.append(
-            $("<div>")
-              .addClass("d-flex justify-content-end")
-              .append(
-                $("<div>")
-                  .addClass("msg sent")
-                  .text(response.data[i].message_content)
-                  .append($("<span>").addClass("msg-time").text(time)),
-              ),
-          );
+          if (response.data[i].is_media) {
+            chatArea.append(
+              $("<div>")
+                .addClass("d-flex justify-content-end pe-3")
+                .append(
+                  $("<div>")
+                    .addClass("msg sent px-4 py-2 pb-3 position-relative")
+                    .append(
+                      $("<img>")
+                        .addClass("img-fluid rounded-3")
+                        .attr({
+                          src: `./uploads/${response.data[i].message_content}`,
+                          heigth: "400",
+                          width: "300",
+                        }),
+                      $("<span>")
+                        .addClass("msg-time position-absolute")
+                        .css({ right: "5px", bottom: "0px" })
+                        .text(`${time}`)
+                        .append(
+                          $("<small>").addClass(
+                            `d-inline bi ${readMsgClass} fs-6 msg-time`,
+                          ),
+                        ),
+                    ),
+                ),
+            );
+          } else {
+            chatArea.append(
+              $("<div>")
+                .addClass("d-flex justify-content-end pe-3")
+                .append(
+                  $("<div>")
+                    .addClass("msg sent px-4 py-2 pb-3 position-relative")
+                    .text(response.data[i].message_content)
+                    .append(
+                      $("<span>")
+                        .addClass("msg-time position-absolute")
+                        .css({ right: "5px", bottom: "0px" })
+                        .text(time)
+                        .append(
+                          $("<small>").addClass(
+                            `d-inline bi ${readMsgClass} fs-6 msg-time`,
+                          ),
+                        ),
+                    ),
+                ),
+            );
+          }
         }
+        scrollToBottom();
       }
     },
   });
+  fetchChatTimer = setTimeout(() => {
+    if (currentUser == username) {
+      fetchMessages(username);
+    }
+  }, 3000);
 }
 
-function getChatContent(username,id) {
+function getChatContent(userName, Id) {
+  let username = userName;
+  let id = Id;
   $(".active-contact").removeClass("active-contact");
   $(`#${id}`).addClass("active-contact");
   $("#chatBox").load("./templates/chatBox.html", function () {
@@ -111,7 +215,7 @@ function getChatContent(username,id) {
             contactStatus.text("offline").addClass("text-secondary");
           }
           sendBtn.attr("onclick", `sendMessage('${response.data.username}')`);
-          $("#charArea").text("");
+          $("#chatArea").text("");
           fetchMessages(username);
         }
       },
@@ -128,6 +232,7 @@ function getContacts() {
     success: function (response) {
       if (response.status) {
         const contactsContainer = $("#contactsContainer");
+        contactsContainer.text("");
         for (let i = 0; i < response.data.length; i++) {
           let is_online;
           if (response.data[i].is_online) {
@@ -142,7 +247,7 @@ function getContacts() {
                 "d-flex align-items-center bg-white gap-2 p-2 contact onHover m-1 rounded-2",
               )
               .attr({
-                id:`contact${i}`,
+                id: `contact${i}`,
                 onclick: `getChatContent('${response.data[i].username}','contact${i}')`,
               })
               .append(
@@ -157,7 +262,7 @@ function getContacts() {
                   .addClass("flex-grow-1")
                   .append(
                     $("<div>")
-                      .addClass("fw-semibold")
+                      .addClass("fw-semibold username")
                       .text(response.data[i].username),
                     $("<small>")
                       .addClass("text-muted text-truncate d-block")
@@ -171,24 +276,6 @@ function getContacts() {
     },
   });
 }
-
-// <div
-//   class="d-flex align-items-center bg-white gap-2 p-2 contact rounded-2 m-1 onHover"
-// >
-//   <img
-//     src="./assects/placeholderImg.jpg"
-//     height="50"
-//     width="50"
-//     class="rounded-circle"
-//   />
-//   <div class="flex-grow-1">
-//     <div class="fw-semibold">Alice</div>
-//     <small class="text-muted text-truncate d-block"
-//       >Typing...</small
-//     >
-//   </div>
-//   <small class="text-muted">11:10</small>
-// </div>
 
 function sendFriendRequest(username, i) {
   $(`#friendRequestBtn${i}`).addClass("d-none");
@@ -221,7 +308,7 @@ function acceptRequest(username, i) {
       if (response.status) {
         $(`#actionBtnsDiv${i}`).addClass("d-none");
         $(`#accepted${i}`).removeClass("d-none");
-        // ajax call for contacts;
+        getContacts();
       }
     },
   });
@@ -312,13 +399,39 @@ function getNotifications() {
   });
 }
 
+function closeImgPreview() {
+  const chatImgPreviewContainer = $("#chatImgPreviewContainer");
+  const chatImgPreview = $("#chatImgPreview");
+  chatImgPreview.attr("src", "");
+  document.getElementById("textMsgForm").reset();
+  chatImgPreviewContainer.addClass("d-none");
+}
+
 function sendMessage(username) {
   const textmsg = $("#messageInput").val();
+  const file = $("#imageInput")[0].files[0];
+  if (file) {
+    let formData = new FormData();
+    formData.append("image", file);
+    formData.append("userToken", userToken);
+    formData.append("username", currentUser);
+    closeImgPreview();
+    $.ajax({
+      url: "../api/sendImage.php",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        if (response.status) {
+          fetchMessages(currentUser);
+        }
+      },
+    });
+  }
   if (!textmsg) {
-    console.log(textmsg + "-fail");
     return;
   }
-  console.log(textmsg);
   $.ajax({
     type: "post",
     url: "../api/sendMessage.php",
@@ -333,13 +446,36 @@ function sendMessage(username) {
     },
   });
 }
-// <div
-//           class=""
-//           style=": ;"
-//         >
-//           <i class="bi bi-person-check fs-5 text-success d-none" id="accepted"></i>
-//           <i class="bi bi-person-x fs-5 text-danger d-none" id="rejected"></i>
-//         </div>
+
+function getUserData() {
+  const photo = $("#photoPreview");
+  const first_name = $("#first_name");
+  const last_name = $("#last_name");
+  const username = $("#username");
+  const email = $("#email");
+  const bio = $("#bio");
+  $.ajax({
+    type: "post",
+    url: "../api/getUserData.php",
+    data: { userToken },
+    dataType: "json",
+    success: function (response) {
+      if (response.status) {
+        photo.attr("src", `./uploads/${response.data.photo}`);
+        first_name.val(response.data.first_name);
+        last_name.val(response.data.last_name);
+        username.val(response.data.username);
+        email.val(response.data.email);
+        bio.val(response.data.bio);
+      }
+    },
+  });
+}
+
+// <div class="" style=": ;">
+//   <i class="bi bi-person-check fs-5 text-success d-none" id="accepted"></i>
+//   <i class="bi bi-person-x fs-5 text-danger d-none" id="rejected"></i>
+// </div>
 
 $(document).ready(function () {
   validateToken();
@@ -420,5 +556,187 @@ $(document).ready(function () {
     $("#searchContacts").val("");
     getContacts();
     $("#cancelSearch").addClass("d-none");
+  });
+
+  $(document).on("click", "#editProfile", function () {
+    getUserData();
+  });
+
+  $(document).on("submit", "#profileUpdateForm", function (e) {
+    e.preventDefault();
+    const first_name = $("#firstName").val();
+    const last_name = $("#lastName").val();
+    const user_name = $("#username").val();
+    const email = $("#email").val();
+    const bio = $("#bio").val();
+    const photo = $("#photo")[0].files[0];
+    let errorFlag = false;
+
+    if (!nameRegex.test(first_name)) {
+      $("#firstNameError").removeClass("d-none");
+      errorFlag = true;
+    }
+
+    if (last_name) {
+      if (!nameRegex.test(last_name)) {
+        $("#lastNameError").removeClass("d-none");
+        errorFlag = true;
+      }
+    }
+
+    if (errorFlag) {
+      return;
+    }
+
+    let formData = new FormData(document.getElementById("profileUpdateForm"));
+    formData.append("token", userToken);
+
+    $.ajax({
+      url: "../api/updateProfile.php",
+      type: "POST",
+      data: formData,
+      dataType: "json",
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        console.log(response);
+        if (response.status) {
+          closeOffcanvas(getContacts);
+        }
+      },
+      error: function () {
+        $("#registerError")
+          .text("Something went wrong!! Try again later...")
+          .removeClass("d-none");
+      },
+    });
+  });
+
+  $(document).on("input", "#registerForm", function () {
+    $("#firstNameError").addClass("d-none");
+    $("#lastNameError").addClass("d-none");
+    $("#userNameError").addClass("d-none");
+  });
+
+  let userNameValidationTimer;
+  $(document).on("input", "#username", function () {
+    $("#userNameError").addClass("d-none");
+    $("#usernameX").addClass("d-none");
+    $("#usernameCheck").addClass("d-none");
+    $("#usernameSpinner").removeClass("d-none");
+
+    clearTimeout(userNameValidationTimer);
+    userNameValidationTimer = setTimeout(function () {
+      const user_name = $("#username").val().trim();
+
+      if (user_name.length === 0) {
+        $("#usernameSpinner").addClass("d-none");
+        $("#userNameError").addClass("d-none");
+        $("#usernameCheck").addClass("d-none");
+        $("#usernameX").addClass("d-none");
+        return;
+      }
+
+      if (!userNameRegex.test(user_name)) {
+        $("#userNameError").text("Only a–z, A–Z, 0–9, _ and . are allowed");
+        $("#userNameError").removeClass("d-none");
+        $("#usernameSpinner").addClass("d-none");
+        $("#usernameX").removeClass("d-none");
+        return;
+      }
+
+      $.ajax({
+        type: "get",
+        url: "../api/isUserNameTaken.php",
+        data: { user_name },
+        dataType: "json",
+        success: function (response) {
+          if (response.status) {
+            $("#usernameSpinner").addClass("d-none");
+            $("#userNameError").addClass("d-none");
+            $("#usernameX").addClass("d-none");
+            $("#usernameCheck").removeClass("d-none");
+          } else {
+            $("#usernameSpinner").addClass("d-none");
+            $("#userNameError").text("User-Name already taken!!");
+            $("#userNameError").removeClass("d-none");
+            $("#usernameCheck").addClass("d-none");
+            $("#usernameX").removeClass("d-none");
+          }
+        },
+      });
+    }, 1000);
+  });
+
+  $(document).on("change", "#photo", function () {
+    const file = $("#photo")[0].files[0];
+    if (!file) {
+      return;
+    }
+    $("#photoPreview").attr("src", URL.createObjectURL(file));
+  });
+
+  $(document).on("click", "#attachImg", function () {
+    $("#imageInput").click();
+  });
+
+  $(document).on("change", "#imageInput", function () {
+    const file = this.files[0];
+    if (!file) {
+      return;
+    }
+
+    const chatImgPreviewContainer = $("#chatImgPreviewContainer");
+    const chatImgPreview = $("#chatImgPreview");
+
+    chatImgPreviewContainer.removeClass("d-none");
+    chatImgPreview.attr("src", URL.createObjectURL(file));
+  });
+
+  $(document).on("click", "#closeChatImgPreview", function () {
+    closeImgPreview();
+  });
+
+  $(document).on("click", "#deleteChat", function () {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This Chat will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: "post",
+          url: "../api/deleteChat.php",
+          data: { userToken, currentUser },
+          dataType: "json",
+          success: function (response) {
+            if (response.status) {
+              Swal.fire("Success", response.message, "success").then(() => {
+                fetchMessages(currentUser);
+              });
+            }
+          },
+        });
+      }
+    });
+  });
+
+  $(document).on("click", ".contact", function () {
+    const username = $(this).find(".username").text();
+    if (window.innerWidth < 768) {
+      openChat(username);
+    }
+  });
+
+  $(document).on("click", "#backBtn", function () {
+    const sidebar = $("#sidebar");
+    const chatBox = $("#chatBox");
+    sidebar.removeClass("d-none");
+    chatBox.addClass("d-none");
   });
 });

@@ -24,6 +24,135 @@
 
   <body class="vh-100">
     <!-- offcanvas -->
+
+    <!-- edit Profile -->
+    <div
+      class="offcanvas offcanvas-start"
+      id="editProfileOffcanvas"
+      aria-labelledby="editProfileOffcanvasLabel"
+    >
+      <div class="offcanvas-header d-flex justify-content-between p-4">
+        <h5 class="offcanvas-title" id="editProfileOffcanvasLabel">
+          Edit Profile Details
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="mt-2 offcanvas-body px-2">
+        <form id="profileUpdateForm">
+          <div class="mb-3 text-center">
+            <img
+              id="photoPreview"
+              src="../assects/userImgPlaceHolder.avif"
+              class="rounded-circle"
+              style="width: 80px; height: 80px; object-fit: cover"
+            />
+          </div>
+
+          <div class="mb-3">
+            <input
+              type="file"
+              class="form-control p-1"
+              id="photo"
+              name="photo"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="row mb-3 gap-2">
+            <div class="col">
+              <input
+                type="text"
+                class="form-control p-1"
+                name="first_name"
+                id="first_name"
+                placeholder="First Name *"
+                required
+              />
+              <small id="firstNameError" class="text-danger d-none"
+                >Invalid First-Name</small
+              >
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control p-1"
+                name="last_name"
+                id="lastName"
+                placeholder="Last Name (optional)"
+              />
+              <small id="lastNameError" class="text-danger d-none"
+                >Invalid Last-Name</small
+              >
+            </div>
+          </div>
+
+          <div class="mb-3 position-relative">
+            <input
+              type="text"
+              class="form-control p-1"
+              name="user_name"
+              id="username"
+              placeholder="Username"
+              required
+            />
+            <i
+              id="usernameCheck"
+              class="bi bi-check-circle-fill text-success position-absolute d-none"
+              style="right: 15px; top: 8px"
+            ></i>
+            <i
+              id="usernameX"
+              class="bi bi-x-circle-fill text-danger position-absolute d-none"
+              style="right: 15px; top: 8px"
+            ></i>
+            <i
+              id="usernameSpinner"
+              class="spinner-border spinner-border-sm text-secondary position-absolute d-none"
+              style="right: 15px; top: 12px"
+            ></i>
+
+            <small id="userNameError" class="text-danger d-none"></small>
+          </div>
+
+          <div class="mb-3">
+            <input
+              type="email"
+              class="form-control p-1"
+              name="email"
+              id="email"
+              placeholder="Email (optional)"
+            />
+          </div>
+
+          <div class="mb-3">
+            <textarea
+              class="form-control p-1"
+              id="bio"
+              name="bio"
+              rows="2"
+              maxlength="150"
+              placeholder="Bio..(Max 150 chars) (optional)"
+            ></textarea>
+          </div>
+
+          <div id="registerError" class="text-danger small mb-2 d-none"></div>
+
+          <button
+            type="submit"
+            class="btn btn-primary w-100 p-1 align-center rounded-pill"
+          >
+            Confirm
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- notifications -->
     <div
       class="offcanvas offcanvas-start"
       tabindex="-1"
@@ -52,6 +181,7 @@
         <!-- SIDEBAR -->
         <div
           class="col-12 col-md-4 col-lg-3 border-end bg-light d-flex flex-column p-0 position-fixed min-vh-100"
+          id="sidebar"
         >
           <!-- Top Bar -->
           <div
@@ -71,6 +201,10 @@
                 <li class="border-bottom pb-2 mb-2">
                   <a
                     class="dropdown-item d-flex align-items-center gap-2"
+                    id="editProfile"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#editProfileOffcanvas"
+                    aria-controls="editProfileOffcanvas"
                     href="#"
                   >
                     <img
@@ -80,7 +214,7 @@
                       id="userProfile"
                       class="rounded-circle"
                     />
-                    <span class="fw-medium" id="userName">John Doe</span>
+                    <span class="fw-medium" id="userName"></span>
                   </a>
                 </li>
 
@@ -172,7 +306,7 @@
 
         <!-- CHAT AREA -->
         <div
-          class="col d-md-flex flex-column bg-telegram-pattern d-none"
+          class="col d-md-flex flex-column bg-telegram-pattern d-none min-vh-100"
           id="chatBox"
         ></div>
       </div>
@@ -183,6 +317,7 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./scripts/home.js"></script>
   </body>
 </html>
