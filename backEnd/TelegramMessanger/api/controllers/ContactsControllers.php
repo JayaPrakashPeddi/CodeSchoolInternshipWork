@@ -102,7 +102,7 @@ class ContactsControllers
         $msgFromUserId = $msgFrom['user_id'];
         $msgTo = $this->db->query("SELECT id,photo,is_online FROM users WHERE username=:username")->get([":username" => $username]);
         $msgToUserId = $msgTo['id'];
-        $is_media = (bool) $is_media;
+        $is_media = (bool) $is_media;        
         $this->db->query("INSERT INTO messages (message_from,message_to,message_content,is_media) VALUES (:msg_from,:msg_to,:msg,:is_media)")->execute([":msg_from" => $msgFromUserId, ":msg_to" => $msgToUserId, ":msg" => $textMessage, ":is_media" => $is_media ? 'true' : 'false']);
         return sendResponse(true, "message sent!!");
     }
@@ -134,7 +134,8 @@ class ContactsControllers
         $currentUser = $msgFrom['user_id'];
         $msgTo = $this->db->query("SELECT id,photo,is_online FROM users WHERE username=:username")->get([":username" => $username]);
         $friendId = $msgTo['id'];
-        $this->db->query("UPDATE user_contacts SET status=FALSE WHERE ((user_id=:current_user AND friend_id=:friend_id) OR (user_id=:friend_id AND friend_id=:current_user)) AND status=TRUE")->execute([":friend_id"=>$friendId,":current_user"=>$currentUser]);
-        return sendResponse(true,"contact deleted!!");
+        $this->deleteChat($token, $username);
+        $this->db->query("UPDATE user_contacts SET status=FALSE WHERE ((user_id=:current_user AND friend_id=:friend_id) OR (user_id=:friend_id AND friend_id=:current_user)) AND status=TRUE")->execute([":friend_id" => $friendId, ":current_user" => $currentUser]);
+        return sendResponse(true, "contact deleted!!");
     }
 }

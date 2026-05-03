@@ -7,12 +7,10 @@ if (!userToken) {
 }
 
 function logout() {
-  const token = localStorage.getItem("userToken");
-
   $.ajax({
     type: "post",
     url: "../api/logout.php",
-    data: { userToken: token },
+    data: { userToken },
     dataType: "json",
     success: function () {
       localStorage.removeItem("userToken");
@@ -63,15 +61,19 @@ function scrollToBottom() {
 
 function dayIdentifier(sentDate, today) {
   let dayDifference = today.getDate() - sentDate.getDate();
-  if (dayDifference == 0) {
+  let sameMonthAndYear =
+    today.getMonth() == sentDate.getMonth() &&
+    today.getYear() == sentDate.getYear();
+  console.log(sameMonthAndYear);
+  if (dayDifference == 0 && sameMonthAndYear) {
     return "Today";
-  } else if (dayDifference == 1) {
+  } else if (dayDifference == 1 && sameMonthAndYear) {
     return "Yesterday";
-  } else if (dayDifference > 1 && dayDifference < 6) {
-    return `${dayDifference} Days ago`;
-  } else if (dayDifference > 6 && dayDifference < 30) {
+  } else if (dayDifference > 1 && dayDifference < 6 && sameMonthAndYear) {
+    return `${dayDifference} days ago`;
+  } else if (dayDifference > 6 && dayDifference < 30 && sameMonthAndYear) {
     let weekCount = Math.floor(dayDifference / 7);
-    return `${weekCount} Weeks ago`;
+    return `${weekCount} weeks ago`;
   } else {
     let date =
       sentDate.getDate() +
@@ -457,17 +459,27 @@ function sendMessage(username) {
     let formData = new FormData();
     formData.append("image", file);
     formData.append("userToken", userToken);
-    formData.append("username", currentUser);
+    formData.append("username", username);
     closeImgPreview();
     $.ajax({
       url: "../api/sendImage.php",
       type: "POST",
       data: formData,
+      dataType: "json",
       processData: false,
       contentType: false,
       success: function (response) {
         if (response.status) {
           fetchMessages(currentUser);
+          return;
+        } else {
+          Swal.fire(
+            "Warning",
+            "Invalid Img format or Imgae size must be < 2 MB",
+            "warning",
+          ).then(() => {
+            return;
+          });
         }
       },
     });
@@ -485,6 +497,7 @@ function sendMessage(username) {
         $("#messageInput").val("");
         $("#chatArea").text("");
         fetchMessages(username);
+        return;
       }
     },
   });
@@ -644,7 +657,7 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         if (response.status) {
-          closeOffcanvas(getContacts);
+          closeOffcanvas();
         }
       },
       error: function () {
@@ -812,4 +825,202 @@ $(document).ready(function () {
       }
     });
   });
+
 });
+
+
+
+// channel creation login
+// function fetchChannelMessages(id) {
+//   const chatArea = $("#chatArea");
+//   $.ajax({
+//     type: "post",
+//     url: "../api/fetchChannelMessages.php",
+//     data: { id, userToken },
+//     dataType: "json",
+//     success: function (response) {
+//       chatArea.text("");
+//       if (response.status) {
+//         let dayLabel = null;
+//         let newDayLabel = null;
+//         console.log(response);
+//         scrollToBottom();
+//       }
+//     },
+//   });
+// }
+
+// function sendChannelMessage(id) {
+//   const textmsg = $("#messageInput").val();
+//   const file = $("#imageInput")[0].files[0];
+//   if (file) {
+//     let formData = new FormData();
+//     formData.append("image", file);
+//     formData.append("userToken", userToken);
+//     formData.append("group_id", id);
+//     closeImgPreview();
+//     $.ajax({
+//       url: "../api/sendImgInChannel.php",
+//       type: "POST",
+//       data: formData,
+//       dataType: "json",
+//       processData: false,
+//       contentType: false,
+//       success: function (response) {
+//         if (response.status) {
+//           fetchChannelMessages(id);
+//           return;
+//         } else {
+//           Swal.fire(
+//             "Warning",
+//             "Invalid Img format or Imgae size must be < 2 MB",
+//             "warning",
+//           ).then(() => {
+//             return;
+//           });
+//         }
+//       },
+//     });
+//   }
+//   if (!textmsg) {
+//     return;
+//   }
+//   $.ajax({
+//     type: "post",
+//     url: "../api/sendChannelMessage.php",
+//     data: { userToken, id, textmsg },
+//     dataType: "json",
+//     success: function (response) {
+//       if (response.status) {
+//         $("#messageInput").val("");
+//         $("#chatArea").text("");
+
+//         fetchChannelMessage(id);
+
+//         return;
+//       }
+//     },
+//   });
+// }
+// function getChannelContent(group_id, id) {
+//   $("#chatBox").load("./templates/chatBox.html", function () {
+//     // console.log(group_id, id);
+//     const pfp = $("#contactProfilePicture");
+//     const contactUsername = $("#contactUsername");
+//     const contactStatus = $("#contactStatus");
+//     const sendBtn = $("#sendBtn");
+//     contactUsername.text("");
+//     contactStatus.text("");
+//     $(".active-contact").removeClass("active-contact");
+//     $(`#${id}`).addClass("active-contact");
+//     $.ajax({
+//       type: "post",
+//       url: "../api/getChannelData.php",
+//       data: { group_id },
+//       dataType: "json",
+//       success: function (response) {
+//         if (response.status) {
+//           pfp.attr("src", `./uploads/${response.data.group_image}`);
+//           contactUsername.text(response.data.group_name);
+//           contactStatus
+//             .text(`${response.data.members_count}`)
+//             .addClass("text-success");
+//           sendBtn.attr("onclick", `sendChannelMessage('${response.data.id}')`);
+//           $("#chatArea").text("");
+//         }
+//       },
+//     });
+//   });
+// }
+// function getChannel() {
+//   $.ajax({
+//     type: "post",
+//     url: "../api/getChannels.php",
+//     data: { userToken },
+//     dataType: "json",
+//     success: function (response) {
+//       if (response.status) {
+//         console.log(response);
+//         const groupsContainer = $("#contactsContainer");
+//         for (let i = 0; i < response.data.length; i++) {
+//           let group = response.data[i];
+//           groupsContainer.append(
+//             $("<div>")
+//               .addClass(
+//                 "d-flex align-items-center bg-white gap-2 p-2 group onHover m-1 rounded-2",
+//               )
+//               .attr({
+//                 id: `group${i}`,
+//                 onclick: `getChannelContent(${group.id}, 'group${i}')`,
+//               })
+//               .append(
+//                 $("<img>")
+//                   .addClass("rounded-circle")
+//                   .attr({
+//                     src: `./uploads/${group.group_image || "default.png"}`,
+//                     height: "50",
+//                     width: "50",
+//                   }),
+
+//                 $("<div>")
+//                   .addClass("flex-grow-1")
+//                   .append(
+//                     $("<div>")
+//                       .addClass("fw-semibold group-name")
+//                       .text(group.group_name),
+
+//                     $("<small>")
+//                       .addClass("text-muted text-truncate d-block")
+//                       .text(`${group.members_count} members`),
+//                   ),
+//               ),
+//           );
+//         }
+//       }
+//     },
+//   });
+// }
+
+// $(document).ready(function () {
+//     $(document).on("click", "#uploadChannelImageTriggerBtn", function () {
+//     $("#channelPhoto").click();
+//   });
+
+//   $(document).on("change", "#channelPhoto", function () {
+//     const file = this.files[0];
+//     if (!file) {
+//       return;
+//     }
+//     const groupImagePreview = $("#groupImagePreview");
+//     groupImagePreview.attr("src", URL.createObjectURL(file));
+//   });
+
+//   $(document).on("click", "#cancelCreateChannel", function () {
+//     $("#groupImagePreview").attr("src", "./assects/placeholderImg.jpg");
+//     $("#createChannelForm").reset();
+//   });
+
+//   $(document).on("click", "#createChannelConfirm", function () {
+//     const channelName = $("#ChannelNameInput").val().trim();
+//     if (channelName.length < 4 && channelName.length > 30) {
+//       $("#channelNameError").removeClass("d-none");
+//       return;
+//     }
+//     const form = document.getElementById("createChannelForm");
+//     let formData = new FormData(form);
+//     formData.append("token", userToken);
+//     $.ajax({
+//       type: "post",
+//       url: "../api/createChannel.php",
+//       data: formData,
+//       dataType: "json",
+//       processData: false,
+//       contentType: false,
+//       success: function (response) {
+//         $("#createChannelForm").reset();
+//         window.location.reload();
+//         getContacts(getChannel);
+//       },
+//     });
+//   });
+// });

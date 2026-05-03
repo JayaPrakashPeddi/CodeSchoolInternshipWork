@@ -25,13 +25,14 @@ CREATE TABLE otps (
 
 ALTER TABLE otps ADD COLUMN status BOOLEAN DEFAULT TRUE;
 
-ALTER TABLE otps ADD COLUMN updated_at TIMESTAMP DEFAULT current_timestamp;
+ALTER TABLE otps
+ADD COLUMN updated_at TIMESTAMP DEFAULT current_timestamp;
 
-UPDATE otps SET status = FALSE WHERE 1=1;
+UPDATE otps SET status = FALSE WHERE 1 = 1;
 
 select * from otps;
 
-select * from users where username ILIKE 'p%';
+select * from users where username ILIKE 'n%';
 
 CREATE TABLE user_tokens (
     id SERIAL PRIMARY KEY,
@@ -78,14 +79,29 @@ CREATE TABLE messages (
     message_from INT REFERENCES users (id),
     message_to INT REFERENCES users (id),
     message_content TEXT,
-    is_media BOOLEAN DEFAULT false,
+    is_media BOOLEAN DEFAULT FALSE,
+    deleted BOOLEAN DEFAULT FALSE,
+    status BOOLEAN DEFAULT FALSE,
     send_at TIMESTAMP DEFAULT current_timestamp,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
 
-ALTER TABLE messages ADD COLUMN deleted BOOLEAN DEFAULT FALSE;
-UPDATE messages SET status=TRUE WHERE 1=1;
+INSERT INTO
+    messages (
+        message_from,
+        message_to,
+        message_content,
+        send_at
+    )
+VALUES (
+        5,
+        7,
+        'movie podham!!',
+        current_timestamp - INTERVAL '4 days'
+    );
+
+UPDATE messages SET status = TRUE WHERE 1 = 1;
 
 SELECT * FROM messages;
 
@@ -114,4 +130,51 @@ WHERE
     to_user = '5'
     and ufrn.status = 'PENDING';
 
-    SELECT photo,first_name,last_name,username,email,bio FROM user_tokens ut INNER JOIN users u ON ut.user_id=u.id WHERE status=true;
+SELECT
+    photo,
+    first_name,
+    last_name,
+    username,
+    email,
+    bio
+FROM user_tokens ut
+    INNER JOIN users u ON ut.user_id = u.id
+WHERE
+    status = true;
+
+
+
+-- CREATE TABLE groups (
+--     id SERIAL PRIMARY KEY,
+--     group_name VARCHAR(30) NOT NULL,
+--     group_image VARCHAR(225),
+--     admin_id INT NOT NULL REFERENCES users (id),
+--     status BOOLEAN DEFAULT TRUE,
+--     members_count INT DEFAULT 1 check (members_count > 0),
+--     created_at TIMESTAMP DEFAULT current_timestamp,
+--     updated_at TIMESTAMP DEFAULT current_timestamp
+-- );
+
+-- SELECT * FROM groups ORDER BY created_at DESC;
+
+-- CREATE TABLE group_members (
+--     id SERIAL PRIMARY KEY,
+--     group_id INT NOT NULL REFERENCES groups (id),
+--     member_id INT NOT NULL REFERENCES users (id),
+--     status BOOLEAN DEFAULT TRUE,
+--     joined_at TIMESTAMP DEFAULT current_timestamp,
+--     created_at TIMESTAMP DEFAULT current_timestamp,
+--     updated_at TIMESTAMP DEFAULT current_timestamp
+-- );
+
+-- CREATE TABLE group_messages (
+--     id SERIAL PRIMARY KEY,
+--     group_id INT NOT NULL REFERENCES groups(id),
+--     group_member_id INT NOT NULL REFERENCES users (id),
+--     message TEXT,
+--     is_media BOOLEAN DEFAULT FALSE,
+--     status BOOLEAN DEFAULT TRUE,
+--     send_at TIMESTAMP DEFAULT current_timestamp,
+--     created_at TIMESTAMP DEFAULT current_timestamp,
+--     updated_at TIMESTAMP DEFAULT current_timestamp
+-- );

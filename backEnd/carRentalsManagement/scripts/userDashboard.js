@@ -165,18 +165,20 @@ function listVehicles() {
                   .text(vehicle.brand + " " + vehicle.model),
                 $("<p>")
                   .addClass("card-text d-flex justify-content-between")
-                  .html(`<span>${vehicle.price_per_day} / day</span><span class="${textClass}">${textMsg}</span>`)
+                  .html(
+                    `<span>${vehicle.price_per_day} / day</span><span class="${textClass}">${textMsg}</span>`,
+                  ),
 
                 //   vehicle.is_available
                 //   ? `<span class="text-success">Available</span>`
                 //   : `<span class="text-danger">Not Available</span>`,
               ),
           );
-        container.append(card);
-      }
-    },
+          container.append(card);
+        }
+      },
+    });
   });
-});
 }
 
 function listBookings() {
@@ -369,5 +371,4 @@ $(document).ready(function () {
       },
     });
   });
-  
 });

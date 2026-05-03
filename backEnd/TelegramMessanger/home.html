@@ -24,7 +24,6 @@
 
   <body class="vh-100">
     <!-- offcanvas -->
-
     <!-- edit Profile -->
     <div
       class="offcanvas offcanvas-start"
@@ -180,12 +179,13 @@
       <div class="row h-100">
         <!-- SIDEBAR -->
         <div
-          class="col-12 col-md-4 col-lg-3 border-end bg-light d-flex flex-column p-0 position-fixed min-vh-100"
+          class="col-12 col-md-4 col-lg-3 border-end bg-light d-flex flex-column p-0 position-fixed"
           id="sidebar"
+          style="height: 100vh; overflow-y: auto"
         >
           <!-- Top Bar -->
           <div
-            class="p-2 border-bottom bg-light d-flex align-items-center gap-2 sticky-top"
+            class="p-2 border-bottom bg-light d-flex align-items-center gap-2 sticky-top position-relative"
           >
             <div class="dropdown">
               <button
@@ -302,11 +302,73 @@
           <div class="flex-grow-1 overflow-auto" id="contactsContainer">
             <!-- Contact -->
           </div>
+          <!-- <button
+            class="btn btn-primary position-absolute rounded-circle py-1 px-2"
+            style="right: 10px; bottom: 10px"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+          >
+            <i class="bi bi-people fs-5"></i>
+          </button> -->
         </div>
+
+        <!-- Modal For Creting New Channel -->
+        <!-- <div
+          class="modal fade"
+          id="staticBackdrop"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                  Create Channel
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form action="" id="createChannelForm">
+                  <div class="d-flex justify-content-center">
+                    <img src="./assects/placeholderImg.jpg" height="80" width="80" class="rounded-circle" id="groupImagePreview" alt="placeholder">
+                  </div>
+                  <div class="d-flex justify-content-center mb-2">
+                    <button type="button" class="btn btn-light mt-1 rounded fs-6" id="uploadChannelImageTriggerBtn">Upload <i class="bi bi-upload fs-6"></i></button>
+                  </div>
+                  <input type="file" name="channelPhoto" id="channelPhoto" hidden>
+                  <input type="text" class="form-control px-2" name="channelName" id="ChannelNameInput" placeholder="Channel name...">
+                  <small class="text-danger d-none" id="channelNameError">Invalid Channel Name!!</small>
+                </form>
+
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  id="cancelCreateChannel"
+                >
+                  Cancel
+                </button>
+                <button type="button" class="btn btn-primary"  id="createChannelConfirm">
+                  Create
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> -->
 
         <!-- CHAT AREA -->
         <div
-          class="col d-md-flex flex-column bg-telegram-pattern d-none min-vh-100"
+          class="col d-md-flex flex-column p-0 bg-telegram-pattern d-none min-vh-100"
           id="chatBox"
         ></div>
       </div>

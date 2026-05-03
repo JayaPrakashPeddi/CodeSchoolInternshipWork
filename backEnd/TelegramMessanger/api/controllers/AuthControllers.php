@@ -23,7 +23,7 @@ class AuthControllers
 
     private function clearExpiredOtps()
     {
-        $this->db->query("UPDATE otps SET status=FALSE WHERE otp_expires_at < current_timestamp");
+        $this->db->query("UPDATE otps SET status=FALSE WHERE otp_expires_at < current_timestamp")->execute();
         return;
     }
 
@@ -34,7 +34,6 @@ class AuthControllers
         if (!$is_verified) {
             return sendResponse(false, "Invalid or Expired OTP");
         }
-
         $userExist = $this->db->query("SELECT 1 as user_exist FROM users WHERE phone_number=:phone")->get([":phone" => $phone]);
         $data['userExist'] = $userExist;
         return sendResponse(true, "OTP verified successfully!!", $data);
