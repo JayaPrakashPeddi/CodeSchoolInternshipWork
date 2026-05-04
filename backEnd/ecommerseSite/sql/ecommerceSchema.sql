@@ -6,9 +6,6 @@ CREATE TABLE categories (
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
 
-ALTER TABLE categories
-DROP CONSTRAINT categories_category_name_key;
-
 ALTER TABLE categories ADD COLUMN status BOOLEAN DEFAULT TRUE;
 
 CREATE TABLE products (
@@ -16,11 +13,13 @@ CREATE TABLE products (
     product_name VARCHAR(30) NOT NULL,
     category_id INT REFERENCES categories (id) ON DELETE CASCADE,
     stock INT NOT NULL DEFAULT 0 check (stock >= 0),
-    price INT NOT NULL check (price > 0),
+    price NUMERIC(10, 2) NOT NULL check (price > 0),
     product_description TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
+
+ALTER TABLE products ADD COLUMN product_image TEXT NOT NULL;
 
 ALTER TABLE products ADD COLUMN status BOOLEAN DEFAULT true;
 
@@ -52,6 +51,10 @@ CREATE TABLE users (
 
 ALTER TABLE users ADD COLUMN status BOOLEAN DEFAULT true;
 
+ALTER TABLE users ADD COLUMN password TEXT NOT NULL;
+
+ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'customer';
+
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
     customer_id INT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -75,15 +78,12 @@ CREATE TABLE order_details (
     order_id INT NOT NULL REFERENCES orders (id) ON DELETE CASCADE,
     product_id INT NOT NULL REFERENCES products (id),
     quantity INT DEFAULT 1 check (quantity > 0),
-    unit_price INT NOT NULL check (unit_price >= 0),
+    unit_price NUMERIC(10, 2) NOT NULL check (unit_price >= 0),
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
 
-ALTER TABLE products ALTER COLUMN price TYPE NUMERIC(10, 2);
-
-ALTER TABLE order_details
-ALTER COLUMN unit_price TYPE NUMERIC(10, 2);
+ALTER TABLE order_details add COLUMN id SERIAL PRIMARY KEY;
 
 CREATE TABLE payments (
     id SERIAL PRIMARY KEY,
@@ -98,19 +98,13 @@ CREATE TABLE payments (
         )
     ),
     amount NUMERIC(10, 2) NOT NULL check (amount >= 0),
-    payment_date DATE DEFAULT current_date,
+    payment_date TIMESTAMP DEFAULT current_timestamp,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
 
-ALTER TABLE users ADD COLUMN password TEXT NOT NULL;
-
-ALTER TABLE products ADD COLUMN product_image TEXT NOT NULL;
-
-ALTER TABLE payments ALTER COLUMN payment_date TYPE TIMESTAMP;
-
 ALTER TABLE payments
-ADD COLUMN payment_status VARCHAR(20) DEFAULT 'pending' CHECK (
+ADD COLUMN payment_status VARCHAR(20) DEFAULT 'PENDING' CHECK (
     payment_status IN (
         'PENDING',
         'SUCCESS',
@@ -128,10 +122,6 @@ CREATE TABLE user_tokens (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE user_tokens;
-
-SELECT * from user_tokens;
-
 CREATE TABLE carts (
     id SERIAL PRIMARY KEY,
     customer_id INT UNIQUE REFERENCES users (id) ON DELETE CASCADE,
@@ -148,25 +138,124 @@ CREATE TABLE cart_items (
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
 
-drop TABLE cart_items;
+--------------------admin insert-------------------------------
 
-ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'customer';
+INSERT INTO
+    users (
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        password,
+        role
+    )
+VALUES (
+        'Admin',
+        'admin',
+        'admin@gmail.com',
+        '0000000000',
+        md5('admin@123'),
+        'ADMIN'
+    );
+
+----------------------------------------------------------------
+
+SELECT * from cart_items;
 
 SELECT * from users;
 
-SELECT concat(first_name,' ',last_name) as fullname from users;
-SELECT concat(first_name,' ',last_name) as full_name FROM users u INNER JOIN user_tokens ut ON u.id=ut.user_id WHERE expires_at>CURRENT_TIMESTAMP AND status=true AND token='941hvlXI6HLuXOY2ZsDF';
+SELECT concat(first_name, ' ', last_name) as fullname from users;
 
-INSERT INTO users (first_name,last_name, email, phone_number, password, role) VALUES ('Admin','admin','admin@gmail.com','0000000000',md5('admin@123'),'ADMIN');
-SELECT 1 FROM users WHERE id=2 AND role='ADMIN';
+SELECT concat(first_name, ' ', last_name) as full_name
+FROM users u
+    INNER JOIN user_tokens ut ON u.id = ut.user_id
+WHERE
+    expires_at > CURRENT_TIMESTAMP
+    AND status = true
+    AND token = '941hvlXI6HLuXOY2ZsDF';
+
+SELECT 1 FROM users WHERE id = 2 AND role = 'ADMIN';
 
 SELECT * from orders;
 
 SELECT * from products;
 
+SELECT * FROM carts;
+
+SELECT sum(p.price) * sum(ci.quantity) as total_cart_price
+FROM cart_items ci
+    INNER JOIN products p ON ci.product_id = p.id
+WHERE
+    cart_id = 1
+GROUP BY
+    ci.cart_id;
+
+SELECT
+    c.id as cart_id,
+    product_id,
+    product_name,
+    product_image,
+    ct.quantity,
+    price,
+    stock
+FROM
+    carts c
+    INNER JOIN cart_items ct ON c.id = ct.cart_id
+    JOIN products p on p.id = ct.product_id
+WHERE
+    c.customer_id = 1;
+
 SELECT * from categories;
 
-SELECT p.id, p.product_name, p.stock, p.price, p.product_description, p.product_image, c.category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC
+SELECT p.id, p.product_name, p.stock, p.price, p.product_description, p.product_image, c.category_name
+FROM products p
+    LEFT JOIN categories c ON p.category_id = c.id
+ORDER BY p.id DESC
+
+SELECT
+    o.id,
+    CONCAT(
+        u.first_name,
+        ' ',
+        u.last_name
+    ) AS customer_name,
+    concat(
+        address,
+        ' ',
+        city,
+        ' ',
+        state,
+        ' ',
+        country,
+        ' ',
+        pin_code
+    ) as full_address,
+    o.total_amount,
+    o.order_status,
+    o.ordered_date
+FROM
+    orders o
+    JOIN users u ON o.customer_id = u.id
+    JOIN address a on o.address_id = a.id
+ORDER BY o.id DESC;
+
+SELECT * FROM address;
+
+SELECT * FROM payments;
+
+SELECT cart_id, ci.product_id, ci.quantity, p.price
+FROM cart_items ci
+    INNER JOIN products p on ci.product_id = p.id;
+
+SELECT * FROM order_details;
+
+SELECT p.product_name, p.product_image, od.unit_price, od.quantity, o.ordered_date, o.order_status, o.address_id
+FROM
+    orders o
+    JOIN order_details od ON o.id = od.order_id
+    INNER JOIN products p ON od.product_id = p.id
+WHERE
+    o.customer_id = 1;
 
 -------------------------------------------------------------------------
 -- INSERT INTO

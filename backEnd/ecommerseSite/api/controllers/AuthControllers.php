@@ -62,7 +62,7 @@ class AuthControllers
 
     public function validateToken($token){
         $this->clearExpiredTokens();
-        $query = "SELECT concat(first_name,' ',last_name) as full_name,u.role as role FROM users u INNER JOIN user_tokens ut ON u.id=ut.user_id WHERE token=:token AND expires_at>CURRENT_TIMESTAMP AND status=true";
+        $query = "SELECT concat(first_name,' ',last_name) as full_name,u.role as role FROM users u INNER JOIN user_tokens ut ON u.id=ut.user_id WHERE token=:token AND expires_at>CURRENT_TIMESTAMP AND ut.status=true";
         $userData = $this->db->query($query)->get([":token"=>$token]);
         if(!$userData){
             return sendResponse(false,"Invalid Token!!");

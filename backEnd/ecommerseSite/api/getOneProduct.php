@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . "/controllers/AdminControllers.php";
+require_once __DIR__ . "/controllers/ProductController.php";
 
 $id = $_GET['id'];
 
-$adminControl = new AdminControllers();
-echo $adminControl->getOneProduct($id);
+$productControl = new ProductControllers();
+echo $productControl->getOneProduct($id);

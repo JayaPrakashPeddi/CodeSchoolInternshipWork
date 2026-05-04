@@ -327,7 +327,9 @@ function getOrders() {
 
     success: function (response) {
       if (!response.status) {
-        $("#orderTable").html("<tr><td colspan='6' class='text-center'>No orders found</td></tr>");
+        $("#orderTable").html(
+          "<tr><td colspan='9' class='text-center'>No orders found</td></tr>",
+        );
         return;
       }
 
@@ -338,7 +340,10 @@ function getOrders() {
           <tr>
             <td>${i + 1}</td>
             <td>${order.customer_name}</td>
-            <td>₹${order.total_amount}</td>
+            <td>${order.city}</td>
+            <td>${order.state}</td>
+            <td>${order.pin_code}</td>
+            <td>₹.${order.total_amount}</td>
             <td>${order.order_status}</td>
             <td>${order.ordered_date}</td>
             <td>
@@ -369,7 +374,9 @@ function updateOrderStatus(id) {
     inputPlaceholder: "Select status",
     showCancelButton: true,
   }).then((result) => {
-    if (!result.value) return;
+    if (!result.value) {
+      return;
+    }
 
     $.ajax({
       type: "POST",
@@ -419,6 +426,7 @@ function loadCategoryOptions() {
 }
 
 $(document).ready(function () {
+  
   if (!userToken) {
     window.location.href = "./index.html";
     return;

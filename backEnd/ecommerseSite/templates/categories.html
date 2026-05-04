@@ -1,109 +1,22 @@
-
-      <div
-        class="container-fluid border-bottom border-dark text-center fs-3 fw-bold mt-0"
-      >
-        Categories
-      </div>
-      <div class="container-fluid d-flex justify-content-between">
-        <div>
-          <select
-            name="category"
-            id="categoryList"
-            class="form-control rounded-2 text-center"
-          >
-            <option value="" disabled selected hidden>
-              -- Select Category --
-            </option>
-            <option value="1">Value 1</option>
-            <option value="2">Value 2</option>
-            <option value="3">Value 3</option>
-          </select>
-        </div>
-        <div>
-          <select
-            name="category"
-            id="categoryList"
-            class="form-control rounded-2 text-center"
-          >
-            <option value="" disabled selected hidden>-- Sort --</option>
-            <option value="1">By Rating : High to Low</option>
-            <option value="2">By Rating : Low to High</option>
-            <option value="3">By Price : High to Low</option>
-            <option value="4">By Price : Low to High</option>
-          </select>
-        </div>
-      </div>
-
-      <div
-        class="container-fluid d-flex flex-wrap justify-content-center gap-2 pb-3"
-      >
-
-        <!-- cards -->
-        <div class="card rounded-4 card-hover" style="width: 20rem">
-          <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-          <div class="card-body">
-            <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-            <span class="text-muted">Category</span>
-            <div class="card-text mt-2">
-              <p class="text-truncate fs-6">
-                decription of the product and trancate it......
-              </p>
-              <div class="d-flex justify-content-between">
-                <div class="text-dark fs-5 fw-semibold">Price</div>
-                <div class="text-black fs-6 fw-medium">rating</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card rounded-4 card-hover" style="width: 20rem">
-          <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-          <div class="card-body">
-            <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-            <span class="text-muted">Category</span>
-            <div class="card-text mt-2">
-              <p class="text-truncate fs-6">
-                decription of the product and trancate it......
-              </p>
-              <div class="d-flex justify-content-between">
-                <div class="text-dark fs-5 fw-semibold">Price</div>
-                <div class="text-black fs-6 fw-medium">rating</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card rounded-4 card-hover" style="width: 20rem">
-          <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-          <div class="card-body">
-            <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-            <span class="text-muted">Category</span>
-            <div class="card-text mt-2">
-              <p class="text-truncate fs-6">
-                decription of the product and trancate it......
-              </p>
-              <div class="d-flex justify-content-between">
-                <div class="text-dark fs-5 fw-semibold">Price</div>
-                <div class="text-black fs-6 fw-medium">rating</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card rounded-4 card-hover" style="width: 20rem">
-          <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-          <div class="card-body">
-            <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-            <span class="text-muted">Category</span>
-            <div class="card-text mt-2">
-              <p class="text-truncate fs-6">
-                decription of the product and trancate it......
-              </p>
-              <div class="d-flex justify-content-between">
-                <div class="text-dark fs-5 fw-semibold">Price</div>
-                <div class="text-black fs-6 fw-medium">rating</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div
+  class="container-fluid border-bottom border-dark text-center fs-3 fw-bold mt-0"
+>
+  Categories
+</div>
+<div class="container-fluid d-flex justify-content-start">
+  <div>
+    <select
+      name="category"
+      id="categoryFilter"
+      class="form-control rounded-2 text-center"
+    >
+      <option value="all" selected>All</option>
+    </select>
+  </div>
+</div>
+<div
+  class="container-fluid d-flex flex-wrap justify-content-center gap-2 p-2 pb-3"
+  id="productsContainer"
+>
+  <!-- cards -->
+</div>

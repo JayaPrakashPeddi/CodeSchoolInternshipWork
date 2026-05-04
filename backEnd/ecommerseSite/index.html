@@ -41,7 +41,10 @@
         </div>
       </div>
       <div class="offcanvas-body">
-        <div class="dropdown d-flex justify-content-start align-items-center">
+        <div
+          class="dropdown d-flex justify-content-start align-items-center"
+          id="offcanvasDropdown"
+        >
           <button
             type="button"
             class="btn btn-dark dropdown-toggle fs-6 text-white"
@@ -49,41 +52,82 @@
             aria-expanded="false"
           >
             <i class="bi bi-person-circle pe-1"></i>
-            <span class=""> username </span>
+            <span class="" id="offcanvasUsername"> username </span>
           </button>
           <ul class="dropdown-menu bg-black">
-            <li>
+            <li id="">
               <a class="dropdown-item text-white dark-dropdown" href="#"
-                ><i class="bi bi-pencil-square pe-1"></i>Edit Profile</a
+                ><i class="bi bi-pencil-square pe-1"></i>Profile</a
               >
             </li>
 
-            <li>
+            <li id="offcanvasLogoutBtn">
               <a class="dropdown-item text-danger" href="#"
                 ><i class="bi bi-box-arrow-right pe-1"></i>Logout</a
               >
             </li>
           </ul>
         </div>
+
+        <div
+          class="d-flex justify-content-center align-items-center gap-2 ms-2"
+          id="offcanvasloginAndRegisterLinks"
+        >
+          <a
+            href="#"
+            class="text-decoration-none nav-hover text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#loginModal"
+            >login</a
+          >/
+          <a
+            href="#"
+            class="text-decoration-none nav-hover text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#registerModal"
+            >register</a
+          >
+        </div>
+
         <div class="navbar navbar-expand mt-4">
           <ul class="navbar-nav d-flex flex-column align-items-baseline gap-4">
             <li class="navbar-item">
-              <a href="#" class="navbar-link text-decoration-none text-white"
+              <a
+                href="#"
+                class="navbar-link text-decoration-none text-white"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#offcanvasMenu"
+                id="offcanvasHomeLink"
                 >Home</a
               >
             </li>
             <li class="navbar-item">
-              <a href="#" class="navbar-link text-decoration-none text-white"
+              <a
+                href="#"
+                class="navbar-link text-decoration-none text-white"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#offcanvasMenu"
+                id="offcanvasCategoriesLink"
                 >Categories</a
               >
             </li>
             <li class="navbar-item">
-              <a href="#" class="navbar-link text-decoration-none text-white"
+              <a
+                href="#"
+                class="navbar-link text-decoration-none text-white"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#offcanvasMenu"
+                id="offcanvasCartLink"
                 >Cart</a
               >
             </li>
             <li class="navbar-item">
-              <a href="#" class="navbar-link text-decoration-none text-white"
+              <a
+                href="#"
+                class="navbar-link text-decoration-none text-white"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#offcanvasMenu"
+                id="offcanvasOrdersLink"
                 >Orders</a
               >
             </li>
@@ -182,6 +226,7 @@
         </div>
       </div>
     </div>
+
     <!-- register modal -->
     <div
       class="modal fade"
@@ -241,7 +286,6 @@
               </small>
             </div>
 
-            
             <div class="form-floating mb-3 position-relative">
               <input
                 type="text"
@@ -255,8 +299,6 @@
                 Invalid phone number!
               </small>
             </div>
-
-
 
             <div class="form-floating mb-3">
               <input
@@ -308,7 +350,7 @@
           <div class="fs-5 fw-bold">E-Commerce</div>
         </div>
 
-        <div class="navbar navbar-expand w-50 d-none d-md-block m-0">
+        <div class="navbar navbar-expand w-50 d-none d-lg-block m-0">
           <ul
             class="navbar-nav d-flex justify-content-evenly align-items-baseline"
           >
@@ -347,7 +389,7 @@
           </ul>
         </div>
 
-        <div class="d-none d-md-flex justify-content-center align-items-center">
+        <div class="d-none d-lg-flex justify-content-center align-items-center">
           <button
             class="btn"
             data-bs-toggle="offcanvas"
@@ -387,7 +429,7 @@
           <ul class="dropdown-menu dropdown-menu-end bg-black">
             <li>
               <a class="dropdown-item text-white dark-dropdown" href="#"
-                ><i class="bi bi-pencil-square pe-1"></i>Edit Profile</a
+                ><i class="bi bi-pencil-square pe-1"></i>Profile</a
               >
             </li>
 
@@ -400,7 +442,7 @@
         </div>
 
         <div
-          class="d-flex justify-content-center align-items-center gap-2 d-md-none"
+          class="d-flex justify-content-center align-items-center gap-2 d-lg-none"
         >
           <button
             class="btn"
@@ -424,7 +466,7 @@
     </header>
 
     <main
-      class="bg-light min-vh-100 px-4 mt-5 pt-5 d-flex flex-column gap-3 align-items-center"
+      class="bg-light min-vh-100 px-4 mt-5 pt-4 d-flex flex-column gap-3 align-items-center"
       id="mainContainer"
     ></main>
 

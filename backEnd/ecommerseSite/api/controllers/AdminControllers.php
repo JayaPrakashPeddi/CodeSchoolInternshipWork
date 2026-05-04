@@ -15,6 +15,7 @@ class AdminControllers
         $userData = $this->db->query("SELECT user_id FROM user_tokens WHERE token=:token AND status=true")->get([":token" => $token]);
         return $userData['user_id'];
     }
+
     private function isAdmin($id)
     {
         $isAdmin = $this->db->query("SELECT 1 FROM users WHERE id=:id AND role='ADMIN'");
@@ -30,7 +31,7 @@ class AdminControllers
         $isAdmin = $this->isAdmin($userId);
         if ($isAdmin) {
             $userCount = $this->db->query("SELECT COUNT(*) AS count FROM users WHERE role='customer'")->get();
-            $orderData = $this->db->query("SELECT COUNT(*) AS count,SUM(total_amount) AS total_revenue FROM orders WHERE order_status = 'Delivered'")->get();
+            $orderData = $this->db->query("SELECT COUNT(*) AS count,SUM(total_amount) AS total_revenue FROM orders")->get();
             $productsCount = $this->db->query("SELECT COUNT(*) AS count FROM products")->get();
             $data['usersCount'] = $userCount['count'];
             $data['ordersCount'] = $orderData['count'];
@@ -78,26 +79,10 @@ class AdminControllers
         return sendResponse(true, "Category added successfully");
     }
 
-    public function getCategories()
-    {
-        $data = $this->db->query("SELECT id,category_name FROM categories WHERE status = true")->getAll();
-        return sendResponse(true, "Categories fetched", [], $data);
-    }
-
     public function deleteCategory($id)
     {
         $this->db->query("UPDATE categories SET status=false WHERE id=:id")->execute([":id" => $id]);
         return sendResponse(true, "Category Deleted!!");
-    }
-
-    public function getProducts()
-    {
-        $products = $this->db->query("SELECT p.id, p.product_name, p.stock, p.price, p.product_description, p.product_image, c.category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.status=true ORDER BY p.id DESC")->getAll();
-        if (!$products) {
-            return sendResponse(false, "No products found");
-        }
-
-        return sendResponse(true, "Products fetched", [], $products);
     }
 
     public function deleteProduct($token, $id)
@@ -117,17 +102,6 @@ class AdminControllers
 
         $this->db->query("UPDATE products SET status=false WHERE id = :id")->execute([":id" => $id]);
         return sendResponse(true, "Product deleted");
-    }
-
-    public function getOneProduct($id)
-    {
-        $product = $this->db->query("SELECT * FROM products WHERE id = :id AND status=true")->get([":id" => $id]);
-
-        if (!$product) {
-            return sendResponse(false, "Not found");
-        }
-
-        return sendResponse(true, "Fetched", [], $product);
     }
 
     public function updateProduct($token, $id, $name, $category, $stock, $price, $description, $filename = null)
@@ -181,10 +155,20 @@ class AdminControllers
 
     public function getOrders()
     {
-        $orders = $this->db->query("SELECT o.id, CONCAT(u.first_name, ' ', u.last_name) AS customer_name, o.total_amount, o.order_status, o.ordered_date FROM orders o JOIN users u ON o.customer_id = u.id ORDER BY o.id DESC")->getAll();
+        $orders = $this->db->query("SELECT o.id, CONCAT(u.first_name, ' ', u.last_name) AS customer_name, city,state,pin_code, o.total_amount, o.order_status, o.ordered_date FROM orders o JOIN users u ON o.customer_id = u.id JOIN address a on o.address_id=a.id ORDER BY o.id DESC")->getAll();
         if (!$orders) {
             return sendResponse(false, "No orders found");
         }
-        return sendResponse(true, "Orders fetched", $orders);
+        return sendResponse(true, "Orders fetched", [], $orders);
+    }
+
+    public function updateOrderStatus($token, $order_id, $status)
+    {
+        $userId = $this->getUserIdByToken($token);
+        if (!$this->isAdmin($userId)) {
+            return sendResponse(false, "Unauthorized");
+        }
+        $this->db->query("UPDATE orders SET order_status=:status WHERE id=:id")->execute([":status"=>$status,":id"=>$order_id]);
+        return sendResponse(true,"Order status updated!");
     }
 }

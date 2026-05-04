@@ -3,17 +3,16 @@
 >
   Orders
 </div>
-<div class="container-fluid d-flex justify-content-between">
-  <div></div>
+<div class="container-fluid d-flex justify-content-end">
   <div>
     <select
       name="category"
-      id="categoryList"
+      id="statusList"
       class="form-control rounded-2 text-center"
     >
-      <option value="" disabled selected hidden>-- Status --</option>
+      <option value="0" selected>All</option>
       <option value="1">Pending</option>
-      <option value="2">Ordered</option>
+      <option value="2">Shipped</option>
       <option value="3">Delivered</option>
       <option value="4">Canceled</option>
     </select>
@@ -21,72 +20,9 @@
 </div>
 
 <div class="container-fluid d-flex flex-wrap justify-content-center gap-2 pb-3">
-  <!-- cards -->
-  <div class="card rounded-4 card-hover" style="width: 20rem">
-    <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-    <div class="card-body">
-      <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-      <span class="text-muted">Category</span>
-      <div class="card-text mt-2">
-        <p class="text-truncate fs-6">
-          decription of the product and trancate it......
-        </p>
-        <div class="d-flex justify-content-between">
-          <div class="text-dark fs-5 fw-semibold">Price</div>
-          <div class="text-black fs-6 fw-medium">rating</div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="row g-3" id="ordersContainer">
+      <!-- Order Item Card -->
+       
 
-  <div class="card rounded-4 card-hover" style="width: 20rem">
-    <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-    <div class="card-body">
-      <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-      <span class="text-muted">Category</span>
-      <div class="card-text mt-2">
-        <p class="text-truncate fs-6">
-          decription of the product and trancate it......
-        </p>
-        <div class="d-flex justify-content-between">
-          <div class="text-dark fs-5 fw-semibold">Price</div>
-          <div class="text-black fs-6 fw-medium">rating</div>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <div class="card rounded-4 card-hover" style="width: 20rem">
-    <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-    <div class="card-body">
-      <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-      <span class="text-muted">Category</span>
-      <div class="card-text mt-2">
-        <p class="text-truncate fs-6">
-          decription of the product and trancate it......
-        </p>
-        <div class="d-flex justify-content-between">
-          <div class="text-dark fs-5 fw-semibold">Price</div>
-          <div class="text-black fs-6 fw-medium">rating</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card rounded-4 card-hover" style="width: 20rem">
-    <img src="./assects/iphone-17.png" class="card-img-top" alt="" />
-    <div class="card-body">
-      <div class="card-title fs-5 fw-bold mb-0">Product name</div>
-      <span class="text-muted">Category</span>
-      <div class="card-text mt-2">
-        <p class="text-truncate fs-6">
-          decription of the product and trancate it......
-        </p>
-        <div class="d-flex justify-content-between">
-          <div class="text-dark fs-5 fw-semibold">Price</div>
-          <div class="text-black fs-6 fw-medium">rating</div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
