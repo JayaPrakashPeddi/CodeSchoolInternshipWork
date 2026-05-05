@@ -141,7 +141,7 @@
       class="offcanvas offcanvas-top bg-black"
       data-bs-backdrop="true"
       id="offcanvasSearch"
-      style="height: 80px"
+      style="height: fit-content"
     >
       <div class="offcanvas-body">
         <div
@@ -158,12 +158,18 @@
             />
             <button
               class="btn position-absolute"
-              data-bs-toggle="offcanvas"
               style="right: 0px"
             >
               <i class="bi bi-search text-dark"></i>
             </button>
+            
           </form>
+        </div>
+        <div
+          class="container-fluid px-5 d-flex flex-column align-items-center"
+          id="searchResult"
+        >
+          
         </div>
       </div>
     </div>

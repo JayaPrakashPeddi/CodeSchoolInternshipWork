@@ -196,6 +196,10 @@ function getProductDetails(id) {
           "onclick",
           `addToCart('${response.data.product_id}')`,
         );
+        $("#buyNowBtn").attr(
+          "onclick",
+          `getToCheckoutPage('${response.data.product_id}')`,
+        );
       });
     },
   });
@@ -260,7 +264,6 @@ function getProductsByCategory() {
 }
 
 function addToCart(id) {
-  console.log(id);
   const quantity = parseInt($("#quantityInput").val());
   if (!id || !userToken) {
     Swal.fire("Error", "Login required", "error");
@@ -285,6 +288,50 @@ function addToCart(id) {
     error: function () {
       Swal.fire("Error", "Something went wrong", "error");
     },
+  });
+}
+
+function getToCheckoutPage(id) {
+  if (!id || !userToken) {
+    Swal.fire("Error", "Login required", "error");
+    return;
+  }
+
+  const cartContainer = $("#mainContainer");
+  cartContainer.load("./templates/buyPage.html", function () {
+    $.ajax({
+      type: "GET",
+      url: "../api/getOneProduct.php",
+      data: { id },
+      dataType: "json",
+      success: function (response) {
+        if (!response.status) {
+          Swal.fire(
+            "Error",
+            "Error While Fetching data.try again later...",
+            "error",
+          );
+          return;
+        }
+        const cartItemsContainer = $("#cartItems");
+        cartItemsContainer.text("");
+        let html = "";
+        const item = response.data;
+        const total = item.price;
+        html += `
+          <div class="row align-items-center border-bottom py-3">
+            <div class="col-4 fw-semibold">${item.product_name}</div>
+            <div class="col-2 text-center">₹${item.price}</div>
+            <div class="col-2 text-center">Qty: 1</div>
+            <div class="col-4 text-end fw-semibold">₹${total}</div>
+          </div>
+        `;
+        cartItemsContainer.html(html);
+        $("#productId").val(item.product_id);
+        $("#totalPrice").text(total);
+      },
+    });
+    loadUserAddress();
   });
 }
 
@@ -579,7 +626,6 @@ function loadUserAddress() {
 }
 
 $(document).ready(function () {
-  
   $("#mainContainer").load("./templates/home.html", function () {
     getProducts();
   });
@@ -888,11 +934,15 @@ $(document).ready(function () {
         return;
       }
     }
+    let productId = $("#productId").val();
+
     formData.append("token", userToken);
     formData.append("address_id", addressId);
+    formData.append("productId", productId);
+
     $.ajax({
       type: "POST",
-      url: "../api/orderCartProducts.php",
+      url: "../api/orderProducts.php",
       data: formData,
       processData: false,
       contentType: false,
@@ -999,5 +1049,43 @@ $(document).ready(function () {
         ordersContainer.html(html);
       },
     });
+  });
+
+  let searchTimer;
+  $(document).on("input","#searchInput", function () {
+    clearTimeout(searchTimer);
+    let html = "";
+    const searchResult = $("#searchResult");
+    searchTimer = setTimeout(()=>{
+      const searchInput = $("#searchInput").val().trim();
+      if(searchInput.length<3){
+        searchResult.text("");
+        return;
+      }
+      $.ajax({
+        type: "GET",
+        url: "../api/getSearchItem.php",
+        data: { searchInput },
+        dataType: "json",
+        success: function (response) {
+          if(response.status){
+            const items = response.data;
+            items.forEach((item)=>{
+              html += `<div class="bg-light w-50 px-5 rounded-pill d-flex align-items-center gap-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" onclick='getProductDetails(${item.id})'>
+                          <img
+                            src="./uploads/${item.product_image}"
+                            height="50"
+                            width="50"
+                            class="rounded-circle"
+                            alt="image"
+                          />
+                          <span class="fs-5">${item.product_name}</span>
+                        </div>`
+            })
+            searchResult.html(html);
+          }
+        }
+      });
+    },500)
   });
 });

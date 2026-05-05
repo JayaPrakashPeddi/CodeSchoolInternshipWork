@@ -16,49 +16,78 @@ class OrderControllers
         return $userData['user_id'];
     }
 
-    public function orderCartProducts($token, $addressId, $paymode)
+    public function orderCartProducts($token, $addressId, $paymode, $product_Id)
     {
         $userId = $this->getUserIdByToken($token);
         $paymode = strtoupper($paymode);
-        $user_cart_data = $this->db->query("SELECT id FROM carts WHERE customer_id=:id")->get([":id" => $userId]);
-        $userCartId = $user_cart_data['id'];
 
-        if (!$userCartId) {
-            return sendResponse(false, "User cart is empty");
-        }
+        if (!$product_Id) {
 
-        $amount = $this->db->query("SELECT sum(p.price * ci.quantity) as total_cart_price FROM cart_items ci INNER JOIN products p ON ci.product_id=p.id WHERE cart_id=:id GROUP BY ci.cart_id")
-            ->get([":id" => $userCartId]);
+            $user_cart_data = $this->db->query("SELECT id FROM carts WHERE customer_id=:id")->get([":id" => $userId]);
 
-        $orderId = $this->db->query("INSERT INTO orders (customer_id,total_amount,address_id) VALUES (:customer_id,:amount,:address_id)  RETURNING id")->get([":customer_id" => $userId, ":amount" => $amount['total_cart_price'], ":address_id" => $addressId]);
+            $userCartId = $user_cart_data['id'];
 
-        $this->db->query("INSERT INTO payments (order_id,payment_type,amount,payment_status) VALUES (:order_id,:paymode,:amount,:pay_status)")->execute([":order_id" => $orderId['id'], ":paymode" => $paymode, ":amount" => $amount['total_cart_price'], ":pay_status" => "SUCCESS"]);
+            if (!$userCartId) {
+                return sendResponse(false, "User cart is empty");
+            }
 
-        $cartItems = $this->db->query("SELECT ci.product_id,ci.quantity,p.price FROM cart_items ci INNER JOIN products p on ci.product_id=p.id WHERE cart_id=:id")->getAll([":id" => $userCartId]);
+            $amount = $this->db->query("SELECT sum(p.price * ci.quantity) as total_cart_price FROM cart_items ci INNER JOIN products p ON ci.product_id=p.id WHERE cart_id=:id GROUP BY ci.cart_id")
+                ->get([":id" => $userCartId]);
 
-        foreach ($cartItems as $item) {
-            $productId = $item['product_id'];
-            $quantity  = $item['quantity'];
-            $price     = $item['price'];
+            $total_amount = $amount['total_cart_price'];
 
-            $product = $this->db->query("SELECT stock,product_name FROM products WHERE id = :id")->get([":id" => $productId]);
+            $cartItems = $this->db->query("SELECT ci.product_id,ci.quantity,p.price FROM cart_items ci INNER JOIN products p on ci.product_id=p.id WHERE cart_id=:id")->getAll([":id" => $userCartId]);
 
-            if ($product['stock'] < $quantity) {
-                return sendResponse(false, "Insufficient stock for product ID: " . $product['product_name']);
+            $orderId = $this->db->query("INSERT INTO orders (customer_id,total_amount,address_id) VALUES (:customer_id,:amount,:address_id)  RETURNING id")->get([":customer_id" => $userId, ":amount" => $total_amount, ":address_id" => $addressId]);
+
+            foreach ($cartItems as $item) {
+                $productId = $item['product_id'];
+                $quantity  = $item['quantity'];
+                $price     = $item['price'];
+
+                $product = $this->db->query("SELECT stock,product_name FROM products WHERE id = :id")->get([":id" => $productId]);
+
+                if ($product['stock'] < $quantity) {
+                    return sendResponse(false, "Insufficient stock for product ID: " . $product['product_name']);
+                }
+
+                $this->db->query("INSERT INTO order_details (order_id, product_id, quantity, unit_price) VALUES (:order_id, :product_id, :quantity, :price)")
+                    ->execute([
+                        ":order_id"   => $orderId['id'],
+                        ":product_id" => $productId,
+                        ":quantity"   => $quantity,
+                        ":price"      => $price
+                    ]);
+
+                $this->db->query("UPDATE products SET stock = stock - :qty WHERE id = :id")->execute([":qty" => $quantity, ":id"  => $productId]);
+            }
+
+            $this->db->query("DELETE FROM cart_items WHERE cart_id=:id")->execute([':id' => $userCartId]);
+        } else {
+            
+            $orderItem = $this->db->query("SELECT * FROM products WHERE id=:id")->get([":id" => $product_Id]);
+            $quantity  = 1;
+            $total_amount     = $orderItem['price'];
+            
+            $orderId = $this->db->query("INSERT INTO orders (customer_id,total_amount,address_id) VALUES (:customer_id,:amount,:address_id)  RETURNING id")->get([":customer_id" => $userId, ":amount" => $total_amount , ":address_id" => $addressId]);
+
+            if ($orderItem['stock'] < 1) {
+                return sendResponse(false, "Insufficient stock for product ID: " . $orderItem['product_name']);
             }
 
             $this->db->query("INSERT INTO order_details (order_id, product_id, quantity, unit_price) VALUES (:order_id, :product_id, :quantity, :price)")
                 ->execute([
                     ":order_id"   => $orderId['id'],
-                    ":product_id" => $productId,
+                    ":product_id" => $product_Id,
                     ":quantity"   => $quantity,
-                    ":price"      => $price
+                    ":price"      => $total_amount
                 ]);
 
-            $this->db->query("UPDATE products SET stock = stock - :qty WHERE id = :id")->execute([":qty" => $quantity, ":id"  => $productId]);
+            $this->db->query("UPDATE products SET stock = stock - :qty WHERE id = :id")->execute([":qty" => $quantity, ":id"  => $product_Id]);
         }
 
-        $this->db->query("DELETE FROM cart_items WHERE cart_id=:id")->execute([':id' => $userCartId]);
+        $this->db->query("INSERT INTO payments (order_id,payment_type,amount,payment_status) VALUES (:order_id,:paymode,:amount,:pay_status)")->execute([":order_id" => $orderId['id'], ":paymode" => $paymode, ":amount" => $total_amount , ":pay_status" => "SUCCESS"]);
+
         return sendResponse(true, "orders_updated");
     }
 
