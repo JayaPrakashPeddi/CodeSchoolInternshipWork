@@ -53,8 +53,6 @@ ul > li > ul > li > a:hover:not(.active) {
   cursor: pointer;
 }
 
-
-
 .stat-card {
   transition: all 0.3s ease;
 }

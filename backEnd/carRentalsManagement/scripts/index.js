@@ -214,7 +214,9 @@ $(document).ready(function () {
       },
     });
   });
+  
 });
+
 function formValidations(username, password) {
   return (
     mailRegex.test(username.val()) &&

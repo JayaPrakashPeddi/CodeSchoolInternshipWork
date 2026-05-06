@@ -28,10 +28,10 @@ class AdminControllers
     public function validateAdmin($token)
     {
         $userId = $this->getUserIdByToken($token);
-        if ($this->isAdmin($userId)){
-            return sendResponse(true,"Is admin: True");
+        if ($this->isAdmin($userId)) {
+            return sendResponse(true, "Is admin: True");
         }
-        return sendResponse(false,"Unauthorized Access!!");
+        return sendResponse(false, "Unauthorized Access!!");
     }
 
     public function getDashboardCardData($token)
@@ -110,8 +110,10 @@ class AdminControllers
         $product = $this->db->query("SELECT product_image FROM products WHERE id=:id")->get([":id" => $id]);
 
         if ($product && $product['product_image']) {
-            $filePath = __DIR__ . "../uploads/" . $product['product_image'];
-            unlink($filePath);
+            $filePath = __DIR__ . "/../uploads/" . $product['product_image'];
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
 
         $this->db->query("UPDATE products SET status=false WHERE id = :id")->execute([":id" => $id]);
