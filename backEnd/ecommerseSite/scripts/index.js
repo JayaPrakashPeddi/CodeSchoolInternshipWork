@@ -134,7 +134,9 @@ function getProducts() {
     dataType: "json",
     success: function (response) {
       if (!response.status) {
-        $("#productsContainer").html("<h3 class='w-100 text-center'>No Products...</h3>")
+        $("#productsContainer").html(
+          "<h3 class='w-100 text-center'>No Products...</h3>",
+        );
         return;
       }
       const products = response.data;
@@ -1009,42 +1011,53 @@ $(document).ready(function () {
             parseInt(response.data[i].quantity);
           status = response.data[i].order_status;
           if (status == "Pending") {
-            status_class = "bg-warning";
+            status_class = "bg-warning text-dark";
           } else if (status == "Delivered") {
-            status_class = "bg-success";
+            status_class = "bg-success text-white";
           } else if (status == "Shipped") {
-            status_class = "bg-info";
+            status_class = "bg-info text-dark";
           } else {
-            status_class = "bg-danger";
+            status_class = "bg-danger text-white";
           }
-          html += `<div class="col-12 mb-3">
-                  <div class="card shadow-sm">
-                    <div class="card-body">
-                      <div class="row align-items-center">
-                        <div class="col-4 col-md-2 text-center mb-2 mb-md-0">
-                          <img 
-                            src="./uploads/${response.data[i].product_image}" 
-                            class="img-fluid rounded"
-                            style="max-height: 80px; object-fit: cover;"
-                          >
-                        </div>
+          html += `
+        <div class="col-12">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
 
-                      <div class="col-8 col-md-7">
-                        <h6 class="mb-1 fs-6 fs-md-5">${response.data[i].product_name}</h6>
-                        <small class="text-muted d-block">Qty: ${response.data[i].quantity}</small>
-                        <small class="text-muted d-block">₹ ${response.data[i].unit_price}</small>
-                      </div>
+                <div class="col-4 col-md-2 text-center mb-2 mb-md-0">
+                  <img 
+                    src="./uploads/${response.data[i].product_image}" 
+                    class="img-fluid rounded"
+                    style="height:80px;width:80px;object-fit:cover;"
+                  >
+                </div>
 
-                      <!-- Status + Price -->
-                      <div class="col-12 col-md-3 text-md-end mt-2 mt-md-0">
-                        <span class="badge ${status_class} mb-1 d-inline-block">${status}</span>
-                        <div class="fw-bold fs-5">₹ ${total}</div>
-                      </div>
+                <div class="col-8 col-md-7">
+                  <h6 class="mb-1">${response.data[i].product_name}</h6>
+                  <small class="text-muted d-block">
+                    Qty: ${response.data[i].quantity}
+                  </small>
+                  <small class="text-muted d-block">
+                    ₹ ${response.data[i].unit_price}
+                  </small>
+                </div>
 
-                    </div>
+                <div class="col-12 col-md-3 text-md-end mt-3 mt-md-0">
+                  <span class="badge ${status_class} px-3 py-2">
+                    ${status}
+                  </span>
+
+                  <div class="fw-bold fs-5 mt-2">
+                    ₹ ${total}
                   </div>
                 </div>
-              </div>`;
+
+              </div>
+            </div>
+          </div>
+        </div>
+        `;
         }
         ordersContainer.html(html);
       },
@@ -1052,13 +1065,13 @@ $(document).ready(function () {
   });
 
   let searchTimer;
-  $(document).on("input","#searchInput", function () {
+  $(document).on("input", "#searchInput", function () {
     clearTimeout(searchTimer);
     let html = "";
     const searchResult = $("#searchResult");
-    searchTimer = setTimeout(()=>{
+    searchTimer = setTimeout(() => {
       const searchInput = $("#searchInput").val().trim();
-      if(searchInput.length<3){
+      if (searchInput.length < 3) {
         searchResult.text("");
         return;
       }
@@ -1068,9 +1081,9 @@ $(document).ready(function () {
         data: { searchInput },
         dataType: "json",
         success: function (response) {
-          if(response.status){
+          if (response.status) {
             const items = response.data;
-            items.forEach((item)=>{
+            items.forEach((item) => {
               html += `<div class="bg-light w-50 px-5 rounded-pill d-flex align-items-center gap-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" onclick='getProductDetails(${item.id})'>
                           <img
                             src="./uploads/${item.product_image}"
@@ -1080,12 +1093,12 @@ $(document).ready(function () {
                             alt="image"
                           />
                           <span class="fs-5">${item.product_name}</span>
-                        </div>`
-            })
+                        </div>`;
+            });
             searchResult.html(html);
           }
-        }
+        },
       });
-    },500)
+    }, 500);
   });
 });

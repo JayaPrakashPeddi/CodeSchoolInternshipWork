@@ -111,7 +111,7 @@ class OrderControllers
         } elseif ($status == 3) {
             $order_status = 'Delivered';
         } elseif ($status == 4) {
-            $order_status = 'Canceled';
+            $order_status = 'Cancelled';
         } else {
             $userOrders = $this->db->query("SELECT p.product_name,p.product_image,od.unit_price,od.quantity,o.ordered_date,o.order_status,o.address_id FROM orders o JOIN order_details od ON o.id = od.order_id INNER JOIN products p ON od.product_id=p.id WHERE o.customer_id=:id;")
                 ->getAll([":id" => $userId]);

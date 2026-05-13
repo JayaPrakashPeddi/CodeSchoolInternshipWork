@@ -19,6 +19,8 @@ CREATE TABLE products (
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
 
+ALTER TABLE products ALTER COLUMN product_name TYPE TEXT;
+
 ALTER TABLE products ADD COLUMN product_image TEXT NOT NULL;
 
 ALTER TABLE products ADD COLUMN status BOOLEAN DEFAULT true;
