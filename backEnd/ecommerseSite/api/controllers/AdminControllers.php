@@ -18,7 +18,7 @@ class AdminControllers
 
     private function isAdmin($id)
     {
-        $isAdmin = $this->db->query("SELECT 1 FROM users WHERE id=:id AND role='ADMIN'");
+        $isAdmin = $this->db->query("SELECT 1 FROM users WHERE id=:id AND role='ADMIN'")->get([":id"=>$id]);
         if ($isAdmin) {
             return true;
         }
