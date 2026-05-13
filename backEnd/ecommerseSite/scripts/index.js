@@ -12,8 +12,8 @@ function validateToken() {
     data: { userToken: token },
     dataType: "json",
     success: function (response) {
-      console.log(response);
       if (!response.status) {
+        $("#logoutBtn").click();
         return;
       }
       if (response.data.role === "ADMIN") {

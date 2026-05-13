@@ -14,3 +14,9 @@ function generateUserToken($len = 20)
     }
     return $token;
 }
+
+function getTokenFromHeader()
+{
+    $header = getallheaders();
+    return $header['Authentication'];
+}

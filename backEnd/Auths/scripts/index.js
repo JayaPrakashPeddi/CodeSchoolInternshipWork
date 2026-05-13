@@ -3,6 +3,56 @@ const phoneRegex = /^[6-9][0-9]{9}$/;
 
 const token = localStorage.getItem("userToken");
 
+function resetAnimations(element) {
+  $(element).removeClass("top-center center-down left-center center-right");
+}
+
+function loginFormValidations(email, password) {
+  return (
+    emailRegex.test(email.val()) &&
+    password.val().length >= 8 &&
+    password.val().length <= 20
+  );
+}
+
+function clearRegisterErrors() {
+  $("#firstNameInputError").addClass("d-none");
+  $("#lastNameInputError").addClass("d-none");
+  $("#registerEmailInputError").addClass("d-none");
+  $("#registerPhoneInputError").addClass("d-none");
+  $("#registerPasswordInputError").addClass("d-none");
+  $("#registerConfirmPasswordInputError").addClass("d-none");
+  $("#firstNameInput").removeClass("is-invalid");
+  $("#lastNameInput").removeClass("is-invalid");
+  $("#registerEmailInput").removeClass("is-invalid");
+  $("#registerPhoneInput").removeClass("is-invalid");
+  $("#registerPasswordInput").removeClass("is-invalid");
+  $("#registerConfirmPasswordInput").removeClass("is-invalid");
+}
+
+function clearLoginErrors() {
+  $("#emailInputError, #passwordInputError").addClass("d-none");
+  $("#emailInput, #passwordInput").removeClass("is-invalid");
+}
+
+let countdown = null;
+function startTimer(duration = 30) {
+  const timerEl = $("#timerText");
+  const resendBtn = $("#resendOtp");
+  let time = duration;
+  clearInterval(countdown);
+  resendBtn.addClass("disabled");
+  timerEl.text(`Resend available in ${time}s`);
+  countdown = setInterval(() => {
+    time--;
+    timerEl.text(`Resend available in ${time}s`);
+    if (time <= 0) {
+      clearInterval(countdown);
+      resendBtn.removeClass("disabled");
+    }
+  }, 1000);
+}
+
 if (token) {
   window.location.replace("./home.html");
 }
@@ -51,13 +101,11 @@ $(document).ready(function () {
   });
 
   $(document).on("click", "#loginBtn", function () {
-    // $("#loginBtn").addClass("disabled");
-    // $("#btnText").addClass("d-none");
-    // $("#spinner").removeClass("d-none");
     const userEmail = $("#emailInput");
     const userPassword = $("#passwordInput");
     const userEmailVal = userEmail.val();
     const userPasswordVal = userPassword.val();
+    const rememberMe = $("#remember").is(":checked");
     let errorFlag = false;
 
     if (!emailRegex.test(userEmailVal)) {
@@ -80,36 +128,26 @@ $(document).ready(function () {
       method: "POST",
       dataType: "json",
       data: {
-        email: userEmail,
-        password: userPassword,
+        email: userEmailVal,
+        password: userPasswordVal,
+        rememberMe,
       },
       success: function (response) {
         if (response.status) {
           console.log(response);
           localStorage.setItem("userToken", response.data.token);
-          Swal.fire({
-            title: "Success!",
-            text: "Login successful",
-            icon: "success",
-          }).then(() => {
-            if (response.data.isAdmin) {
-              window.location.href = "../adminDashboard.html";
-            } else {
-              window.location.href = "../userDashboard.html";
-            }
-          });
+          if (response.data.isAdmin) {
+            Swal.fire("Admin", "Admin", "warning");
+            return;
+          } else {
+            window.location.replace("../home.html");
+          }
         } else {
           Swal.fire("Error", response.message, "error");
-          // $("#loginBtn").removeClass("disabled");
-          // $("#btnText").removeClass("d-none");
-          // $("#spinner").addClass("d-none");
         }
       },
       error: function (error) {
         console.error(error);
-        // $("#loginBtn").removeClass("disabled");
-        // $("#btnText").removeClass("d-none");
-        // $("#spinner").addClass("d-none");
       },
     });
   });
@@ -280,36 +318,142 @@ $(document).ready(function () {
   $(document).on("input", "#registerForm", function () {
     clearRegisterErrors();
   });
+
+  $(document).on("click", "#getOTPbtn", function () {
+    const email = $("#validateEmailInput").val();
+    const emailError = $("#validateEmailInputError");
+    if (!emailRegex.test(email)) {
+      emailError.removeClass("d-none");
+      return;
+    }
+    $.ajax({
+      type: "POST",
+      url: "../api/getOTP.php",
+      data: { email },
+      dataType: "json",
+      success: function (response) {
+        if (!response.status) {
+          Swal.fire("Warning", "No user exist with this email!!", "warning");
+          return;
+        }
+        $("#validateEmailInput").prop("disabled", true);
+        $("#otpInputField").removeClass("d-none");
+        $("#getOTPbtn").addClass("disabled");
+        localStorage.setItem("temp_token", response.data.temp_token);
+        console.log(response.data.otp);
+        startTimer();
+      },
+    });
+  });
+
+  $(document).on("click", "#resendOtp", function () {
+    const resendBtn = $(this);
+    if (resendBtn.hasClass("disabled")) {
+      return;
+    }
+    resendBtn.addClass("disabled");
+    $.ajax({
+      type: "POST",
+      url: "../api/resendOtp.php",
+      data: { temp_token: localStorage.getItem("temp_token") },
+      dataType: "json",
+      success: function (response) {
+        if (response.status) {
+          startTimer();
+          console.log("New Otp - " + response.data.otp);
+        } else {
+          Swal.fire(
+            "Warning",
+            response.message + " " + response.data,
+            "warning",
+          ).then(() => {
+            $("#loginOptionsContainer").load("./templates/qrlogin.html");
+          });
+        }
+      },
+      error: function (err) {
+        console.error(err);
+        resendBtn.removeClass("disabled");
+        Swal.fire(
+          "Error",
+          "Something went wrong. Please try again later...",
+          "error",
+        );
+      },
+    });
+  });
+
+  $(document).on("input", "#otpInput", function () {
+    const otp = $("#otpInput").val();
+    if (otp.length != 6) {
+      $("#verifyBtn").prop("disabled", true);
+      return;
+    }
+    $("#verifyBtn").prop("disabled", false);
+  });
+
+  $(document).on("click", "#verifyBtn", function () {
+    const temp_token = localStorage.getItem("temp_token");
+    const userOtp = $("#otpInput").val();
+
+    $.ajax({
+      type: "POST",
+      url: "../api/verifyOtp.php",
+      data: { token: temp_token, otp: userOtp },
+      dataType: "json",
+      success: function (response) {
+        if (!response.status) {
+          Swal.fire("Invalid OTP, Try again!!", "warning");
+          return;
+        }
+        $("#otpInput").prop("disabled", true);
+        $("#resendOtpContainer").addClass("d-none");
+        $("#verifyBtn").addClass("d-none");
+        $("#passwordResetContainer").removeClass("d-none");
+      },
+    });
+  });
+
+  $(document).on("click", "#resetPasswordBtn", function () {
+    const newPassword = $("#newPasswordInput").val().trim();
+    const confirmPassword = $("#confirmPasswordInput").val().trim();
+    console.log(newPassword,confirmPassword);
+    let errorFlag = false;
+    if (newPassword.length < 6 || newPassword > 25) {
+      $("#newPasswordInputError").removeClass("d-none");
+      errorFlag = true;
+    }
+    if (newPassword != confirmPassword) {
+      $("#confirmPasswordInputError").removeClass("d-none");
+      errorFlag = true;
+    }
+    if (errorFlag) {
+      return;
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "../api/resetPassword.php",
+      data: {
+        token: localStorage.getItem("temp_token"),
+        password: newPassword,
+        confirmPassword: confirmPassword,
+      },
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        if (!response.status) {
+          Swal.fire("Error",response.message,"error");
+          return;
+        }
+        Swal.fire("Success","Password reset successful!","success").then(()=>{
+          localStorage.removeItem("temp_token");
+          $("#cancleVerifyEmail").click();
+        });
+      },
+      error: function(err){
+        console.error(err);
+      }
+    });
+  });
 });
-
-function resetAnimations(element) {
-  $(element).removeClass("top-center center-down left-center center-right");
-}
-
-function loginFormValidations(email, password) {
-  return (
-    emailRegex.test(email.val()) &&
-    password.val().length >= 8 &&
-    password.val().length <= 20
-  );
-}
-
-function clearRegisterErrors() {
-  $("#firstNameInputError").addClass("d-none");
-  $("#lastNameInputError").addClass("d-none");
-  $("#registerEmailInputError").addClass("d-none");
-  $("#registerPhoneInputError").addClass("d-none");
-  $("#registerPasswordInputError").addClass("d-none");
-  $("#registerConfirmPasswordInputError").addClass("d-none");
-  $("#firstNameInput").removeClass("is-invalid");
-  $("#lastNameInput").removeClass("is-invalid");
-  $("#registerEmailInput").removeClass("is-invalid");
-  $("#registerPhoneInput").removeClass("is-invalid");
-  $("#registerPasswordInput").removeClass("is-invalid");
-  $("#registerConfirmPasswordInput").removeClass("is-invalid");
-}
-
-function clearLoginErrors() {
-  $("#emailInputError, #passwordInputError").addClass("d-none");
-  $("#emailInput, #passwordInput").removeClass("is-invalid");
-}

@@ -13,7 +13,7 @@ function validateAdmin() {
     dataType: "dataType",
     success: function (response) {
       if (!response.status) {
-        $("#logoutBtn").click();
+        $("#adminLogoutBtn").click();
         return;
       }
     },
@@ -58,7 +58,7 @@ function validateProductForm(
   isUpdating = false,
 ) {
   let isValid = true;
-  $(".text-danger").addClass("d-none");
+  $("#productNameError, #categoryError, #stockError, #priceError, #descriptionError, #imageError").addClass("d-none");
   if (!name || name.length < 3) {
     $("#productNameError").removeClass("d-none");
     isValid = false;
@@ -167,8 +167,8 @@ function deleteCategory(id) {
     text: "This category will be deleted permanently!",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#6c757d",
+    confirmButtonColor: "red",
+    cancelButtonColor: "grey",
     confirmButtonText: "Yes, delete it!",
   }).then((result) => {
     if (!result.isConfirmed) {
@@ -209,8 +209,8 @@ function deleteProduct(id, btn) {
     text: "This product will be deleted permanently!",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#6c757d",
+    confirmButtonColor: "red",
+    cancelButtonColor: "grey",
     confirmButtonText: "Yes, delete it!",
   }).then((result) => {
     if (!result.isConfirmed) {
@@ -315,6 +315,8 @@ function deleteUser(id) {
     text: "User will be deleted permanently!",
     icon: "warning",
     showCancelButton: true,
+    confirmButtonColor: "red",
+    cancelButtonColor: "grey",
     confirmButtonText: "Yes, delete it!",
   }).then((result) => {
     if (!result.isConfirmed) return;
@@ -487,7 +489,7 @@ $(document).ready(function () {
     });
   });
 
-  $(document).on("click", "#logoutBtn", function () {
+  $(document).on("click", "#adminLogoutBtn", function () {
     $.ajax({
       type: "POST",
       url: "../api/logout.php",

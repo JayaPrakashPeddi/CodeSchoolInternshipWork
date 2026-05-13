@@ -46,6 +46,7 @@ function startTimer() {
 
 $(document).ready(function () {
   $("#loginOptionsContainer").load("./templates/qrlogin.html");
+  
   $(document).on("click", "#nextBtn", function () {
     const number = $("#phoneNumberInput").val();
     const rememberMe = $("#keepMeSignedIn").is(":checked");
