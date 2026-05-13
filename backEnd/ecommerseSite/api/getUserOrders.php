@@ -5,4 +5,4 @@ $token = $_POST["userToken"];
 $status = $_POST["status"] ?? null;
 
 $ordersControl = new OrderControllers();
-echo $ordersControl->getUserOrders($token,$status);
+echo $ordersControl->getUserOrders($token, $status);

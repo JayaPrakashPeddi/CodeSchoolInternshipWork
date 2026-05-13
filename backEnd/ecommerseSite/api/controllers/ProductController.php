@@ -56,7 +56,7 @@ class ProductControllers
     public function getSearchItem($searchInput)
     {
         $pattern = "%" . $searchInput . "%";
-        $searchResult = $this->db->query("SELECT id,product_image,product_name FROM products WHERE product_name ILIKE :pattern AND status=true")->getAll([":pattern"=>$pattern]);
-        return sendResponse(true,"search items fetched",[],$searchResult);
+        $searchResult = $this->db->query("SELECT id,product_image,product_name FROM products WHERE product_name ILIKE :pattern AND status=true")->getAll([":pattern" => $pattern]);
+        return sendResponse(true, "search items fetched", [], $searchResult);
     }
 }

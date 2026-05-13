@@ -6,4 +6,4 @@ $categoryName = $_POST['name'];
 $token = $_POST['userToken'];
 
 $adminControl = new AdminControllers();
-echo $adminControl->addCategory($token,$categoryName);
+echo $adminControl->addCategory($token, $categoryName);

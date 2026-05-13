@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once __DIR__ . "/controllers/UserControllers.php";
 
 $address = $_POST['address'];
@@ -9,4 +9,4 @@ $country = $_POST['country'];
 $token = $_POST['userToken'];
 
 $userControl = new UserControllers();
-echo $userControl->addUserAddress($token,$address,$city,$state,$pincode,$country);
+echo $userControl->addUserAddress($token, $address, $city, $state, $pincode, $country);

@@ -5,4 +5,4 @@ $token = $_POST['userToken'];
 $id = $_POST['id'];
 
 $adminControl = new AdminControllers();
-echo $adminControl->deleteUser($id,$token);
+echo $adminControl->deleteUser($id, $token);

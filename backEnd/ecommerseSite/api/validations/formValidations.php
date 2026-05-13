@@ -23,14 +23,13 @@ function loginFormValidations($email, $password)
 }
 function registerFormValidations($firstName, $lastName, $email, $phone, $password, $confirmPassword)
 {
-    $firstNameRegex = "/^[A-Za-z]+(?: [A-Za-z]+)*$/";
-    $lastNameRegex = "/^[A-Za-z]{2,30}$/";
+    $nameRegex = "/^[A-Za-z]{4,30}$/";
     $phoneRegex = "/^[6-9]\d{9}$/";
     $errors = [];
-    if (!preg_match($firstNameRegex, $firstName)) {
+    if (!preg_match($nameRegex, $firstName)) {
         $errors['firstNameInputError'] = "Invalid first name";
     }
-    if (!preg_match($lastNameRegex, $lastName)) {
+    if (!preg_match($nameRegex, $lastName)) {
         $errors['lastNameInputError'] = "Invalid last name";
     }
     if (!preg_match(EMAIL_REGEX, $email)) {

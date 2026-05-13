@@ -14,8 +14,8 @@ $file = $_FILES['image'] ?? null;
 $filename = null;
 if ($file && $file['error'] === 0) {
     $filename = time() . "_" . basename($file["name"]);
-    if(!move_uploaded_file($file['tmp_name'], "../uploads/" . $filename)){
-        die(sendResponse(false,"failed to save the file"));
+    if (!move_uploaded_file($file['tmp_name'], "../uploads/" . $filename)) {
+        die(sendResponse(false, "failed to save the file"));
     }
 }
 

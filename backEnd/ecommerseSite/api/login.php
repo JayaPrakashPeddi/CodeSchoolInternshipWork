@@ -9,9 +9,9 @@ $password = $_POST["password"];
 $result = loginFormValidations($email, $password);
 
 if (!$result['status']) {
-    die(sendResponse(false,"Form Validations Failed",$result['errors']));
+    die(sendResponse(false, "Form Validations Failed", $result['errors']));
 } else {
-    
-$authController = new AuthControllers();
-echo $authController->login($email,$password);
+
+    $authController = new AuthControllers();
+    echo $authController->login($email, $password);
 }

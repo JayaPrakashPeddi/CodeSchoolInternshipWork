@@ -1,7 +1,7 @@
 <?php
 function sendResponse($status, $message, $errors = [], $data = [])
 {
-    return json_encode(["status"=>$status, "message"=>$message, "errors"=>$errors, "data"=>$data]);
+    return json_encode(["status" => $status, "message" => $message, "errors" => $errors, "data" => $data]);
 }
 
 function generateSecureToken($length = 20)

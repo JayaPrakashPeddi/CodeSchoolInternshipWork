@@ -58,7 +58,9 @@ function validateProductForm(
   isUpdating = false,
 ) {
   let isValid = true;
-  $("#productNameError, #categoryError, #stockError, #priceError, #descriptionError, #imageError").addClass("d-none");
+  $(
+    "#productNameError, #categoryError, #stockError, #priceError, #descriptionError, #imageError",
+  ).addClass("d-none");
   if (!name || name.length < 3) {
     $("#productNameError").removeClass("d-none");
     isValid = false;

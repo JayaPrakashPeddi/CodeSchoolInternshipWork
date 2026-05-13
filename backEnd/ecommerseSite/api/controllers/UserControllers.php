@@ -24,7 +24,7 @@ class UserControllers
         }
         $addresses = $this->db->query("SELECT CONCAT(u.first_name, ' ', u.last_name) AS customer_name,a.id address_id, concat(address,' ',city,' ',state,' ',country,' ',pin_code) as full_address from users u INNER JOIN customer_address ca ON u.id=ca.customer_id JOIN address a ON ca.address_id=a.id WHERE u.id=:id;")
             ->getAll([":id" => $userId]);
-        return sendResponse(true, "Addresses fetched!!",[] , $addresses);
+        return sendResponse(true, "Addresses fetched!!", [], $addresses);
     }
     public function addUserAddress($token, $address, $city, $state, $pincode, $country)
     {

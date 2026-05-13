@@ -10,7 +10,8 @@ class AuthControllers
         $this->db = new DB();
     }
 
-    private function clearExpiredTokens(){
+    private function clearExpiredTokens()
+    {
         $this->db->query("UPDATE user_tokens SET status=false WHERE expires_at < CURRENT_TIMESTAMP AND status=true")->execute();
     }
 
@@ -57,21 +58,23 @@ class AuthControllers
         $this->db->query($insertQuery)->execute([":user_id" => $userId, ":token" => $token]);
         $data['token'] = $token;
         $data['role'] = $userData['role'];
-        return sendResponse(true, "Login Successful!!",[],$data);
+        return sendResponse(true, "Login Successful!!", [], $data);
     }
 
-    public function validateToken($token){
+    public function validateToken($token)
+    {
         $this->clearExpiredTokens();
         $query = "SELECT concat(first_name,' ',last_name) as full_name,u.role as role FROM users u INNER JOIN user_tokens ut ON u.id=ut.user_id WHERE token=:token AND expires_at>CURRENT_TIMESTAMP AND ut.status=true";
-        $userData = $this->db->query($query)->get([":token"=>$token]);
-        if(!$userData){
-            return sendResponse(false,"Invalid Token!!");
+        $userData = $this->db->query($query)->get([":token" => $token]);
+        if (!$userData) {
+            return sendResponse(false, "Invalid Token!!");
         }
-        return sendResponse(true,"token valiadated!!",[],$userData);
+        return sendResponse(true, "token valiadated!!", [], $userData);
     }
 
-    public function logout($token){
-        $this->db->query("UPDATE user_tokens SET status=false WHERE token=:token AND status=true")->execute([":token"=>$token]);
-        return sendResponse(true,"logged out successfully!!");
+    public function logout($token)
+    {
+        $this->db->query("UPDATE user_tokens SET status=false WHERE token=:token AND status=true")->execute([":token" => $token]);
+        return sendResponse(true, "logged out successfully!!");
     }
 }

@@ -6,4 +6,4 @@ $status = $_POST['status'];
 $orderId = $_POST['id'];
 
 $adminControl = new AdminControllers();
-echo $adminControl->updateOrderStatus($token,$orderId,$status);
+echo $adminControl->updateOrderStatus($token, $orderId, $status);

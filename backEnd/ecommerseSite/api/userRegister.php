@@ -13,9 +13,9 @@ $confirmPassword = $_POST['confirmPassword'] ?? null;
 $result = registerFormValidations($firstName, $lastName, $email, $phone, $password, $confirmPassword);
 
 if (!$result['status']) {
-    die(sendResponse(false,"Form Validations Failed",$result['errors']));
+    die(sendResponse(false, "Form Validations Failed", $result['errors']));
 } else {
-    
-$authController = new AuthControllers();
-echo $authController->register($firstName,$lastName,$email,$phone,$password); 
+
+    $authController = new AuthControllers();
+    echo $authController->register($firstName, $lastName, $email, $phone, $password);
 }
