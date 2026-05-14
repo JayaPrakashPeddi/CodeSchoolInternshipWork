@@ -1,7 +1,6 @@
-const userToken = localStorage.getItem("userToken");
+ const userToken = localStorage.getItem("userToken");
 const emailRegex = /^[a-zA-Z0-9.$#]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
-const firstNameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-const lastNameRegex = /^[a-zA-Z]{3,}/;
+const nameRegex = /^[a-zA-Z]{4,}/;
 const numberRegex = /^[6-9]\d{9}$/;
 
 function validateToken() {
@@ -88,11 +87,11 @@ function registerFormValidations(
 
   let errorFlag = false;
 
-  if (!firstNameRegex.test(firstName)) {
+  if (!nameRegex.test(firstName)) {
     firstNameInputErrorEle.removeClass("d-none");
     errorFlag = true;
   }
-  if (!lastNameRegex.test(lastName)) {
+  if (!nameRegex.test(lastName)) {
     lastNameInputErrorEle.removeClass("d-none");
     errorFlag = true;
   }
@@ -627,6 +626,55 @@ function loadUserAddress() {
   });
 }
 
+let offset = 0;
+let load = 8;
+let loadFlag = false;
+function loadProducts() {
+  if (loadFlag) {
+    return;
+  }
+  loadFlag = true;
+  let html = '';
+  offset += load;
+  $.ajax({
+    type: "GET",
+    url: "../api/getProducts.php",
+    data: { offset },
+    dataType: "json",
+    success: function (response) {
+      if (response.status) {
+        let products = response.data;
+        products.forEach((product) => {
+          html += `
+        <div class="card rounded-4 card-hover" style="width: 20rem" onclick=getProductDetails('${product.id}')>
+          <img src="./uploads/${product.product_image}" height="400" width="250" class="card-img-top" alt="" />
+          <div class="card-body">
+            <div class="card-title fs-5 fw-bold mb-0">${product.product_name}</div>
+            <span class="text-muted">${product.category_name}</span>
+            <div class="card-text mt-2">
+              <p class="text-truncate fs-6">
+                ${product.product_description}
+              </p>
+              <div class="d-flex justify-content-between">
+                <div class="text-dark fs-5 fw-semibold">₹.${product.price}</div>
+                <div class="text-black fs-6 fw-medium">Instock: ${product.stock}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        `;
+        });
+        $("#productsContainer").append(html);
+      }
+      loadFlag = false;
+    },
+    error: function (err){
+      console.error(err);
+      loadFlag=false;
+    }
+  });
+}
+
 $(document).ready(function () {
   $("#mainContainer").load("./templates/home.html", function () {
     getProducts();
@@ -1100,5 +1148,13 @@ $(document).ready(function () {
         },
       });
     }, 500);
+  });
+
+  $(window).on("scroll", function () {
+    if (
+      $(window).scrollTop() + $(window).height() >=  $(document).height() - 100
+    ) {
+      loadProducts();
+    }
   });
 });

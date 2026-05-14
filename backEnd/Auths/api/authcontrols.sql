@@ -35,7 +35,6 @@ CREATE TABLE otps (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE temp_tokens (
     id SERIAL PRIMARY KEY,
     email VARCHAR(50) NOT NULL,
@@ -55,3 +54,22 @@ DROP TABLE temp_tokens;
 SELECT * FROM users;
 
 SELECT * FROM user_tokens;
+
+INSERT INTO
+    users (
+        first_name,
+        last_name,
+        phone_number,
+        email,
+        password,
+        role
+    )
+VALUES (
+        'admin',
+        'admin',
+        '0000000000',
+        'admin@gmail.com',
+        md5('admin@123'),
+        'admin'
+    );
+

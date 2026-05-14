@@ -41,6 +41,7 @@ function validateToken() {
     },
     error: function (err) {
       console.error(err);
+      logout();
     },
   });
 }
@@ -49,5 +50,4 @@ $(document).ready(function () {
   validateToken();
 
   $("#logoutBtn").on("click", () => logout());
-
 });

@@ -32,10 +32,10 @@ class ProductControllers
         return sendResponse(true, "Fetched", [], $product);
     }
 
-    public function getProducts($category)
+    public function getProducts($category,$offset)
     {
         if ($category == 'all') {
-            $products = $this->db->query("SELECT p.id, p.product_name, p.stock, p.price, p.product_description, p.product_image, c.category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.status=true ORDER BY p.id DESC")->getAll();
+            $products = $this->db->query("SELECT p.id, p.product_name, p.stock, p.price, p.product_description, p.product_image, c.category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.status=true ORDER BY p.id DESC LIMIT 8 OFFSET :offset;")->getAll([":offset"=>$offset]);
             if (!$products) {
                 return sendResponse(false, "No products found");
             }

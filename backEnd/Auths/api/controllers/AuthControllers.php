@@ -42,7 +42,7 @@ class AuthControllers
         if (strtoupper($user['role']) === "ADMIN") {
             $isAdmin = true;
         }
-        return sendResponse(true, "Login successful!!", ["token" => $token, "$isAdmin" => $isAdmin]);
+        return sendResponse(true, "Login successful!!", ["token" => $token, "isAdmin" => $isAdmin]);
     }
 
     public function register($first_name, $last_name, $email, $phone, $photo, $password)

@@ -137,7 +137,7 @@ $(document).ready(function () {
           console.log(response);
           localStorage.setItem("userToken", response.data.token);
           if (response.data.isAdmin) {
-            Swal.fire("Admin", "Admin", "warning");
+            window.location.replace("../adminPanal.html");
             return;
           } else {
             window.location.replace("../home.html");
@@ -417,7 +417,7 @@ $(document).ready(function () {
   $(document).on("click", "#resetPasswordBtn", function () {
     const newPassword = $("#newPasswordInput").val().trim();
     const confirmPassword = $("#confirmPasswordInput").val().trim();
-    console.log(newPassword,confirmPassword);
+    console.log(newPassword, confirmPassword);
     let errorFlag = false;
     if (newPassword.length < 6 || newPassword > 25) {
       $("#newPasswordInputError").removeClass("d-none");
@@ -443,17 +443,19 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         if (!response.status) {
-          Swal.fire("Error",response.message,"error");
+          Swal.fire("Error", response.message, "error");
           return;
         }
-        Swal.fire("Success","Password reset successful!","success").then(()=>{
-          localStorage.removeItem("temp_token");
-          $("#cancleVerifyEmail").click();
-        });
+        Swal.fire("Success", "Password reset successful!", "success").then(
+          () => {
+            localStorage.removeItem("temp_token");
+            $("#cancleVerifyEmail").click();
+          },
+        );
       },
-      error: function(err){
+      error: function (err) {
         console.error(err);
-      }
+      },
     });
   });
 });
