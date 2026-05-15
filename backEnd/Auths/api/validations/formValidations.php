@@ -1,9 +1,8 @@
 <?php
 function loginFormValidations($email, $password)
 {
-    $mailRegex = "/^[a-zA-Z]+[a-zA-Z0-9+-.#$]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/";
     return (
-        preg_match($mailRegex, $email) &&
+        filter_var($email,FILTER_VALIDATE_EMAIL) &&
         strlen($password) >= 8 &&
         strlen($password) <= 16
     );

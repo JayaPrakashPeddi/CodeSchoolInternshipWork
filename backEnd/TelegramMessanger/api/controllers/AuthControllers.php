@@ -68,7 +68,8 @@ class AuthControllers
 
     public function register($first_name, $last_name, $user_name, $bio, $phone, $photo, $email, $rememberMe)
     {
-        $this->db->query("INSERT INTO users (first_name,last_name,username,bio,phone_number,photo,email) VALUES (:first_name,:last_name,:user_name,:bio,:phone,:photo,:email)")->execute([":first_name" => $first_name, ":last_name" => $last_name, ":user_name" => $user_name, ":bio" => $bio, ":phone" => $phone, ":photo" => $photo, ":email" => $email]);
+        $this->db->query("INSERT INTO users (first_name,last_name,username,bio,phone_number,photo,email) VALUES (:first_name,:last_name,:user_name,:bio,:phone,:photo,:email)")
+            ->execute([":first_name" => $first_name, ":last_name" => $last_name, ":user_name" => $user_name, ":bio" => $bio, ":phone" => $phone, ":photo" => $photo, ":email" => $email]);
         return $this->login($phone, $rememberMe);
     }
 
@@ -115,9 +116,9 @@ class AuthControllers
         if (!$id) {
             return sendResponse(false, "invalid token");
         }
-        $previousImg = $this->db->query("SELECT photo FROM users WHERE id=:id")->get([":id"=>$id]);
+        $previousImg = $this->db->query("SELECT photo FROM users WHERE id=:id")->get([":id" => $id]);
         $previousImgPath = "../uploads/" . $previousImg['photo'];
-        if (file_exists($previousImgPath)){
+        if (file_exists($previousImgPath)) {
             unlink($previousImgPath);
         }
         $this->db->query("UPDATE users SET first_name=:first_name,last_name=:last_name,username=:username,bio=:bio,photo=:photo,email=:email WHERE id=:id")->execute([":first_name" => $first_name, ":last_name" => $last_name, ":username" => $user_name, ":bio" => $bio, ":photo" => $photo, ":email" => $email, ":id" => $id]);

@@ -28,9 +28,9 @@
       id="offcanvasMenu"
       style="width: 300px"
     >
-      <!-- Header -->
+      <!-- header -->
       <div class="offcanvas-header border-bottom border-secondary px-3 py-3">
-        <!-- Brand -->
+        <!-- logo -->
         <div class="d-flex align-items-center gap-3">
           <div
             class="bg-primary d-flex align-items-center justify-content-center rounded-3"
@@ -45,7 +45,7 @@
           </div>
         </div>
 
-        <!-- Close Button -->
+        <!-- close btn -->
         <button
           type="button"
           class="btn-close btn-close-white"
@@ -54,15 +54,9 @@
         ></button>
       </div>
 
-      <!-- Body -->
+      <!-- offcanvas body -->
       <div class="offcanvas-body d-flex flex-column">
-        <!-- Profile / Dropdown -->
-        <div
-          class="dropdown d-flex justify-content-start align-items-center mb-4"
-          id="offcanvasDropdown"
-        ></div>
-
-        <!-- Navigation -->
+        <!-- navigation -->
         <ul class="navbar-nav d-flex flex-column gap-3 px-2">
           <li class="nav-item">
             <a
@@ -113,13 +107,13 @@
 
     <div class="container-fluid h-100">
       <div class="row h-100">
-        <!-- SIDEBAR -->
+        <!-- sidebar -->
         <div
           class="col-md-4 col-lg-3 border-end border-secondary bg-black d-none d-lg-flex flex-column p-0 position-fixed"
           id="sidebar"
           style="height: 100vh; overflow-y: auto"
         >
-          <!-- Brand -->
+          <!-- logo -->
           <div
             class="d-flex align-items-center gap-3 p-3 border-bottom border-secondary"
           >
@@ -186,7 +180,7 @@
 
         <!-- Right area -->
         <div class="col d-flex flex-column p-0 min-vh-100" id="right">
-          <!-- Header -->
+          <!-- header -->
           <div
             class="border-bottom border-secondary sticky-top bg-black p-3 d-flex justify-content-between justify-content-lg-end align-items-center"
             style="min-height: 50px"
@@ -210,19 +204,30 @@
                 id="userDtlsDropDown"
               >
                 <i class="bi bi-person-circle pe-1"></i>
-                <span class="" id="navbarUsername"></span>
+                <span class="text-truncate" id="navbarUsername"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
+                <li id="settingsBtm">
+                  <a class="dropdown-item text-dark" href="#">
+                    <i class="bi bi-gear-fill"></i>
+                    <span>Settings</span>
+                  </a>
+                </li>
                 <li id="logoutBtn">
                   <a class="dropdown-item text-danger" href="#"
-                    ><i class="bi bi-box-arrow-right pe-1"></i>Logout</a
+                    ><i class="bi bi-box-arrow-right pe-1"></i
+                    ><span>Logout</span></a
                   >
                 </li>
               </ul>
             </div>
           </div>
-
-          <main></main>
+          <main id="mainContainer" class="p-3 text-white">
+            <div class="container-fluid bg-dark p-3 rounded-4">
+              <span class="fs-5 px-3">Profile</span>
+            </div>
+          
+          </main>
         </div>
       </div>
     </div>

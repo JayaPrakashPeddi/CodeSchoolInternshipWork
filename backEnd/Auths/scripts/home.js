@@ -1,5 +1,6 @@
 const userToken = localStorage.getItem("userToken");
 if (!userToken) {
+  localStorage.removeItem("userToken");
   window.location.replace("./index.html");
 }
 
@@ -36,8 +37,10 @@ function validateToken() {
       if (!response.status) {
         Swal.fire("Error", response.message, "warning").then(() => {
           logout();
+          return;
         });
       }
+      $("#navbarUsername").text(response.data["first_name"]);
     },
     error: function (err) {
       console.error(err);

@@ -6,7 +6,7 @@ $userEmail = $_POST['email'];
 $userPassword = $_POST['password'];
 $rememberMe = $_POST['rememberMe'];
 
-if(!loginFormValidations($userEmail,$userEmail)){
+if(!loginFormValidations($userEmail,$userPassword)){
     die(sendResponse(false,"Invalid login credentials"));
 }
 

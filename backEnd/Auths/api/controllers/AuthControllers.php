@@ -11,15 +11,13 @@ class AuthControllers
         $this->db = new DB();
     }
 
-    private function clearPreviousEmailsAndOtps($token)
+    private function clearPreviousEmailsAndOtps()
     {
-        $this->db->query("UPDATE temp_tokens SET status=false WHERE token = :token AND expires_at <= CURRENT_TIMESTAMP")->execute([":token" => $token]);
-        $session = $this->db->query("SELECT email FROM temp_tokens WHERE token = :token")->get([":token" => $token]);
-        $email = $session['email'];
-        $this->db->query("UPDATE otps SET status=false WHERE email=:email AND otp_expires_at <= CURRENT_TIMESTAMP")->execute([":email" => $email]);
+        $this->db->query("UPDATE temp_tokens SET status=false WHERE expires_at <= CURRENT_TIMESTAMP")->execute();
+        $this->db->query("UPDATE otps SET status=false WHERE otp_expires_at <= CURRENT_TIMESTAMP")->execute();
     }
 
-    public function clearExpiredToken()
+    private function clearExpiredToken()
     {
         return $this->db->query("UPDATE user_tokens SET status=false WHERE expires_at < current_timestamp")->execute();
     }
@@ -34,8 +32,8 @@ class AuthControllers
         $token = generateUserToken();
         $this->db->query("INSERT INTO user_tokens (user_id,token) VALUES (:id,:token)")->execute([":id" => $user['id'], ":token" => $token]);
 
-        if ($rememberMe){
-            $this->db->query("UPDATE user_tokens SET expires_at = current_timestamp + interval '15 days' WHERE token=:token")->execute([":token"=>$token]);
+        if ($rememberMe) {
+            $this->db->query("UPDATE user_tokens SET expires_at = current_timestamp + interval '15 days' WHERE token=:token")->execute([":token" => $token]);
         }
 
         $isAdmin = false;
@@ -95,9 +93,8 @@ class AuthControllers
 
     public function resendOTP($temp_token)
     {
-        $this->db->query("UPDATE temp_tokens SET status=false WHERE expires_at < CURRENT_TIMESTAMP")->execute();
-
-        $session = $this->db->query("SELECT email FROM temp_tokens WHERE token = :token AND expires_at > CURRENT_TIMESTAMP")
+        $this->clearPreviousEmailsAndOtps();
+        $session = $this->db->query("SELECT email FROM temp_tokens WHERE token = :token AND status=true")
             ->get([
                 ":token" => $temp_token
             ]);
@@ -116,13 +113,13 @@ class AuthControllers
 
     public function verifyOtp($token, $otp)
     {
-        $this->clearPreviousEmailsAndOtps($token);
-        $session = $this->db->query("SELECT email FROM temp_tokens WHERE token = :token AND expires_at > CURRENT_TIMESTAMP")
+        $this->clearPreviousEmailsAndOtps();
+        $session = $this->db->query("SELECT email FROM temp_tokens WHERE token = :token AND status=true")
             ->get([
                 ":token" => $token
             ]);
         $email = $session['email'];
-        $validOtp = $this->db->query("SELECT 1 FROM otps WHERE email=:email AND otp=:otp AND otp_expires_at > CURRENT_TIMESTAMP")->get([":email" => $email, ":otp" => $otp]);
+        $validOtp = $this->db->query("SELECT 1 FROM otps WHERE email=:email AND otp=:otp AND status=true")->get([":email" => $email, ":otp" => $otp]);
         if (!$validOtp) {
             return sendResponse(false, "Invalid OTP!!");
         }
@@ -131,8 +128,8 @@ class AuthControllers
 
     public function resetPassword($token, $password)
     {
-        $this->clearPreviousEmailsAndOtps($token);
-        $session = $this->db->query("SELECT email FROM temp_tokens WHERE token = :token AND expires_at > CURRENT_TIMESTAMP")
+        $this->clearPreviousEmailsAndOtps();
+        $session = $this->db->query("SELECT email FROM temp_tokens WHERE token = :token AND status=true")
             ->get([
                 ":token" => $token
             ]);
@@ -147,15 +144,17 @@ class AuthControllers
 
     public function validateToken($token)
     {
-        $isValid = $this->db->query("SELECT 1 FROM user_tokens WHERE token=:token AND expires_at > current_timestamp")->get([":token" => $token]);
-        if (!$isValid) {
+        $this->clearExpiredToken();
+        $ValidUser = $this->db->query("SELECT u.first_name FROM user_tokens ut INNER JOIN users u ON ut.user_id=u.id WHERE token=:token AND status=true")->get([":token" => $token]);
+        if (!$ValidUser) {
             return sendResponse(false, "Expired Token!!");
         }
-        return sendResponse(true, "Valid Token!!!");
+        return sendResponse(true, "Valid Token!!!",$ValidUser);
     }
 
-    public function logout($token) {
-        $this->db->query("UPDATE user_tokens SET status=false WHERE token=:token")->execute([":token"=>$token]);
+    public function logout($token)
+    {
+        $this->db->query("UPDATE user_tokens SET status=false WHERE token=:token")->execute([":token" => $token]);
         return sendResponse(true, "Successfully logged out!!");
     }
 }
