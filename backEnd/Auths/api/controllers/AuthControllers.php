@@ -19,7 +19,7 @@ class AuthControllers
 
     private function clearExpiredToken()
     {
-        return $this->db->query("UPDATE user_tokens SET status=false WHERE expires_at < current_timestamp")->execute();
+        return $this->db->query("UPDATE user_tokens SET status=false WHERE expires_at < current_timestamp AND status=true")->execute();
     }
 
     public function login($email, $password, $rememberMe)
@@ -145,7 +145,7 @@ class AuthControllers
     public function validateToken($token)
     {
         $this->clearExpiredToken();
-        $ValidUser = $this->db->query("SELECT u.first_name FROM user_tokens ut INNER JOIN users u ON ut.user_id=u.id WHERE token=:token AND status=true")->get([":token" => $token]);
+        $ValidUser = $this->db->query("SELECT u.first_name FROM user_tokens ut INNER JOIN users u ON ut.user_id=u.id WHERE token=:token AND ut.status=true")->get([":token" => $token]);
         if (!$ValidUser) {
             return sendResponse(false, "Expired Token!!");
         }
