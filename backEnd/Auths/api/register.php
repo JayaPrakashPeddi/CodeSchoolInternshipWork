@@ -10,22 +10,21 @@ $registerPhoneInput = $_POST['registerPhoneInput'] ?? null;
 $registerPasswordInput = $_POST['registerPasswordInput'] ?? null;
 $registerConfirmPasswordInput = $_POST['registerConfirmPasswordInput'] ?? null;
 
-if (!$profileImage) {
-    sendResponse(false, "File not uploaded!!");
-}
-
 $formValidationsResult = registerFormValidations($firstNameInput, $lastNameInput, $registerEmailInput, $registerPhoneInput, $registerPasswordInput, $registerConfirmPasswordInput);
 
 if (!empty($formValidationsResult)) {
     return sendResponse(false, "form validations failed", [], $formValidationsResult);
 }
 
-$fileName = time() . "_" . basename($profileImage['name']);
+$fileName = null;
+if (isset($profileImage['name']) && !empty($profileImage['name'])) {
+    $fileName = time() . "_" . basename($profileImage['name']);
 
-$path = "../uploads/" . $fileName;
+    $path = "../uploads/" . $fileName;
 
-if (!move_uploaded_file($profileImage['tmp_name'], $path)) {
-    sendResponse(false, "File not uploaded!!");
+    if (!move_uploaded_file($profileImage['tmp_name'], $path)) {
+        sendResponse(false, "File not uploaded!!");
+    }
 }
 
 $authControl = new AuthControllers();

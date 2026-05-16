@@ -53,6 +53,7 @@ DROP TABLE temp_tokens;
 
 SELECT * FROM users;
 
+
 SELECT * FROM user_tokens;
 
 INSERT INTO

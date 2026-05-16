@@ -56,18 +56,49 @@ function darkMode(isDarkMode = localStorage.getItem("isDarkMode") === "true") {
     $(".darkmode-hover")
       .removeClass("darkmode-hover")
       .addClass("lightmode-hover");
+    $("body").removeClass("darkmode").addClass("lightmode");
   } else {
     $(".bg-white").removeClass("bg-white").addClass("bg-black");
     $(".text-dark").removeClass("text-dark").addClass("text-white");
     $(".lightmode-hover")
       .removeClass("lightmode-hover")
       .addClass("darkmode-hover");
+    $("body").removeClass("lightmode").addClass("darkmode");
   }
   $("#darkModeSwitch").prop("checked", isDarkMode);
 }
 
 function removeActiveLink() {
   $(".active-link").removeClass("active-link");
+}
+
+function getUserProfileData() {
+  $.ajax({
+    type: "GET",
+    url: "../api/getUserProfileData.php",
+    headers: setHeader(),
+    dataType: "json",
+    success: function (response) {
+      if (!response.status) {
+        Swal.fire("Error", response.message, "error").then(() => {
+          window.location.reload();
+          return;
+        });
+      } else {
+        $("#userProfileFirstName").val(response.data.first_name);
+        $("#userProfileLastName").val(response.data.last_name);
+        $("#userProfilePhone").val(response.data.phone_number);
+        $("#userProfileEmail").val(response.data.email);
+        if (response.data.photo) {
+          let src = `./uploads/${response.data.photo}`;
+          $("#userProfileImg").attr("src", src);
+        }
+      }
+    },
+    error: function (err) {
+      console.error(err);
+    },
+  });
 }
 
 $(document).ready(function () {
@@ -92,6 +123,7 @@ $(document).ready(function () {
   $("#settingsBtn").on("click", () => {
     $("#mainContainer").load("./templates/settings.html", () => {
       darkMode();
+      getUserProfileData();
     });
   });
 
@@ -110,4 +142,24 @@ $(document).ready(function () {
       darkMode();
     });
   });
+
+  $(document).on("click", "#editProfileBtn", function () {
+    $(
+      "#userProfileFirstName, #userProfileLastName, #userProfilePhone, #userProfileEmail",
+    ).prop("disabled", false);
+    $("#userProfileFirstName").focus();
+    $("#editAndResetPasswordBtnsContainer").addClass("d-none");
+    $("#confirmationBtnsContainer").removeClass("d-none");
+  });
+
+    $(document).on("click", "#cancelBtn", function () {
+    $(
+      "#userProfileFirstName, #userProfileLastName, #userProfilePhone, #userProfileEmail",
+    ).prop("disabled", true);
+
+    $("#editAndResetPasswordBtnsContainer").removeClass("d-none");
+    $("#confirmationBtnsContainer").addClass("d-none");
+    $("#settingsBtn").click();
+  });
+
 });

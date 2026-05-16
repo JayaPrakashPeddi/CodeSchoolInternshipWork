@@ -4,8 +4,15 @@
   box-sizing: border-box;
 }
 
-body {
+.darkmode {
   background-image: url(../assects/bg-image.jpg);
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.lightmode {
+  background-image: url(../assects/bg-light.jpg);
   background-position: center;
   background-attachment: fixed;
   background-size: cover;

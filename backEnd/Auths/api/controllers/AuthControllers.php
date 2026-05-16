@@ -22,6 +22,12 @@ class AuthControllers
         return $this->db->query("UPDATE user_tokens SET status=false WHERE expires_at < current_timestamp AND status=true")->execute();
     }
 
+    private function getUserIdByToken($token)
+    {
+        $user = $this->db->query("SELECT user_id FROM user_tokens WHERE token=:token AND status=TRUE")->get([":token" => $token]);
+        return $user['user_id'];
+    }
+
     public function login($email, $password, $rememberMe)
     {
         $hashedPassword = md5($password);
@@ -149,12 +155,22 @@ class AuthControllers
         if (!$ValidUser) {
             return sendResponse(false, "Expired Token!!");
         }
-        return sendResponse(true, "Valid Token!!!",$ValidUser);
+        return sendResponse(true, "Valid Token!!!", $ValidUser);
     }
 
     public function logout($token)
     {
         $this->db->query("UPDATE user_tokens SET status=false WHERE token=:token")->execute([":token" => $token]);
         return sendResponse(true, "Successfully logged out!!");
+    }
+
+    public function getUserData($token)
+    {
+        $userId = $this->getUserIdByToken($token);
+        if (!$userId) {
+            return sendResponse(false, "Invalid Token!!");
+        }
+        $userData = $this->db->query("SELECT first_name,last_name,phone_number,email,photo FROM users WHERE id=:id AND status=true")->get([":id" => $userId]);
+        return sendResponse(true, "User data fetched", $userData);
     }
 }
