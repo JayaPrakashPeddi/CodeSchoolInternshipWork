@@ -51,19 +51,21 @@ function validateToken() {
 
 function darkMode(isDarkMode = localStorage.getItem("isDarkMode") === "true") {
   if (!isDarkMode) {
-    $(".bg-black").removeClass("bg-black").addClass("bg-white");
+    $(".bg-black").removeClass("bg-black").addClass("bg-light");
     $(".text-white").removeClass("text-white").addClass("text-dark");
     $(".darkmode-hover")
       .removeClass("darkmode-hover")
       .addClass("lightmode-hover");
     $("body").removeClass("darkmode").addClass("lightmode");
+    $("#offcanvasClose").removeClass("btn-close-white");
   } else {
-    $(".bg-white").removeClass("bg-white").addClass("bg-black");
+    $(".bg-light").removeClass("bg-light").addClass("bg-black");
     $(".text-dark").removeClass("text-dark").addClass("text-white");
     $(".lightmode-hover")
       .removeClass("lightmode-hover")
       .addClass("darkmode-hover");
     $("body").removeClass("lightmode").addClass("darkmode");
+    $("#offcanvasClose").addClass("btn-close-white");
   }
   $("#darkModeSwitch").prop("checked", isDarkMode);
 }
@@ -152,7 +154,7 @@ $(document).ready(function () {
     $("#confirmationBtnsContainer").removeClass("d-none");
   });
 
-    $(document).on("click", "#cancelBtn", function () {
+  $(document).on("click", "#cancelBtn", function () {
     $(
       "#userProfileFirstName, #userProfileLastName, #userProfilePhone, #userProfileEmail",
     ).prop("disabled", true);
@@ -161,5 +163,4 @@ $(document).ready(function () {
     $("#confirmationBtnsContainer").addClass("d-none");
     $("#settingsBtn").click();
   });
-
 });

@@ -68,7 +68,6 @@
 }
 .active-link {
   background: linear-gradient(135deg, #0d6efd, #3d8bfd);
-  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.35);
 }
 
 .nav-link i {
@@ -82,12 +81,6 @@
     width: 100%;
   }
 }
-
-/* @media (min-width: 768px) and (max-width: 1023px) {
-  #right {
-    margin-left: calc(33% + 2px) !important;
-  }
-} */
 
 @keyframes left-center {
   from {

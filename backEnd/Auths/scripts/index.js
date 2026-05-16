@@ -403,7 +403,7 @@ $(document).ready(function () {
       dataType: "json",
       success: function (response) {
         if (!response.status) {
-          Swal.fire("Warning","Invalid OTP, Try again!!", "warning");
+          Swal.fire("Warning", "Invalid OTP, Try again!!", "warning");
           return;
         }
         $("#otpInput").prop("disabled", true);

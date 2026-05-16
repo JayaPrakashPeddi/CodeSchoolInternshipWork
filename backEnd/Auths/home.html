@@ -24,7 +24,6 @@
     <!-- offcanvas for side bar -->
     <div
       class="offcanvas offcanvas-start bg-black text-white border-end border-secondary"
-      tabindex="-1"
       id="offcanvasMenu"
       style="width: 300px"
     >
@@ -48,9 +47,9 @@
         <!-- close btn -->
         <button
           type="button"
-          class="btn-close btn-close-white"
+          class="btn-close"
+          id="offcanvasClose"
           data-bs-dismiss="offcanvas"
-          aria-label="Close"
         ></button>
       </div>
 
@@ -117,7 +116,7 @@
       <div class="row h-100">
         <!-- sidebar -->
         <div
-          class="col-md-4 col-lg-3 border-end border-secondary bg-black d-none d-lg-flex flex-column p-0 position-fixed"
+          class="col-md-4 col-lg-3 border-end border-secondary bg-black d-none d-lg-flex flex-column p-0 position-fixed shadow-sm"
           id="sidebar"
           style="height: 100vh; overflow-y: auto"
         >
@@ -188,7 +187,7 @@
         <div class="col d-flex flex-column p-0 min-vh-100" id="right">
           <!-- header -->
           <div
-            class="border-bottom border-secondary sticky-top bg-black p-3 d-flex justify-content-between justify-content-lg-end align-items-center"
+            class="border-bottom border-secondary sticky-top bg-black p-3 d-flex justify-content-between justify-content-lg-end align-items-center shadow-sm"
             style="min-height: 50px"
           >
             <!-- offcanvas button -->
